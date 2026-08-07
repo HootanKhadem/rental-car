@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>City Drive — App Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --ink:#0B1512;--obsidian:#10201B;--graphite:#16261F;--raised:#1C2E27;--raised2:#223a31;
+  --line:#28392F;--line-soft:#1F2C25;
+  --emerald:#2FA37A;--emerald-deep:#1F7A5C;--teal:#0E7C7B;
+  --gold:#C6A664;--gold-bright:#E3C485;--gold-deep:#9C7E45;
+  --sand:#E7D9C0;--sand-dim:#C7B79A;
+  --ivory:#F4F1EA;--smoke:#9FB0A6;--smoke-dim:#6E8076;--sage:#7FAE94;--rust:#C77A68;
+  --serif:'Playfair Display',Georgia,serif;--sans:'Inter',system-ui,sans-serif;--mono:'Space Mono',ui-monospace,monospace;
+  --ar-head:'Cairo',sans-serif;--ar-body:'Tajawal',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:
+  radial-gradient(1000px 600px at 80% 0%,rgba(47,163,122,.07),transparent 60%),
+  radial-gradient(900px 700px at 5% 100%,rgba(198,166,100,.05),transparent 60%),#080d0b;
+  color:var(--ivory);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px;-webkit-font-smoothing:antialiased}
+body.lang-ar{font-family:var(--ar-body)}
+body.lang-ar .serif,body.lang-ar h1,body.lang-ar .lg-title,body.lang-ar .fname,body.lang-ar .mname,body.lang-ar .lname,body.lang-ar .pitch h1{font-family:var(--ar-head)}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,select{font-family:inherit}
+::selection{background:var(--gold);color:var(--ink)}
+img{display:block;max-width:100%}
+svg.ic{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.7}
+
+.stage{display:flex;align-items:center;gap:56px;max-width:1100px;flex-wrap:wrap;justify-content:center}
+.pitch{max-width:380px}
+.pitch .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);display:inline-flex;align-items:center;gap:8px}
+body.lang-ar .pitch .eyebrow{font-family:var(--ar-body);letter-spacing:0;font-weight:700}
+.pitch .pulse{width:8px;height:8px;border-radius:50%;background:var(--emerald);box-shadow:0 0 0 0 rgba(47,163,122,.6);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(47,163,122,.6)}70%{box-shadow:0 0 0 8px rgba(47,163,122,0)}100%{box-shadow:0 0 0 0 rgba(47,163,122,0)}}
+.pitch h1{font-family:var(--serif);font-size:44px;font-weight:600;line-height:1.08;margin:16px 0 18px}
+body.lang-ar .pitch h1{line-height:1.3;font-weight:900}
+.pitch h1 em{font-style:italic;color:var(--gold)}
+body.lang-ar .pitch h1 em{font-style:normal}
+.pitch p{color:var(--smoke);font-size:15px;line-height:1.6;margin-bottom:24px}
+.pitch .langrow{display:flex;gap:10px;margin-bottom:18px}
+.lang-btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:30px;padding:9px 15px;font-family:var(--mono);font-size:12px;color:var(--sand);transition:.2s}
+.lang-btn:hover{border-color:var(--gold);color:var(--gold)}
+.store-row{display:flex;gap:12px;flex-wrap:wrap}
+.store{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:10px;padding:11px 16px;font-size:13px}
+.store small{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--smoke)}
+body.lang-ar .store small{font-family:var(--ar-body);letter-spacing:0}
+.platform-note{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--smoke-dim);margin-top:20px}
+body.lang-ar .platform-note{font-family:var(--ar-body);letter-spacing:0}
+
+/* PHONE */
+.phone{width:390px;height:810px;background:#000;border-radius:54px;padding:13px;box-shadow:0 40px 90px rgba(0,0,0,.6),0 0 0 2px #14201b,inset 0 0 0 2px #243a31;position:relative;flex-shrink:0}
+.screen{width:100%;height:100%;background:var(--ink);border-radius:42px;overflow:hidden;position:relative;display:flex;flex-direction:column}
+.notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:128px;height:30px;background:#000;border-radius:0 0 18px 18px;z-index:50}
+.statusbar{display:flex;justify-content:space-between;align-items:center;padding:14px 26px 6px;font-size:13px;font-weight:600;z-index:30}
+.view{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+.view::-webkit-scrollbar{display:none}
+.scr{display:none;padding:6px 0 24px;animation:fade .35s ease}
+.scr.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.px{padding:0 20px}
+.lg-title{font-family:var(--serif);font-size:28px;font-weight:600;margin:8px 0 2px}
+.subgreet{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+body.lang-ar .subgreet{font-family:var(--ar-body);letter-spacing:0;font-weight:700}
+.hdr-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;padding-top:4px}
+.bell{width:38px;height:38px;border-radius:11px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--smoke);position:relative}
+.bell .nd{position:absolute;top:8px;inset-inline-end:9px;width:7px;height:7px;border-radius:50%;background:var(--rust)}
+
+.ai-band-app{margin:0 20px 18px;border:1px solid var(--emerald-deep);border-radius:16px;padding:16px;background:linear-gradient(140deg,#123026,#0e2019);display:flex;gap:13px;align-items:center;cursor:pointer}
+.ai-band-app .aiav{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--emerald),var(--gold));color:var(--ink);display:flex;align-items:center;justify-content:center;font-weight:900;flex-shrink:0}
+.ai-band-app h4{font-size:14px;font-weight:700}
+.ai-band-app p{font-size:11.5px;color:var(--smoke);margin-top:3px}
+
+.feat{margin:0 20px 22px;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--graphite);position:relative}
+.feat .fvis{position:relative;height:160px;overflow:hidden}
+.feat .fvis img{width:100%;height:100%;object-fit:cover}
+.feat-tag{position:absolute;top:14px;inset-inline-start:14px;font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);background:var(--gold);padding:5px 10px;border-radius:20px;z-index:2;font-weight:700}
+body.lang-ar .feat-tag{font-family:var(--ar-body);letter-spacing:0}
+.feat .fbody{padding:15px 18px 18px}
+.feat .fseg{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--emerald)}
+body.lang-ar .feat .fseg{font-family:var(--ar-body);letter-spacing:0;font-weight:700}
+.feat .fname{font-family:var(--serif);font-size:22px;margin:4px 0 12px}
+.feat .ffoot{display:flex;justify-content:space-between;align-items:center}
+.feat .fprice{font-family:var(--serif);font-size:20px}
+.feat .fprice span{font-family:var(--mono);font-size:10px;color:var(--smoke)}
+.feat .fbtn{background:linear-gradient(120deg,var(--emerald-deep),var(--emerald));color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;padding:11px 16px;border-radius:9px}
+body.lang-ar .feat .fbtn{font-family:var(--ar-body);letter-spacing:0}
+
+.sec-row{display:flex;justify-content:space-between;align-items:baseline;margin:0 20px 12px}
+.sec-row h3{font-size:16px;font-weight:700}
+.sec-row a{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+body.lang-ar .sec-row a{font-family:var(--ar-body);letter-spacing:0}
+.hscroll{display:flex;gap:14px;overflow-x:auto;padding:0 20px 6px;scroll-snap-type:x mandatory}
+.hscroll::-webkit-scrollbar{display:none}
+.mini-card{min-width:170px;scroll-snap-align:start;border:1px solid var(--line);border-radius:14px;background:var(--graphite);overflow:hidden}
+.mini-card .mvis{height:100px;overflow:hidden}
+.mini-card .mvis img{width:100%;height:100%;object-fit:cover}
+.mini-card .mbody{padding:11px 13px 13px}
+.mini-card .mname{font-family:var(--serif);font-size:16px;margin-bottom:2px}
+.mini-card .mseg{font-family:var(--mono);font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--smoke)}
+body.lang-ar .mini-card .mseg{font-family:var(--ar-body);letter-spacing:0}
+.mini-card .mprice{font-family:var(--mono);font-size:13px;color:var(--gold);margin-top:9px}
+
+.searchbar{display:flex;align-items:center;gap:10px;background:var(--obsidian);border:1px solid var(--line);border-radius:12px;padding:12px 15px;margin:4px 20px 14px}
+.searchbar input{flex:1;background:none;border:none;outline:none;color:var(--ivory);font-size:15px}
+.searchbar input::placeholder{color:var(--smoke-dim)}
+.fchips{display:flex;gap:8px;overflow-x:auto;padding:0 20px 14px}
+.fchips::-webkit-scrollbar{display:none}
+.fchip{white-space:nowrap;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:9px 14px;border:1px solid var(--line);border-radius:30px;color:var(--smoke)}
+body.lang-ar .fchip{font-family:var(--ar-body);letter-spacing:0;font-weight:600;font-size:13px}
+.fchip.on{background:var(--gold);color:var(--ink);border-color:var(--gold);font-weight:700}
+.listcar{display:flex;gap:13px;align-items:center;margin:0 20px 12px;padding:10px;border:1px solid var(--line);border-radius:14px;background:var(--graphite)}
+.listcar .lvis{width:96px;height:66px;flex-shrink:0;border-radius:10px;overflow:hidden}
+.listcar .lvis img{width:100%;height:100%;object-fit:cover}
+.listcar .lname{font-family:var(--serif);font-size:16px}
+.listcar .lseg{font-family:var(--mono);font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--smoke);margin:2px 0 6px}
+body.lang-ar .listcar .lseg{font-family:var(--ar-body);letter-spacing:0}
+.listcar .lprice{font-family:var(--mono);font-size:14px;color:var(--gold)}
+.listcar .lbtn{margin-inline-start:auto;font-family:var(--mono);font-size:10px;text-transform:uppercase;padding:9px 12px;border:1px solid var(--gold);color:var(--gold);border-radius:8px}
+body.lang-ar .listcar .lbtn{font-family:var(--ar-body);font-weight:700}
+
+/* profile + auth */
+.prof-head{display:flex;flex-direction:column;align-items:center;padding:14px 0 6px}
+.prof-av{width:74px;height:74px;border-radius:50%;background:linear-gradient(140deg,var(--emerald-deep),var(--gold-bright));color:var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:28px;font-weight:700;margin-bottom:12px}
+.prof-name{font-family:var(--serif);font-size:21px}
+.prof-tier{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-top:4px}
+body.lang-ar .prof-tier{font-family:var(--ar-body);letter-spacing:0;font-weight:700}
+.menu{margin:18px 20px 0;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--obsidian)}
+.menu-item{display:flex;align-items:center;gap:14px;padding:15px 16px;border-bottom:1px solid var(--line-soft);font-size:14px}
+.menu-item:last-child{border:none}
+.menu-item .mic{width:20px;color:var(--gold);display:flex}
+.menu-item .arr{margin-inline-start:auto;color:var(--smoke-dim)}
+
+.auth-box{margin:20px;border:1px solid var(--line);border-radius:16px;padding:22px;background:var(--graphite)}
+.auth-box h3{font-family:var(--serif);font-size:22px;margin-bottom:6px}
+.auth-box p{font-size:12.5px;color:var(--smoke);margin-bottom:16px}
+.field{margin-bottom:13px}
+.field label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--smoke);margin-bottom:6px}
+body.lang-ar .field label{font-family:var(--ar-body);letter-spacing:0;font-weight:700;font-size:12.5px}
+.field input,.field select{width:100%;background:var(--ink);border:1px solid var(--line);border-radius:9px;color:var(--ivory);font-size:15px;padding:12px 13px;outline:none}
+.field input:focus,.field select:focus{border-color:var(--gold)}
+.field.bad input,.field.bad select{border-color:var(--rust)}
+.btn-block{width:100%;justify-content:center;display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:14px;border-radius:10px;font-weight:700}
+body.lang-ar .btn-block{font-family:var(--ar-body);letter-spacing:0}
+.btn-emerald{background:linear-gradient(120deg,var(--emerald-deep),var(--emerald));color:#fff}
+.btn-gold{background:linear-gradient(120deg,var(--gold),var(--gold-bright));color:var(--ink)}
+.btn-ghost{border:1px solid var(--line);color:var(--ivory)}
+.trust-note{display:flex;align-items:center;gap:8px;background:rgba(47,163,122,.08);border:1px solid var(--emerald-deep);border-radius:9px;padding:10px 12px;font-size:11.5px;color:var(--sand);margin-bottom:14px}
+
+/* reserve wizard (in-phone) */
+.wiz-steps{display:flex;gap:5px;padding:12px 20px 4px}
+.wstep{flex:1;height:6px;border-radius:5px;background:var(--line);transition:.3s}
+.wstep.done{background:var(--emerald-deep)}
+.wstep.cur{background:var(--emerald);box-shadow:0 0 0 3px rgba(47,163,122,.18)}
+.wiz-title{padding:6px 20px 6px;font-family:var(--mono);font-size:13px;letter-spacing:.02em;color:var(--gold);font-weight:700}
+body.lang-ar .wiz-title{font-family:var(--ar-body);letter-spacing:0;font-size:15px}
+.wiz-pane{display:none;padding:8px 20px 16px}
+.wiz-pane.on{display:block;animation:fade .3s ease}
+.upload-box{border:1.5px dashed var(--line);border-radius:13px;padding:24px;text-align:center;cursor:pointer;background:var(--obsidian);transition:.2s}
+.upload-box.has{border-color:var(--emerald);border-style:solid;background:rgba(47,163,122,.06)}
+.upload-box .ub-ic{color:var(--gold);margin-bottom:9px;display:flex;justify-content:center}
+.upload-box.has .ub-ic{color:var(--emerald)}
+.upload-box .ub-t{font-size:13.5px;font-weight:700}
+.upload-box .ub-s{font-size:11px;color:var(--smoke);margin-top:4px}
+.verify-row{display:flex;align-items:center;gap:8px;font-size:12.5px;margin-top:12px;color:var(--smoke)}
+.verify-row.ok{color:var(--sage)}.verify-row.bad{color:var(--rust)}
+.spin{width:15px;height:15px;border:2px solid var(--line);border-top-color:var(--gold);border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.sel-car{display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--obsidian);margin-bottom:14px}
+.sel-car img{width:80px;height:54px;object-fit:cover;border-radius:8px;flex-shrink:0}
+.sel-car .scn{font-family:var(--serif);font-size:16px}
+.sel-car .scp{font-family:var(--mono);font-size:12px;color:var(--gold);margin-top:3px}
+.summary-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line-soft);font-size:13.5px}
+.summary-row.total{border-top:1px solid var(--line);border-bottom:none;margin-top:4px;padding-top:12px;font-weight:700;font-size:16px}
+.summary-row.total .sv{color:var(--gold);font-family:var(--serif)}
+.feature-list{display:flex;flex-direction:column;gap:8px;margin:14px 0}
+.feature-list .fl{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--sand)}
+.feature-list .fl .fc{color:var(--emerald)}
+.tc-box{height:130px;overflow-y:auto;border:1px solid var(--line);border-radius:9px;padding:13px;font-size:11.5px;color:var(--smoke);line-height:1.6;background:var(--obsidian);margin-bottom:12px}
+.check-row{display:flex;align-items:flex-start;gap:10px;font-size:12.5px;cursor:pointer}
+.check-row input{width:19px;height:19px;margin-top:1px;accent-color:var(--emerald);flex-shrink:0}
+#sigPad{width:100%;height:120px;background:#fff;border-radius:9px;touch-action:none;cursor:crosshair}
+.pay-methods{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px}
+.pay-opt{border:1px solid var(--line);border-radius:10px;padding:13px;text-align:center;font-family:var(--mono);font-size:11px;font-weight:700}
+.pay-opt.sel{border-color:var(--emerald);background:rgba(47,163,122,.08);color:var(--emerald)}
+.wiz-nav{display:flex;gap:10px;margin-top:18px}
+.wiz-nav .btn-block{flex:1}
+.success-wrap{text-align:center;padding:24px 0}
+.success-wrap .sc-ic{width:66px;height:66px;border-radius:50%;background:rgba(47,163,122,.14);color:var(--emerald);display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.success-wrap h3{font-family:var(--serif);font-size:23px;margin-bottom:8px}
+
+/* AI chat screen */
+.ai-log{display:flex;flex-direction:column;gap:11px;padding:14px 18px}
+.msg{max-width:84%;padding:10px 13px;border-radius:14px;font-size:13.5px;line-height:1.5}
+.msg.bot{background:var(--raised);border-bottom-inline-start-radius:4px;align-self:flex-start}
+.msg.me{background:linear-gradient(120deg,var(--emerald-deep),var(--emerald));color:#fff;border-bottom-inline-end-radius:4px;align-self:flex-end}
+.ai-quick{display:flex;gap:7px;flex-wrap:wrap;padding:0 18px 8px}
+.ai-quick button{font-size:11.5px;border:1px solid var(--line);border-radius:30px;padding:7px 11px;color:var(--sand)}
+.ai-input{display:flex;gap:8px;padding:10px 16px 14px}
+.ai-input input{flex:1;background:var(--obsidian);border:1px solid var(--line);border-radius:30px;color:var(--ivory);font-size:14px;padding:11px 15px;outline:none}
+.ai-input button{width:42px;height:42px;border-radius:50%;background:var(--gold);color:var(--ink);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* notifications screen */
+.notif-item{display:flex;gap:11px;padding:14px 20px;border-bottom:1px solid var(--line-soft)}
+.notif-item .nic{width:34px;height:34px;border-radius:9px;background:rgba(47,163,122,.1);color:var(--emerald);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.notif-item .ntt{font-size:13px;font-weight:700}
+.notif-item .ntm{font-size:11.5px;color:var(--smoke);margin-top:3px}
+
+/* tab bar */
+.tabbar{display:flex;background:rgba(13,24,19,.94);backdrop-filter:blur(16px);border-top:1px solid var(--line-soft);padding:10px 6px 26px}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;color:var(--smoke-dim);font-family:var(--mono);font-size:8.5px;letter-spacing:.06em;text-transform:uppercase}
+body.lang-ar .tab{font-family:var(--ar-body);letter-spacing:0;font-size:10px}
+.tab.on{color:var(--gold)}
+.tab .ti{display:flex}
+
+.toast{position:absolute;bottom:90px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--raised);border:1px solid var(--gold);border-radius:10px;padding:11px 16px;font-size:12.5px;transition:.4s;z-index:60;text-align:center;max-width:80%}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.hide{display:none!important}
+@media(max-width:900px){.stage{gap:30px}.pitch{text-align:center}.pitch .langrow,.store-row{justify-content:center}.pitch .eyebrow{justify-content:center}}
+@media(max-width:430px){.phone{transform:scale(.9);transform-origin:top center}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body class="lang-ar">
+<div class="stage">
+  <div class="pitch">
+    <div class="eyebrow"><span class="pulse"></span><span data-i18n="pitch_eyebrow">تطبيق · v1.0</span></div>
+    <h1 data-i18n="pitch_title">City Drive في <em data-i18n="pitch_title_em">جيبك.</em></h1>
+    <p data-i18n="pitch_lead">تجربة العضوية كاملة — تصفّح الأسطول، احجز في ثوانٍ، تابع التوصيل، ودردش مع المساعد الذكي. نموذج تفاعلي يحاكي تطبيق iOS و Android. اضغط على التبويبات للاستكشاف.</p>
+    <div class="langrow">
+      <button class="lang-btn" id="langBtn"><svg class="ic" viewBox="0 0 24 24" style="width:16px;height:16px"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></svg><span id="langLabel">EN</span></button>
+    </div>
+    <div class="store-row">
+      <div class="store"><svg class="ic" viewBox="0 0 24 24" style="width:20px;height:20px;stroke:var(--ivory)"><path d="M16 3a4 4 0 01-3 4M12 7a4 4 0 00-4 4c0 4 4 9 4 9s4-5 4-9a4 4 0 00-4-4z"/></svg><div><small data-i18n="dl_on">حمّل من</small><b>App Store</b></div></div>
+      <div class="store"><svg class="ic" viewBox="0 0 24 24" style="width:18px;height:18px;stroke:var(--ivory)"><path d="M5 3l14 9-14 9V3z"/></svg><div><small data-i18n="get_it">احصل عليه من</small><b>Google Play</b></div></div>
+    </div>
+    <div class="platform-note" data-i18n="proto_note">نموذج أولي · التطبيقات الأصلية قيد التطوير</div>
+  </div>
+
+  <div class="phone">
+    <div class="screen">
+      <div class="notch"></div>
+      <div class="statusbar"><span>9:41</span><span style="font-size:12px">●●● ▮</span></div>
+      <div class="view" id="view">
+
+        <!-- HOME -->
+        <div class="scr active" data-screen="home">
+          <div class="px hdr-row">
+            <div><div class="subgreet" data-i18n="greeting">صباح الخير</div><div class="lg-title" id="homeName">عبدالله</div></div>
+            <button class="bell" data-go="notif"><svg class="ic" viewBox="0 0 24 24"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/></svg><span class="nd"></span></button>
+          </div>
+          <div class="ai-band-app" data-go="ai">
+            <span class="aiav">C</span>
+            <div><h4 data-i18n="ai_band_t">مساعدك الذكي جاهز</h4><p data-i18n="ai_band_d">اسأل، احجز، وتابع توصيل سيارتك — بالعربية والإنجليزية.</p></div>
+          </div>
+          <div class="feat" id="featCard"></div>
+          <div class="sec-row"><h3 data-i18n="avail_now">متاح الآن</h3><a data-go="search" data-i18n="see_all">عرض الكل</a></div>
+          <div class="hscroll" id="homeScroll"></div>
+        </div>
+
+        <!-- SEARCH -->
+        <div class="scr" data-screen="search">
+          <div class="px"><div class="lg-title" style="margin-bottom:12px" data-i18n="find_car">ابحث عن سيارة</div></div>
+          <div class="searchbar"><svg class="ic" viewBox="0 0 24 24" style="width:18px;height:18px;color:var(--gold)"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input id="appSearch" data-i18n-ph="search_ph" placeholder="ابحث في الأسطول…"/></div>
+          <div class="fchips" id="appChips">
+            <button class="fchip on" data-t="all" data-i18n="t_all">الكل</button>
+            <button class="fchip" data-t="luxury" data-i18n="t_luxury">فاخرة</button>
+            <button class="fchip" data-t="suv" data-i18n="t_suv">دفع رباعي</button>
+            <button class="fchip" data-t="sedan" data-i18n="t_sedan">سيدان</button>
+            <button class="fchip" data-t="eco" data-i18n="t_eco">اقتصادية</button>
+            <button class="fchip" data-t="ev" data-i18n="t_ev">كهربائية</button>
+          </div>
+          <div id="appList"></div>
+        </div>
+
+        <!-- RESERVE -->
+        <div class="scr" data-screen="reserve">
+          <div class="px"><div class="lg-title" style="margin-bottom:4px" data-i18n="rsv_title">حجز سيارة</div></div>
+          <div class="wiz-steps" id="wizSteps"></div>
+          <div class="wiz-title" id="wizTitle"></div>
+
+          <div class="wiz-pane" data-step="0">
+            <div class="trust-note"><span>●</span><span data-i18n="rsv_guest">الحجز متاح للأعضاء المسجّلين فقط.</span></div>
+            <p style="color:var(--smoke);font-size:13px;margin-bottom:16px" data-i18n="rsv_guest_d">أنشئ حساباً مجانياً للمتابعة.</p>
+            <button class="btn-block btn-emerald" data-go="profile" data-i18n="create_account">إنشاء الحساب</button>
+          </div>
+          <div class="wiz-pane" data-step="1">
+            <p style="color:var(--smoke);font-size:13px;margin-bottom:14px" data-i18n="rsv_civil_d">حمّل البطاقة المدنية.</p>
+            <div class="upload-box" id="upCivil"><div class="ub-ic"><svg class="ic" viewBox="0 0 24 24" style="width:28px;height:28px"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h5"/></svg></div><div class="ub-t" data-i18n="up_civil">البطاقة المدنية</div><div class="ub-s" data-i18n="up_hint">اضغط للرفع</div></div>
+            <input type="file" id="fileCivil" accept="image/*" class="hide"/>
+            <div class="verify-row" id="vCivil" style="display:none"></div>
+          </div>
+          <div class="wiz-pane" data-step="2">
+            <p style="color:var(--smoke);font-size:13px;margin-bottom:14px" data-i18n="rsv_lic_d">حمّل رخصة قيادة سارية.</p>
+            <div class="upload-box" id="upLic"><div class="ub-ic"><svg class="ic" viewBox="0 0 24 24" style="width:28px;height:28px"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8" cy="12" r="2"/><path d="M13 10h5M13 14h5"/></svg></div><div class="ub-t" data-i18n="up_lic">رخصة القيادة</div><div class="ub-s" data-i18n="up_hint">اضغط للرفع</div></div>
+            <input type="file" id="fileLic" accept="image/*" class="hide"/>
+            <div class="field" style="margin-top:14px"><label data-i18n="lbl_lic_no">رقم الرخصة / الرقم المدني</label><input id="licNo" placeholder="123456789012"/></div>
+            <button class="btn-block btn-ghost" id="verifyLic" data-i18n="verify_lic">التحقق من الرخصة</button>
+            <div class="verify-row" id="vLic" style="display:none"></div>
+          </div>
+          <div class="wiz-pane" data-step="3">
+            <div class="sel-car" id="rsvCar"></div>
+            <div class="field"><label data-i18n="lbl_start">تاريخ الاستلام</label><input type="date" id="startDate"/></div>
+            <div class="field"><label data-i18n="lbl_days">المدة (أيام)</label><input type="number" id="days" min="1" max="90" value="1"/></div>
+            <div class="verify-row" id="periodNote"></div>
+            <div class="summary-row total"><span data-i18n="est_total">الإجمالي التقديري</span><span class="sv" id="estTotal"></span></div>
+          </div>
+          <div class="wiz-pane" data-step="4">
+            <div class="sel-car" id="rsvCar2"></div>
+            <div class="feature-list">
+              <div class="fl"><span class="fc">✓</span><span data-i18n="feat_ins">تأمين شامل</span></div>
+              <div class="fl"><span class="fc">✓</span><span data-i18n="feat_del">توصيل مجاني</span></div>
+              <div class="fl"><span class="fc">✓</span><span data-i18n="feat_24">مساعدة 24/7</span></div>
+              <div class="fl"><span class="fc">✓</span><span data-i18n="feat_ai">متابعة ذكية</span></div>
+            </div>
+            <div class="summary-row"><span data-i18n="sum_car">السيارة</span><span class="sv" id="sumCar"></span></div>
+            <div class="summary-row"><span data-i18n="sum_period">المدة</span><span class="sv" id="sumPeriod"></span></div>
+            <div class="summary-row total"><span data-i18n="sum_total">الإجمالي</span><span class="sv" id="sumTotal"></span></div>
+          </div>
+          <div class="wiz-pane" data-step="5">
+            <div class="tc-box" data-i18n="tc_body">الشروط والأحكام…</div>
+            <label class="check-row"><input type="checkbox" id="tcCheck"/><span data-i18n="tc_agree">أوافق على الشروط والأحكام.</span></label>
+          </div>
+          <div class="wiz-pane" data-step="6">
+            <p style="color:var(--smoke);font-size:12.5px;margin-bottom:10px" data-i18n="sig_d">وقّع رقمياً والتقط سيلفي مع وثائقك.</p>
+            <canvas id="sigPad"></canvas>
+            <button class="btn-block btn-ghost" id="clearSig" style="margin-top:8px;font-size:10px;padding:9px" data-i18n="clear">مسح</button>
+            <div class="upload-box" id="upSelfie" style="margin-top:12px"><div class="ub-ic"><svg class="ic" viewBox="0 0 24 24" style="width:28px;height:28px"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg></div><div class="ub-t" data-i18n="up_selfie">سيلفي مع الوثائق</div><div class="ub-s" data-i18n="up_selfie_h">اضغط للالتقاط</div></div>
+            <input type="file" id="fileSelfie" accept="image/*" class="hide"/>
+            <div class="verify-row" id="vSelfie" style="display:none"></div>
+          </div>
+          <div class="wiz-pane" data-step="7">
+            <div class="summary-row total" style="margin-top:0;border-top:none"><span data-i18n="amount_due">المبلغ المستحق</span><span class="sv" id="payTotal"></span></div>
+            <label style="font-family:var(--mono);font-size:10px;color:var(--smoke);text-transform:uppercase;display:block;margin:14px 0 9px" data-i18n="choose_pay">وسيلة الدفع</label>
+            <div class="pay-methods" id="payMethods">
+              <div class="pay-opt sel" data-pay="knet">KNET كي نت</div>
+              <div class="pay-opt" data-pay="visa">Visa/Master</div>
+              <div class="pay-opt" data-pay="paypal">PayPal</div>
+              <div class="pay-opt" data-pay="apple">Apple Pay</div>
+            </div>
+            <div class="field"><label data-i18n="lbl_card">رقم البطاقة</label><input id="cardNo" placeholder="•••• •••• •••• ••••" inputmode="numeric"/></div>
+            <div class="trust-note"><span>🔒</span><span data-i18n="pay_secure">دفع آمن عبر بوابة كي نت.</span></div>
+          </div>
+          <div class="wiz-pane" data-step="8">
+            <div class="success-wrap">
+              <div class="sc-ic"><svg class="ic" viewBox="0 0 24 24" style="width:32px;height:32px;stroke-width:2.2"><path d="M20 6L9 17l-5-5"/></svg></div>
+              <h3 data-i18n="rsv_done_t">تم تأكيد الحجز!</h3>
+              <p style="color:var(--smoke);font-size:13px;padding:0 16px" id="rsvDoneMsg"></p>
+            </div>
+          </div>
+
+          <div class="wiz-nav px" id="wizNav">
+            <button class="btn-block btn-ghost" id="wizBack" data-i18n="back">رجوع</button>
+            <button class="btn-block btn-emerald" id="wizNext" data-i18n="next">التالي</button>
+          </div>
+        </div>
+
+        <!-- AI -->
+        <div class="scr" data-screen="ai">
+          <div class="px hdr-row" style="align-items:center"><div style="display:flex;align-items:center;gap:11px"><span class="prof-av" style="width:44px;height:44px;font-size:18px;margin:0">C</span><div><div style="font-weight:700;font-size:15px" data-i18n="ai_name">مساعد City Drive</div><div style="font-size:11px;color:var(--emerald)" data-i18n="ai_online">متصل الآن</div></div></div></div>
+          <div class="ai-log" id="aiLog"></div>
+          <div class="ai-quick" id="aiQuick"></div>
+          <div class="ai-input"><input id="aiText" data-i18n-ph="ai_ph" placeholder="اكتب رسالتك…"/><button id="aiSend"><svg class="ic" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></button></div>
+        </div>
+
+        <!-- NOTIFICATIONS -->
+        <div class="scr" data-screen="notif">
+          <div class="px"><div class="lg-title" style="margin-bottom:10px" data-i18n="notif_title">الإشعارات</div></div>
+          <div id="notifList"></div>
+        </div>
+
+        <!-- PROFILE / AUTH -->
+        <div class="scr" data-screen="profile">
+          <!-- guest -->
+          <div id="authView">
+            <div class="auth-box">
+              <h3 data-i18n="reg_title">إنشاء حساب</h3>
+              <p data-i18n="reg_sub">انضم إلى City Drive في خطوة واحدة.</p>
+              <div class="trust-note"><span>🛡</span><span data-i18n="reg_trust">بياناتك محمية ولن تُشارك.</span></div>
+              <form id="regForm" novalidate>
+                <div class="field" id="f-name"><label data-i18n="lbl_name">الاسم الكامل</label><input name="name" data-i18n-ph="ph_name" placeholder="عبدالله الأحمد"/></div>
+                <div class="field" id="f-email"><label data-i18n="lbl_email">البريد الإلكتروني</label><input name="email" type="email" placeholder="name@email.com"/></div>
+                <div class="field" id="f-gov"><label data-i18n="lbl_gov">المحافظة</label><select name="gov"><option value="" data-i18n="ph_select">اختر…</option><option data-i18n="gov_capital">العاصمة</option><option data-i18n="gov_hawalli">حولي</option><option data-i18n="gov_farwaniya">الفروانية</option><option data-i18n="gov_ahmadi">الأحمدي</option><option data-i18n="gov_jahra">الجهراء</option><option data-i18n="gov_mubarak">مبارك الكبير</option></select></div>
+                <div class="field" id="f-area"><label data-i18n="lbl_area">المنطقة / العنوان</label><input name="area" data-i18n-ph="ph_area" placeholder="السالمية، شارع…"/></div>
+                <button type="submit" class="btn-block btn-emerald" data-i18n="create_account">إنشاء الحساب</button>
+              </form>
+            </div>
+          </div>
+          <!-- member -->
+          <div id="memberView" class="hide">
+            <div class="prof-head">
+              <div class="prof-av" id="profAv">ع</div>
+              <div class="prof-name" id="profName">عبدالله الأحمد</div>
+              <div class="prof-tier" data-i18n="tier_gold_full">عضو ذهبي · CD-04417</div>
+            </div>
+            <div class="menu">
+              <div class="menu-item"><span class="mic"><svg class="ic" viewBox="0 0 24 24" style="width:18px;height:18px"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span><span data-i18n="m_payment">وسائل الدفع</span><span class="arr">›</span></div>
+              <div class="menu-item"><span class="mic"><svg class="ic" viewBox="0 0 24 24" style="width:18px;height:18px"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8" cy="12" r="2"/></svg></span><span data-i18n="m_docs">الرخصة والبطاقة المدنية</span><span class="arr">✓</span></div>
+              <div class="menu-item"><span class="mic"><svg class="ic" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M12 21s-7-5-7-11a7 7 0 0114 0c0 6-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><span data-i18n="m_addr">عناوين التوصيل</span><span class="arr">›</span></div>
+            </div>
+            <div class="menu">
+              <div class="menu-item" data-go="notif"><span class="mic"><svg class="ic" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/></svg></span><span data-i18n="notif_title">الإشعارات</span><span class="arr">›</span></div>
+              <div class="menu-item" data-go="ai"><span class="mic"><svg class="ic" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span><span data-i18n="ai_name">مساعد City Drive</span><span class="arr">›</span></div>
+              <div class="menu-item" id="logoutItem"><span class="mic"><svg class="ic" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg></span><span data-i18n="logout">تسجيل الخروج</span><span class="arr">›</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tabbar" id="tabbar">
+        <button class="tab on" data-screen="home"><span class="ti"><svg class="ic" viewBox="0 0 24 24" style="width:20px;height:20px"><path d="M3 11l9-8 9 8M5 10v10h14V10"/></svg></span><span data-i18n="tab_home">الرئيسية</span></button>
+        <button class="tab" data-screen="search"><span class="ti"><svg class="ic" viewBox="0 0 24 24" style="width:20px;height:20px"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></span><span data-i18n="tab_search">بحث</span></button>
+        <button class="tab" data-screen="ai"><span class="ti"><svg class="ic" viewBox="0 0 24 24" style="width:20px;height:20px"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span><span data-i18n="tab_ai">المساعد</span></button>
+        <button class="tab" data-screen="profile"><span class="ti"><svg class="ic" viewBox="0 0 24 24" style="width:20px;height:20px"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0116 0"/></svg></span><span data-i18n="tab_you">حسابي</span></button>
+      </div>
+      <div class="toast" id="toast"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* shared i18n + fleet inline (subset mirrors client.html) */
+const I18N={
+ ar:{pitch_eyebrow:"تطبيق · v1.0",pitch_title:"City Drive في",pitch_title_em:"جيبك.",pitch_lead:"تجربة العضوية كاملة — تصفّح الأسطول، احجز في ثوانٍ، تابع التوصيل، ودردش مع المساعد الذكي. نموذج تفاعلي يحاكي تطبيق iOS و Android.",
+  dl_on:"حمّل من",get_it:"احصل عليه من",proto_note:"نموذج أولي · التطبيقات الأصلية قيد التطوير",
+  greeting:"صباح الخير",ai_band_t:"مساعدك الذكي جاهز",ai_band_d:"اسأل، احجز، وتابع توصيل سيارتك — بالعربية والإنجليزية.",
+  avail_now:"متاح الآن",see_all:"عرض الكل",find_car:"ابحث عن سيارة",search_ph:"ابحث في الأسطول…",
+  t_all:"الكل",t_luxury:"فاخرة",t_suv:"دفع رباعي",t_sedan:"سيدان",t_eco:"اقتصادية",t_ev:"كهربائية",
+  featured:"مميّزة",reserve:"احجز",per_day:"/ يوم",kwd:"د.ك",
+  rsv_title:"حجز سيارة",rsv_guest:"الحجز متاح للأعضاء المسجّلين فقط.",rsv_guest_d:"أنشئ حساباً مجانياً للمتابعة.",create_account:"إنشاء الحساب",
+  rsv_civil_d:"حمّل البطاقة المدنية.",up_civil:"البطاقة المدنية",up_hint:"اضغط للرفع",
+  rsv_lic_d:"حمّل رخصة قيادة سارية.",up_lic:"رخصة القيادة",lbl_lic_no:"رقم الرخصة / الرقم المدني",verify_lic:"التحقق من الرخصة",
+  lbl_start:"تاريخ الاستلام",lbl_days:"المدة (أيام)",est_total:"الإجمالي التقديري",
+  feat_ins:"تأمين شامل",feat_del:"توصيل مجاني",feat_24:"مساعدة 24/7",feat_ai:"متابعة ذكية",
+  sum_car:"السيارة",sum_period:"المدة",sum_total:"الإجمالي",days_u:"يوم",
+  tc_body:"باستخدامك خدمة City Drive توافق على إعادة السيارة في الموعد والحالة المتفق عليها، واستخدامها داخل الكويت فقط، ومسؤوليتك عن المخالفات المرورية. يشمل التأمين الأضرار العرضية. الحد الأدنى لعمر السائق 21 عاماً مع رخصة سارية لا تقل عن سنة.",
+  tc_agree:"أوافق على الشروط والأحكام.",sig_d:"وقّع رقمياً والتقط سيلفي مع وثائقك.",clear:"مسح",up_selfie:"سيلفي مع الوثائق",up_selfie_h:"اضغط للالتقاط",
+  amount_due:"المبلغ المستحق",choose_pay:"وسيلة الدفع",lbl_card:"رقم البطاقة",pay_secure:"دفع آمن عبر بوابة كي نت.",rsv_done_t:"تم تأكيد الحجز!",back:"رجوع",next:"التالي",
+  ai_name:"مساعد City Drive",ai_online:"متصل الآن",ai_ph:"اكتب رسالتك…",notif_title:"الإشعارات",
+  reg_title:"إنشاء حساب",reg_sub:"انضم إلى City Drive في خطوة واحدة.",reg_trust:"بياناتك محمية ولن تُشارك.",
+  lbl_name:"الاسم الكامل",ph_name:"عبدالله الأحمد",lbl_email:"البريد الإلكتروني",lbl_gov:"المحافظة",ph_select:"اختر…",
+  gov_capital:"العاصمة",gov_hawalli:"حولي",gov_farwaniya:"الفروانية",gov_ahmadi:"الأحمدي",gov_jahra:"الجهراء",gov_mubarak:"مبارك الكبير",
+  lbl_area:"المنطقة / العنوان",ph_area:"السالمية، شارع…",
+  tier_gold_full:"عضو ذهبي · CD-04417",m_payment:"وسائل الدفع",m_docs:"الرخصة والبطاقة المدنية",m_addr:"عناوين التوصيل",logout:"تسجيل الخروج",
+  tab_home:"الرئيسية",tab_search:"بحث",tab_ai:"المساعد",tab_you:"حسابي",
+  pane_names:["الحساب","البطاقة المدنية","الرخصة","السيارة والمدة","الملخص","الشروط","التوقيع","الدفع","تم"]},
+ en:{pitch_eyebrow:"App · v1.0",pitch_title:"City Drive in your",pitch_title_em:"pocket.",pitch_lead:"The full membership experience — browse the fleet, book in seconds, track delivery, and chat with the AI assistant. An interactive prototype mirroring the iOS & Android apps.",
+  dl_on:"Download on the",get_it:"Get it on",proto_note:"Prototype · native builds in development",
+  greeting:"Good morning",ai_band_t:"Your AI assistant is ready",ai_band_d:"Ask, book, and track your delivery — in Arabic and English.",
+  avail_now:"Available now",see_all:"See all",find_car:"Find a car",search_ph:"Search the fleet…",
+  t_all:"All",t_luxury:"Luxury",t_suv:"SUV",t_sedan:"Sedan",t_eco:"Economy",t_ev:"Electric",
+  featured:"Featured",reserve:"Reserve",per_day:"/ day",kwd:"KWD",
+  rsv_title:"Reserve a car",rsv_guest:"Booking is for registered members only.",rsv_guest_d:"Create a free account to continue.",create_account:"Create account",
+  rsv_civil_d:"Upload your Civil ID.",up_civil:"Civil ID",up_hint:"Tap to upload",
+  rsv_lic_d:"Upload a valid driver licence.",up_lic:"Driver licence",lbl_lic_no:"Licence / Civil ID number",verify_lic:"Verify licence",
+  lbl_start:"Pickup date",lbl_days:"Duration (days)",est_total:"Estimated total",
+  feat_ins:"Full insurance",feat_del:"Free delivery",feat_24:"24/7 assistance",feat_ai:"Smart tracking",
+  sum_car:"Car",sum_period:"Period",sum_total:"Total",days_u:"days",
+  tc_body:"By using City Drive you agree to return the car on time and in the agreed condition, use it within Kuwait only, and be responsible for traffic violations. Insurance covers accidental damage. Minimum driver age 21 with a valid licence held at least one year.",
+  tc_agree:"I agree to the Terms & Conditions.",sig_d:"Sign digitally and take a selfie with your documents.",clear:"Clear",up_selfie:"Selfie with documents",up_selfie_h:"Tap to capture",
+  amount_due:"Amount due",choose_pay:"Payment method",lbl_card:"Card number",pay_secure:"Secure payment via KNET gateway.",rsv_done_t:"Booking confirmed!",back:"Back",next:"Next",
+  ai_name:"City Drive Assistant",ai_online:"Online now",ai_ph:"Type your message…",notif_title:"Notifications",
+  reg_title:"Create account",reg_sub:"Join City Drive in one step.",reg_trust:"Your data is protected and never shared.",
+  lbl_name:"Full name",ph_name:"Abdullah Al-Ahmad",lbl_email:"Email",lbl_gov:"Governorate",ph_select:"Select…",
+  gov_capital:"Capital",gov_hawalli:"Hawalli",gov_farwaniya:"Farwaniya",gov_ahmadi:"Ahmadi",gov_jahra:"Jahra",gov_mubarak:"Mubarak Al-Kabeer",
+  lbl_area:"Area / address",ph_area:"Salmiya, street…",
+  tier_gold_full:"Gold member · CD-04417",m_payment:"Payment methods",m_docs:"Licence & Civil ID",m_addr:"Delivery addresses",logout:"Sign out",
+  tab_home:"Home",tab_search:"Search",tab_ai:"Assistant",tab_you:"Account",
+  pane_names:["Account","Civil ID","Licence","Car & period","Summary","Terms","Signature","Payment","Done"]}
+};
+let LANG=localStorage.getItem('cd_lang')||'ar';
+function t(k){return I18N[LANG][k]!==undefined?I18N[LANG][k]:(I18N.en[k]!==undefined?I18N.en[k]:k);}
+function applyLang(){
+  document.documentElement.lang=LANG;document.documentElement.dir=LANG==='ar'?'rtl':'ltr';
+  document.body.classList.toggle('lang-ar',LANG==='ar');
+  document.getElementById('langLabel').textContent=LANG==='ar'?'EN':'عربي';
+  document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(I18N[LANG][k]!==undefined)el.textContent=I18N[LANG][k];});
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{const k=el.getAttribute('data-i18n-ph');if(I18N[LANG][k]!==undefined)el.placeholder=I18N[LANG][k];});
+  localStorage.setItem('cd_lang',LANG);
+  renderHome();renderList();renderNotif();buildWizSteps();
+}
+document.getElementById('langBtn').onclick=()=>{LANG=LANG==='ar'?'en':'ar';applyLang();};
+
+/* store */
+const store={get user(){try{return JSON.parse(localStorage.getItem('cd_user'))}catch(e){return null}},set user(u){u?localStorage.setItem('cd_user',JSON.stringify(u)):localStorage.removeItem('cd_user');}};
+
+/* fleet (mirror client) */
+const IMG='https://upload.wikimedia.org/wikipedia/commons/thumb/';
+function pic(p,f){return IMG+p+'/330px-'+f;}
+function fb(i){i.onerror=null;i.src='data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="400" height="240"><rect width="400" height="240" fill="#16261F"/><text x="50%" y="50%" fill="#6E8076" font-family="sans-serif" font-size="18" text-anchor="middle">City Drive</text></svg>');}
+const FLEET=[
+ {brand:'Toyota',model:'Land Cruiser 300',ar:'لاند كروزر 300',type:'luxury',seg:{en:'Luxury SUV',ar:'دفع رباعي فاخر'},price:55,feat:true,img:pic('6/6d/2021_Toyota_Land_Cruiser_300_3.4_ZX_%28Colombia%29_front_view_04.png','2021_Toyota_Land_Cruiser_300_3.4_ZX_%28Colombia%29_front_view_04.png')},
+ {brand:'Mercedes',model:'GLE',ar:'مرسيدس GLE',type:'luxury',seg:{en:'Luxury SUV',ar:'دفع رباعي فاخر'},price:70,feat:true,img:pic('8/8b/Mercedes-Benz_GLE_350_d_4MATIC_AMG_Line_%28V_167%29_%E2%80%93_f_18042021.jpg','Mercedes-Benz_GLE_350_d_4MATIC_AMG_Line_%28V_167%29_%E2%80%93_f_18042021.jpg')},
+ {brand:'Range Rover',model:'Vogue',ar:'رنج روفر فوغ',type:'luxury',seg:{en:'Luxury SUV',ar:'دفع رباعي فاخر'},price:90,feat:true,img:pic('1/17/2022_Land_Rover_Range_Rover_SE_P440e_AWD_Automatic_3.0_Front.jpg','2022_Land_Rover_Range_Rover_SE_P440e_AWD_Automatic_3.0_Front.jpg')},
+ {brand:'BMW',model:'X5',ar:'بي إم دبليو X5',type:'suv',seg:{en:'Luxury SUV',ar:'دفع رباعي فاخر'},price:65,feat:false,img:pic('f/f1/2019_BMW_X5_M50d_Automatic_3.0.jpg','2019_BMW_X5_M50d_Automatic_3.0.jpg')},
+ {brand:'Nissan',model:'Patrol',ar:'نيسان باترول',type:'suv',seg:{en:'Full-size SUV',ar:'دفع رباعي كبير'},price:48,feat:true,img:pic('9/9d/2016_Nissan_Patrol_%28Y62%29_Ti-L_wagon_%282018-09-17%29_01.jpg','2016_Nissan_Patrol_%28Y62%29_Ti-L_wagon_%282018-09-17%29_01.jpg')},
+ {brand:'Hyundai',model:'Ioniq 5',ar:'هيونداي أيونيك 5',type:'ev',seg:{en:'Electric',ar:'كهربائية'},price:28,feat:true,img:pic('8/85/Hyundai_Ioniq_5_AWD_Techniq-Paket_%E2%80%93_f_31122024.jpg','Hyundai_Ioniq_5_AWD_Techniq-Paket_%E2%80%93_f_31122024.jpg')},
+ {brand:'Hyundai',model:'Tucson',ar:'هيونداي توسان',type:'suv',seg:{en:'Compact SUV',ar:'دفع رباعي متوسط'},price:22,feat:false,img:pic('c/c6/2022_Hyundai_Tucson_Preferred%2C_Front_Right%2C_05-24-2021.jpg','2022_Hyundai_Tucson_Preferred%2C_Front_Right%2C_05-24-2021.jpg')},
+ {brand:'Toyota',model:'Corolla Cross Hybrid',ar:'كورولا كروس هايبرد',type:'eco',seg:{en:'Eco SUV',ar:'دفع رباعي اقتصادي'},price:20,feat:false,img:pic('4/43/2023_Toyota_Corolla_Cross_XLE_4WD_in_Wind_Chill_Pearl%2C_front_left.jpg','2023_Toyota_Corolla_Cross_XLE_4WD_in_Wind_Chill_Pearl%2C_front_left.jpg')},
+ {brand:'Toyota',model:'Camry',ar:'تويوتا كامري',type:'sedan',seg:{en:'Sedan',ar:'سيدان'},price:16,feat:false,img:pic('a/ac/2018_Toyota_Camry_%28ASV70R%29_Ascent_sedan_%282018-08-27%29_01.jpg','2018_Toyota_Camry_%28ASV70R%29_Ascent_sedan_%282018-08-27%29_01.jpg')},
+ {brand:'Nissan',model:'Altima',ar:'نيسان التيما',type:'sedan',seg:{en:'Sedan',ar:'سيدان'},price:15,feat:false,img:pic('5/59/2024_Nissan_Altima_SR%2C_front_left%2C_05-05-2025.jpg','2024_Nissan_Altima_SR%2C_front_left%2C_05-05-2025.jpg')},
+ {brand:'Geely',model:'Coolray',ar:'جيلي كولراي',type:'eco',seg:{en:'Compact SUV',ar:'دفع رباعي مدمج'},price:18,feat:false,img:pic('c/c1/2018_Geely_Binyue.jpg','2018_Geely_Binyue.jpg')},
+ {brand:'BMW',model:'5 Series',ar:'بي إم دبليو الفئة 5',type:'luxury',seg:{en:'Luxury Sedan',ar:'سيدان فاخرة'},price:55,feat:false,img:pic('8/86/BMW_G60_520i_1X7A2443.jpg','BMW_G60_520i_1X7A2443.jpg')}
+];
+function carName(c){return LANG==='ar'?c.ar:(c.brand+' '+c.model);}
+
+/* home */
+function renderHome(){
+  const c=FLEET[0];
+  document.getElementById('featCard').innerHTML=`
+   <div class="fvis"><span class="feat-tag">${t('featured')}</span><img src="${c.img}" onerror="fb(this)" alt="${c.brand} ${c.model}"/></div>
+   <div class="fbody"><div class="fseg">${LANG==='ar'?c.seg.ar:c.seg.en}</div><div class="fname">${carName(c)}</div>
+     <div class="ffoot"><div class="fprice">${t('kwd')} ${c.price}<span> ${t('per_day')}</span></div><button class="fbtn" data-reserve="0">${t('reserve')}</button></div></div>`;
+  document.getElementById('homeScroll').innerHTML=FLEET.slice(1,7).map(c=>{const i=FLEET.indexOf(c);return `
+   <div class="mini-card" data-reserve="${i}"><div class="mvis"><img src="${c.img}" onerror="fb(this)" alt=""/></div><div class="mbody"><div class="mname">${carName(c)}</div><div class="mseg">${LANG==='ar'?c.seg.ar:c.seg.en}</div><div class="mprice">${t('kwd')} ${c.price} ${t('per_day')}</div></div></div>`;}).join('');
+  const u=store.user;document.getElementById('homeName').textContent=u?u.name.split(' ')[0]:(LANG==='ar'?'ضيف':'Guest');
+}
+/* search list */
+let appFilter='all',appQ='';
+function renderList(){
+  let list=FLEET.filter(c=>(appFilter==='all'||c.type===appFilter)&&(!appQ||(c.brand+' '+c.model+' '+c.ar).toLowerCase().includes(appQ)));
+  document.getElementById('appList').innerHTML=list.length?list.map(c=>{const i=FLEET.indexOf(c);return `
+   <div class="listcar"><div class="lvis"><img src="${c.img}" onerror="fb(this)" alt=""/></div>
+     <div><div class="lname">${carName(c)}</div><div class="lseg">${LANG==='ar'?c.seg.ar:c.seg.en}</div><div class="lprice">${t('kwd')} ${c.price}</div></div>
+     <button class="lbtn" data-reserve="${i}">${t('reserve')}</button></div>`;}).join(''):`<p style="text-align:center;color:var(--smoke);font-size:13px;padding:30px">—</p>`;
+}
+
+/* navigation */
+function go(s){
+  document.querySelectorAll('.scr').forEach(v=>v.classList.toggle('active',v.dataset.screen===s));
+  document.querySelectorAll('.tab').forEach(tb=>tb.classList.toggle('on',tb.dataset.screen===s));
+  document.getElementById('view').scrollTop=0;
+}
+document.getElementById('tabbar').addEventListener('click',e=>{const tb=e.target.closest('.tab');if(tb)go(tb.dataset.screen);});
+document.addEventListener('click',e=>{
+  const g=e.target.closest('[data-go]');if(g){go(g.dataset.go);return;}
+  const r=e.target.closest('[data-reserve]');if(r){openReserve(+r.dataset.reserve);}
+});
+
+/* auth */
+function refreshAuth(){
+  const u=store.user;
+  document.getElementById('authView').classList.toggle('hide',!!u);
+  document.getElementById('memberView').classList.toggle('hide',!u);
+  if(u){document.getElementById('profName').textContent=u.name;document.getElementById('profAv').textContent=u.name.trim()[0];}
+  renderHome();
+}
+document.getElementById('regForm').addEventListener('submit',e=>{
+  e.preventDefault();const f=e.target;let ok=true;
+  [['f-name',f.name.value.trim()],['f-email',/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.value)],['f-gov',f.gov.value],['f-area',f.area.value.trim()]].forEach(([id,v])=>{document.getElementById(id).classList.toggle('bad',!v);if(!v)ok=false;});
+  if(!ok)return;
+  store.user={name:f.name.value.trim(),email:f.email.value.trim(),gov:f.gov.value,area:f.area.value.trim(),civil:false,licence:false};
+  refreshAuth();toast((LANG==='ar'?'أهلاً بك ':'Welcome ')+store.user.name.split(' ')[0]+' 🎉');pushNotif('welcome');
+});
+document.getElementById('logoutItem').onclick=()=>{store.user=null;refreshAuth();toast(LANG==='ar'?'تم تسجيل الخروج':'Signed out');go('home');};
+
+/* reserve wizard */
+let wiz={step:0,car:null};
+function buildWizSteps(){
+  document.getElementById('wizSteps').innerHTML=I18N[LANG].pane_names.map((n,i)=>`<div class="wstep" data-s="${i}"></div>`).join('');
+  paintSteps();
+}
+function paintSteps(){
+  document.querySelectorAll('.wstep').forEach((s,i)=>{s.classList.toggle('done',i<wiz.step);s.classList.toggle('cur',i===wiz.step);});
+  document.getElementById('wizTitle').textContent=(wiz.step+1)+' / 9 · '+I18N[LANG].pane_names[wiz.step];
+}
+function showPane(){
+  document.querySelectorAll('#wizSteps ~ .wiz-pane, .scr[data-screen=reserve] .wiz-pane').forEach(p=>p.classList.toggle('on',+p.dataset.step===wiz.step));
+  paintSteps();
+  const back=document.getElementById('wizBack'),next=document.getElementById('wizNext'),nav=document.getElementById('wizNav');
+  back.style.visibility=wiz.step<=0?'hidden':'visible';
+  nav.style.display=(wiz.step===0||wiz.step===8)?'none':'flex';
+  next.textContent=wiz.step===7?(LANG==='ar'?'ادفع وأكّد':'Pay & confirm'):t('next');
+}
+function openReserve(idx){
+  wiz={step:0,car:FLEET[idx]};const u=store.user;
+  if(u){wiz.step=u.civil?(u.licence?3:2):1;}
+  fillCarPanes();buildWizSteps();showPane();go('reserve');
+}
+function fillCarPanes(){
+  const c=wiz.car;const html=`<img src="${c.img}" onerror="fb(this)" alt=""/><div><div class="scn">${carName(c)}</div><div class="scp">${t('kwd')} ${c.price} ${t('per_day')}</div></div>`;
+  document.getElementById('rsvCar').innerHTML=html;document.getElementById('rsvCar2').innerHTML=html;
+  const today=new Date().toISOString().slice(0,10);const sd=document.getElementById('startDate');sd.value=today;sd.min=today;updatePeriod();
+}
+function updatePeriod(){
+  let d=parseInt(document.getElementById('days').value)||1;d=Math.max(1,Math.min(90,d));
+  document.getElementById('periodNote').textContent=LANG==='ar'?'الحد الأدنى يوم واحد · الأقصى 90 يوماً':'Min 1 day · Max 90 days';
+  const total=d*wiz.car.price;document.getElementById('estTotal').textContent=t('kwd')+' '+total;return{d,total};
+}
+document.getElementById('days').addEventListener('input',updatePeriod);
+function bindUpload(boxId,inputId,rowId,msg){
+  const box=document.getElementById(boxId),inp=document.getElementById(inputId),row=document.getElementById(rowId);
+  box.onclick=()=>inp.click();
+  inp.onchange=()=>{if(!inp.files[0])return;box.classList.add('has');box.querySelector('.ub-t').textContent=inp.files[0].name;row.style.display='flex';row.className='verify-row';row.innerHTML=`<span class="spin"></span><span>${LANG==='ar'?'جارٍ التحقق…':'Verifying…'}</span>`;setTimeout(()=>{row.className='verify-row ok';row.innerHTML=`<span>✓</span><span>${msg()}</span>`;box._ok=true;},1300);};
+}
+bindUpload('upCivil','fileCivil','vCivil',()=>LANG==='ar'?'تم التحقق من البطاقة':'Civil ID verified');
+bindUpload('upLic','fileLic','vLic',()=>LANG==='ar'?'تم استلام الرخصة':'Licence received');
+bindUpload('upSelfie','fileSelfie','vSelfie',()=>LANG==='ar'?'تم استلام صورة التحقق':'Selfie received');
+document.getElementById('verifyLic').onclick=()=>{
+  const row=document.getElementById('vLic');row.style.display='flex';row.className='verify-row';row.innerHTML=`<span class="spin"></span><span>${LANG==='ar'?'جارٍ التحقق…':'Checking…'}</span>`;
+  const num=document.getElementById('licNo').value.trim();
+  setTimeout(()=>{if(num.length>=6){row.className='verify-row ok';row.innerHTML=`<span>✓</span><span>${LANG==='ar'?'رخصة سارية · غير منتهية':'Valid · not expired'}</span>`;document.getElementById('upLic')._ok=true;}else{row.className='verify-row bad';row.innerHTML=`<span>✕</span><span>${LANG==='ar'?'رقم غير صالح أو منتهية':'Invalid or expired'}</span>`;}},1400);
+};
+let sigCtx,sigDrawn=false;
+function initSig(){const cv=document.getElementById('sigPad');const r=cv.getBoundingClientRect();cv.width=r.width;cv.height=120;sigCtx=cv.getContext('2d');sigCtx.strokeStyle='#0B1512';sigCtx.lineWidth=2.4;sigCtx.lineCap='round';let dr=false;const pos=e=>{const b=cv.getBoundingClientRect();const x=(e.touches?e.touches[0].clientX:e.clientX)-b.left;const y=(e.touches?e.touches[0].clientY:e.clientY)-b.top;return[x,y];};const dn=e=>{dr=true;sigDrawn=true;const[x,y]=pos(e);sigCtx.beginPath();sigCtx.moveTo(x,y);e.preventDefault();};const mv=e=>{if(!dr)return;const[x,y]=pos(e);sigCtx.lineTo(x,y);sigCtx.stroke();e.preventDefault();};const up=()=>dr=false;cv.onmousedown=dn;cv.onmousemove=mv;window.addEventListener('mouseup',up);cv.ontouchstart=dn;cv.ontouchmove=mv;cv.ontouchend=up;}
+document.getElementById('clearSig').onclick=()=>{if(sigCtx){sigCtx.clearRect(0,0,document.getElementById('sigPad').width,120);sigDrawn=false;}};
+document.getElementById('payMethods').addEventListener('click',e=>{const o=e.target.closest('.pay-opt');if(!o)return;document.querySelectorAll('.pay-opt').forEach(p=>p.classList.remove('sel'));o.classList.add('sel');});
+document.getElementById('wizBack').onclick=()=>{if(wiz.step>0){wiz.step--;showPane();}};
+document.getElementById('wizNext').onclick=()=>{
+  const s=wiz.step;
+  if(s===1&&!document.getElementById('upCivil')._ok){toast(LANG==='ar'?'حمّل البطاقة المدنية':'Upload Civil ID');return;}
+  if(s===2&&!document.getElementById('upLic')._ok){toast(LANG==='ar'?'تحقّق من رخصة سارية':'Verify a valid licence');return;}
+  if(s===3){const{d,total}=updatePeriod();wiz.days=d;wiz.total=total;}
+  if(s===5&&!document.getElementById('tcCheck').checked){toast(LANG==='ar'?'وافق على الشروط':'Accept the terms');return;}
+  if(s===6){if(!sigDrawn){toast(LANG==='ar'?'وقّع رقمياً':'Sign first');return;}if(!document.getElementById('upSelfie')._ok){toast(LANG==='ar'?'أرفق صورة التحقق':'Add selfie');return;}}
+  if(s===7)return doPayment();
+  if(s===1){const u=store.user;if(u){u.civil=true;store.user=u;}}
+  if(s===2){const u=store.user;if(u){u.licence=true;store.user=u;}}
+  wiz.step++;
+  if(wiz.step===4)fillSummary();
+  if(wiz.step===6&&!sigCtx)setTimeout(initSig,30);
+  if(wiz.step===7)document.getElementById('payTotal').textContent=t('kwd')+' '+(wiz.total||updatePeriod().total);
+  showPane();
+};
+function fillSummary(){const c=wiz.car,d=wiz.days||updatePeriod().d,total=wiz.total||d*c.price;document.getElementById('sumCar').textContent=carName(c);document.getElementById('sumPeriod').textContent=d+' '+t('days_u');document.getElementById('sumTotal').textContent=t('kwd')+' '+total;}
+function doPayment(){const n=document.getElementById('wizNext');n.style.opacity=.6;n.textContent=LANG==='ar'?'جارٍ الدفع…':'Processing…';
+  setTimeout(()=>{n.style.opacity=1;wiz.step=8;document.getElementById('rsvDoneMsg').textContent=LANG==='ar'?`${carName(wiz.car)} في الطريق إليك. سيصلك المساعد الذكي بتفاصيل التوصيل.`:`${carName(wiz.car)} is on its way. The AI assistant will message delivery details.`;showPane();pushNotif('booked',wiz.car);toast(LANG==='ar'?'تم الدفع ✓':'Payment successful ✓');},1500);}
+
+/* AI */
+const AI_FLOW={ar:{greet:"أهلاً بك في City Drive! 👋 أنا مساعدك الذكي. كيف أقدر أساعدك؟",quick:["أبغى سيارة عائلية","أرخص سيارة","كيف أحجز؟"],replies:{"أبغى سيارة عائلية":"أنصحك بـ نيسان باترول (٤٨ د.ك/يوم) أو لاند كروزر. أحجزها لك؟","أرخص سيارة":"أوفر خيار نيسان التيما بـ ١٥ د.ك/يوم. تبي تحجزها؟","كيف أحجز؟":"سجّل، ارفع البطاقة والرخصة، اختر السيارة والمدة، وقّع وادفع بكي نت!"},fallback:"وصلت رسالتك! جرّب أحد الأزرار فوق."},
+ en:{greet:"Welcome to City Drive! 👋 I'm your AI assistant. How can I help?",quick:["Family car","Cheapest car","How to book?"],replies:{"Family car":"I recommend the Nissan Patrol (KWD 48/day) or Land Cruiser. Reserve one?","Cheapest car":"The Nissan Altima at KWD 15/day. Book it?","How to book?":"Register, upload Civil ID & licence, pick a car & dates, sign and pay via KNET!"},fallback:"Got it! Try one of the buttons above."}};
+function aiAdd(text,who){const l=document.getElementById('aiLog');const d=document.createElement('div');d.className='msg '+who;d.textContent=text;l.appendChild(d);l.scrollTop=l.scrollHeight;}
+function aiBootstrap(){document.getElementById('aiLog').innerHTML='';aiAdd(AI_FLOW[LANG].greet,'bot');document.getElementById('aiQuick').innerHTML=AI_FLOW[LANG].quick.map(q=>`<button>${q}</button>`).join('');document.querySelectorAll('#aiQuick button').forEach(b=>b.onclick=()=>aiUser(b.textContent));}
+function aiUser(text){if(!text.trim())return;aiAdd(text,'me');document.getElementById('aiText').value='';const r=AI_FLOW[LANG].replies[text]||AI_FLOW[LANG].fallback;setTimeout(()=>aiAdd(r,'bot'),550);}
+document.getElementById('aiSend').onclick=()=>aiUser(document.getElementById('aiText').value);
+document.getElementById('aiText').addEventListener('keydown',e=>{if(e.key==='Enter')aiUser(e.target.value);});
+
+/* notifications */
+let NOTIFS=[{ar:{t:"عرض خاص للأعضاء الذهبيين",m:"خصم ١٥٪ على رنج روفر هذا الأسبوع"},en:{t:"Gold member offer",m:"15% off Range Rover this week"}},{ar:{t:"بناءً على اهتمامك بالدفع الرباعي",m:"باترول ولاند كروزر متوفرة الآن"},en:{t:"Based on your SUV interest",m:"Patrol & Land Cruiser available now"}}];
+function renderNotif(){document.getElementById('notifList').innerHTML=NOTIFS.map(n=>{const x=n[LANG];return `<div class="notif-item"><div class="nic"><svg class="ic" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/></svg></div><div><div class="ntt">${x.t}</div><div class="ntm">${x.m}</div></div></div>`;}).join('');}
+function pushNotif(kind,car){let n;if(kind==='welcome')n={ar:{t:"أهلاً بك في City Drive",m:"حسابك جاهز — احجز بثوانٍ"},en:{t:"Welcome to City Drive",m:"Your account is ready"}};else if(kind==='booked'&&car)n={ar:{t:"تم تأكيد حجزك",m:`${car.ar} في الطريق إليك`},en:{t:"Booking confirmed",m:`${car.brand} ${car.model} is on its way`}};if(n){NOTIFS.unshift(n);renderNotif();}}
+
+/* toast */
+let _tt;function toast(m){const el=document.getElementById('toast');el.textContent=m;el.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('show'),2400);}
+
+/* boot */
+applyLang();refreshAuth();buildWizSteps();aiBootstrap();
+document.getElementById('appSearch').addEventListener('input',e=>{appQ=e.target.value.toLowerCase();renderList();});
+document.getElementById('appChips').addEventListener('click',e=>{const b=e.target.closest('.fchip');if(!b)return;document.querySelectorAll('.fchip').forEach(c=>c.classList.remove('on'));b.classList.add('on');appFilter=b.dataset.t;renderList();});
+renderList();
+</script>
+</body>
+</html>

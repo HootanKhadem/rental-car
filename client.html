@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>City Drive — توصيل سيارات الإيجار بالذكاء الاصطناعي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --ink:#0B1512; --obsidian:#10201B; --graphite:#16261F; --raised:#1C2E27;
+  --line:#28392F; --line-soft:#1F2C25;
+  --emerald:#2FA37A; --emerald-deep:#1F7A5C; --teal:#0E7C7B;
+  --gold:#C6A664; --gold-bright:#E3C485; --gold-deep:#9C7E45;
+  --sand:#E7D9C0; --sand-dim:#C7B79A;
+  --ivory:#F4F1EA; --smoke:#9FB0A6; --smoke-dim:#6E8076;
+  --sage:#7FAE94; --rust:#C77A68; --sky:#79B7D6;
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'Inter',system-ui,-apple-system,sans-serif;
+  --mono:'Space Mono',ui-monospace,monospace;
+  --ar-head:'Cairo',sans-serif; --ar-body:'Tajawal',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:
+  radial-gradient(1100px 640px at 85% 0%,rgba(47,163,122,.07),transparent 60%),
+  radial-gradient(900px 700px at 5% 100%,rgba(198,166,100,.05),transparent 60%),
+  var(--ink);
+  color:var(--ivory);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+/* Arabic locale: bigger, Arabic fonts */
+body.lang-ar{font-family:var(--ar-body);font-size:16.5px}
+body.lang-ar .serif,body.lang-ar h1,body.lang-ar h2,body.lang-ar h3,body.lang-ar .brand,body.lang-ar .foot-brand{font-family:var(--ar-head)}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+img,svg{display:block;max-width:100%}
+input,select,textarea{font-family:inherit}
+::selection{background:var(--gold);color:var(--ink)}
+
+.serif{font-family:var(--serif)}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
+body.lang-ar .eyebrow{font-family:var(--ar-body);letter-spacing:.08em;font-weight:700}
+.wrap{max-width:1240px;margin:0 auto;padding:0 28px}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:14px 22px;border-radius:6px;transition:.25s;cursor:pointer}
+body.lang-ar .btn{font-family:var(--ar-body);font-weight:700;letter-spacing:0}
+.btn-gold{background:linear-gradient(120deg,var(--gold),var(--gold-bright));color:var(--ink);font-weight:700}
+.btn-gold:hover{filter:brightness(1.06);transform:translateY(-1px)}
+.btn-emerald{background:linear-gradient(120deg,var(--emerald-deep),var(--emerald));color:#fff;font-weight:700}
+.btn-emerald:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.btn-ghost{border:1px solid var(--line);color:var(--ivory)}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ---- TOP BAR ---- */
+header{position:sticky;top:0;z-index:60;background:rgba(11,21,18,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line-soft)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:74px;gap:16px}
+.brand{font-family:var(--serif);font-size:24px;font-weight:700;letter-spacing:.08em;display:flex;align-items:center;gap:9px;white-space:nowrap}
+.brand .logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--emerald),var(--gold));display:flex;align-items:center;justify-content:center;color:var(--ink);font-size:17px;font-weight:900}
+.brand b{color:var(--gold)}
+.nav-links{display:flex;gap:30px;font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--smoke)}
+body.lang-ar .nav-links{font-family:var(--ar-body);font-weight:600;letter-spacing:0;font-size:15px}
+.nav-links a{transition:.2s}
+.nav-links a:hover{color:var(--ivory)}
+.nav-cta{display:flex;align-items:center;gap:12px}
+.lang-btn{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:30px;padding:8px 13px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--sand);transition:.2s}
+.lang-btn:hover{border-color:var(--gold);color:var(--gold)}
+.icon-btn{width:40px;height:40px;border-radius:10px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--smoke);position:relative;transition:.2s}
+.icon-btn:hover{border-color:var(--gold);color:var(--gold)}
+.icon-btn .ndot{position:absolute;top:7px;inset-inline-end:8px;width:7px;height:7px;border-radius:50%;background:var(--rust);display:none}
+.icon-btn .ndot.on{display:block}
+.user-chip{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:30px;padding:5px 13px 5px 5px;cursor:pointer;transition:.2s}
+.user-chip:hover{border-color:var(--gold)}
+.user-chip .uav{width:30px;height:30px;border-radius:50%;background:linear-gradient(140deg,var(--emerald-deep),var(--gold-bright));color:var(--ink);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
+.user-chip .unm{font-size:13px;font-weight:600}
+.menu-btn{display:none;font-size:22px}
+svg.ic{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.7}
+
+/* ---- HERO ---- */
+.hero{position:relative;padding:60px 0 36px;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:40px;align-items:center}
+.ai-badge{display:inline-flex;align-items:center;gap:9px;background:rgba(47,163,122,.1);border:1px solid var(--emerald-deep);border-radius:30px;padding:8px 15px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--emerald);margin-bottom:18px}
+body.lang-ar .ai-badge{font-family:var(--ar-body);letter-spacing:0;font-weight:700}
+.ai-badge .pulse{width:8px;height:8px;border-radius:50%;background:var(--emerald);box-shadow:0 0 0 0 rgba(47,163,122,.6);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(47,163,122,.6)}70%{box-shadow:0 0 0 8px rgba(47,163,122,0)}100%{box-shadow:0 0 0 0 rgba(47,163,122,0)}}
+.hero h1{font-family:var(--serif);font-size:clamp(38px,5.6vw,70px);line-height:1.05;font-weight:600;letter-spacing:-.01em;margin:6px 0 20px}
+.hero h1 em{font-style:italic;color:var(--gold)}
+body.lang-ar .hero h1{font-family:var(--ar-head);line-height:1.25;font-weight:900}
+body.lang-ar .hero h1 em{font-style:normal}
+.hero p.lead{color:var(--smoke);max-width:460px;font-size:16px;margin-bottom:28px}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+.hero-car{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:linear-gradient(180deg,var(--graphite),var(--obsidian))}
+.hero-car img{width:100%;height:380px;object-fit:cover}
+.hero-car .glow{position:absolute;inset:0;background:radial-gradient(60% 60% at 60% 40%,rgba(47,163,122,.18),transparent 70%);pointer-events:none}
+.hero-car .htag{position:absolute;bottom:0;inset-inline-start:0;right:0;left:0;padding:18px;background:linear-gradient(0deg,rgba(11,21,18,.92),transparent);display:flex;justify-content:space-between;align-items:flex-end}
+.hero-car .htag .hn{font-family:var(--serif);font-size:22px}
+body.lang-ar .hero-car .htag .hn{font-family:var(--ar-head)}
+.hero-car .htag .hp{font-family:var(--mono);font-size:13px;color:var(--gold)}
+.telemetry{display:grid;grid-template-columns:repeat(3,1fr);margin-top:40px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.tcell{padding:22px 18px;border-inline-end:1px solid var(--line)}
+.tcell:last-child{border-inline-end:none}
+.tcell .num{font-family:var(--serif);font-size:32px;color:var(--ivory)}
+.tcell .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--smoke);margin-top:6px}
+body.lang-ar .tcell .lbl{font-family:var(--ar-body);letter-spacing:0;font-size:13px}
+
+/* ---- SECTION SHELL ---- */
+section{padding:70px 0}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:36px;gap:24px;flex-wrap:wrap}
+.sec-head h2{font-family:var(--serif);font-size:clamp(28px,4vw,42px);font-weight:600}
+body.lang-ar .sec-head h2{font-family:var(--ar-head);font-weight:900}
+.sec-head .eyebrow{display:block;margin-bottom:12px}
+
+/* ---- AI BAND ---- */
+.ai-band{background:linear-gradient(160deg,#0d211b,#0b1512);border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft)}
+.ai-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:8px}
+.ai-card{border:1px solid var(--line);border-radius:12px;padding:26px;background:var(--obsidian);transition:.25s}
+.ai-card:hover{border-color:var(--emerald-deep);transform:translateY(-4px)}
+.ai-card .aic{width:46px;height:46px;border-radius:12px;background:rgba(47,163,122,.12);display:flex;align-items:center;justify-content:center;color:var(--emerald);margin-bottom:16px}
+.ai-card h3{font-size:19px;font-weight:600;margin-bottom:8px}
+body.lang-ar .ai-card h3{font-family:var(--ar-head);font-weight:700}
+.ai-card p{color:var(--smoke);font-size:14px}
+
+/* ---- CONTROL / SEARCH BAR ---- */
+.control{background:var(--obsidian);border:1px solid var(--line);border-radius:8px;padding:18px;margin-bottom:30px}
+.control-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.search-field{flex:1;min-width:220px;display:flex;align-items:center;gap:10px;background:var(--ink);border:1px solid var(--line);border-radius:6px;padding:0 14px}
+.search-field input{flex:1;background:none;border:none;outline:none;color:var(--ivory);font-family:inherit;font-size:15px;padding:13px 0}
+.search-field input::placeholder{color:var(--smoke-dim)}
+.search-field .ico{color:var(--gold)}
+.sel{background:var(--ink);border:1px solid var(--line);border-radius:6px;color:var(--ivory);font-family:var(--mono);font-size:12px;letter-spacing:.04em;padding:13px 12px;outline:none}
+body.lang-ar .sel{font-family:var(--ar-body)}
+.chips{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+.chip{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:9px 15px;border:1px solid var(--line);border-radius:40px;color:var(--smoke);transition:.2s}
+body.lang-ar .chip{font-family:var(--ar-body);letter-spacing:0;font-weight:600;font-size:14px}
+.chip:hover{border-color:var(--gold);color:var(--ivory)}
+.chip.active{background:var(--gold);color:var(--ink);border-color:var(--gold);font-weight:700}
+.result-count{font-family:var(--mono);font-size:12px;color:var(--smoke);margin-bottom:22px;letter-spacing:.04em}
+body.lang-ar .result-count{font-family:var(--ar-body)}
+
+/* ---- FLEET GRID ---- */
+.fleet{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.card{background:linear-gradient(180deg,var(--graphite),var(--obsidian));border:1px solid var(--line);border-radius:12px;overflow:hidden;position:relative;transition:.3s;display:flex;flex-direction:column}
+.card:hover{transform:translateY(-5px);border-color:var(--emerald-deep)}
+.card-vis{position:relative;height:180px;overflow:hidden;background:#0c0c0e}
+.card-vis img{width:100%;height:100%;object-fit:cover;transition:.4s}
+.card:hover .card-vis img{transform:scale(1.05)}
+.status{position:absolute;top:14px;inset-inline-start:14px;z-index:2;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:5px 10px;border-radius:30px;display:flex;align-items:center;gap:6px}
+body.lang-ar .status{font-family:var(--ar-body);letter-spacing:0;font-weight:700}
+.status.avail{color:var(--sage);background:rgba(127,174,148,.16);border:1px solid rgba(127,174,148,.4)}
+.status.req{color:var(--sand);background:rgba(231,217,192,.1);border:1px solid var(--line)}
+.status .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.fav{position:absolute;top:12px;inset-inline-end:12px;z-index:2;width:34px;height:34px;border-radius:50%;background:rgba(11,21,18,.6);color:var(--sand);display:flex;align-items:center;justify-content:center;transition:.2s}
+.fav:hover,.fav.on{color:var(--gold);background:rgba(11,21,18,.85)}
+.card-body{padding:18px 20px 22px;display:flex;flex-direction:column;flex:1}
+.seg{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--emerald);margin-bottom:7px}
+body.lang-ar .seg{font-family:var(--ar-body);letter-spacing:0;font-weight:700}
+.card-body h3{font-family:var(--serif);font-size:22px;font-weight:600;margin-bottom:14px}
+body.lang-ar .card-body h3{font-family:var(--ar-head);font-weight:700}
+.spec-plate{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:6px;background:rgba(0,0,0,.22);margin-bottom:18px}
+.spec{padding:11px 6px;text-align:center;border-inline-end:1px solid var(--line-soft)}
+.spec:last-child{border-inline-end:none}
+.spec .v{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--ivory)}
+.spec .k{font-family:var(--mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--smoke-dim);margin-top:4px}
+body.lang-ar .spec .k{font-family:var(--ar-body);letter-spacing:0}
+.card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:auto;gap:10px}
+.price{font-family:var(--serif);font-size:23px;white-space:nowrap}
+.price span{font-family:var(--mono);font-size:11px;color:var(--smoke);letter-spacing:.04em}
+body.lang-ar .price span{font-family:var(--ar-body)}
+.reserve{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:11px 16px;border:1px solid var(--gold);color:var(--gold);border-radius:6px;transition:.2s;white-space:nowrap}
+body.lang-ar .reserve{font-family:var(--ar-body);letter-spacing:0;font-weight:700}
+.reserve:hover{background:var(--gold);color:var(--ink)}
+.empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--smoke);font-family:var(--mono);font-size:13px;border:1px dashed var(--line);border-radius:8px}
+
+/* ---- TRUST STRIP ---- */
+.trust{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:34px}
+.trust-item{display:flex;align-items:center;gap:12px;border:1px solid var(--line-soft);border-radius:10px;padding:16px;background:var(--obsidian)}
+.trust-item .ti{width:38px;height:38px;border-radius:10px;background:rgba(47,163,122,.1);display:flex;align-items:center;justify-content:center;color:var(--emerald);flex-shrink:0}
+.trust-item .tt{font-size:13.5px;font-weight:600}
+.trust-item .td{font-size:11.5px;color:var(--smoke);margin-top:2px}
+
+/* ---- REWARDS ---- */
+.rewards{background:var(--obsidian);border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft)}
+.member{display:grid;grid-template-columns:340px 1fr;gap:34px;align-items:center;margin-bottom:44px}
+.tier-card{background:linear-gradient(150deg,#1d3329,#10201b);border:1px solid var(--emerald-deep);border-radius:12px;padding:28px;position:relative;overflow:hidden}
+.tier-card::after{content:'';position:absolute;top:-40px;inset-inline-end:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(47,163,122,.22),transparent 65%)}
+.tier-card .tlbl{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+body.lang-ar .tier-card .tlbl{font-family:var(--ar-body);letter-spacing:0;font-weight:700}
+.tier-card .tname{font-family:var(--serif);font-size:36px;margin:6px 0 4px}
+body.lang-ar .tier-card .tname{font-family:var(--ar-head);font-weight:900}
+.tier-card .tid{font-family:var(--mono);font-size:12px;color:var(--smoke);letter-spacing:.06em}
+.pts{display:flex;align-items:baseline;gap:8px;margin-top:24px}
+.pts .n{font-family:var(--serif);font-size:38px;color:var(--gold-bright)}
+.pts .u{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--smoke)}
+body.lang-ar .pts .u{font-family:var(--ar-body);letter-spacing:0}
+.prog{margin-top:18px}
+.prog .bar{height:6px;border-radius:6px;background:rgba(0,0,0,.4);overflow:hidden}
+.prog .fill{height:100%;background:linear-gradient(90deg,var(--emerald-deep),var(--gold-bright));border-radius:6px}
+.prog .ptxt{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--smoke);margin-top:9px;text-transform:uppercase}
+body.lang-ar .prog .ptxt{font-family:var(--ar-body);letter-spacing:0}
+.ladder{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.rung{border:1px solid var(--line);border-radius:8px;padding:18px;transition:.2s}
+.rung.cur{border-color:var(--gold);background:rgba(198,166,100,.05)}
+.rung .rt{font-family:var(--serif);font-size:19px;margin-bottom:4px}
+body.lang-ar .rung .rt{font-family:var(--ar-head);font-weight:700}
+.rung .rq{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--smoke);margin-bottom:12px}
+body.lang-ar .rung .rq{font-family:var(--ar-body);letter-spacing:0}
+.rung ul{list-style:none;font-size:12.5px;color:var(--smoke)}
+.rung li{padding:4px 0;padding-inline-start:14px;position:relative}
+.rung li::before{content:'—';position:absolute;inset-inline-start:0;color:var(--gold)}
+.rung.cur li{color:var(--ivory)}
+
+/* ---- FOOTER ---- */
+footer{border-top:1px solid var(--line-soft);padding:54px 0 38px;background:var(--obsidian)}
+.foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:30px;margin-bottom:38px}
+.foot-grid h5{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--smoke);margin-bottom:16px}
+body.lang-ar .foot-grid h5{font-family:var(--ar-body);letter-spacing:0;font-weight:700}
+.foot-grid a{display:block;color:var(--smoke);font-size:14px;padding:6px 0;transition:.2s}
+.foot-grid a:hover{color:var(--gold)}
+.foot-brand{font-family:var(--serif);font-size:23px;letter-spacing:.06em;margin-bottom:12px;display:flex;align-items:center;gap:9px}
+.foot-bottom{border-top:1px solid var(--line-soft);padding-top:24px;display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--smoke-dim);flex-wrap:wrap;gap:12px}
+body.lang-ar .foot-bottom{font-family:var(--ar-body)}
+
+.reveal{opacity:0;transform:translateY(18px);transition:.7s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* ---- MODAL SHELL ---- */
+.modal-bg{position:fixed;inset:0;background:rgba(6,11,9,.78);backdrop-filter:blur(4px);z-index:90;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-bg.open{display:flex}
+.modal{background:var(--graphite);border:1px solid var(--line);border-radius:16px;width:100%;max-width:480px;max-height:92vh;overflow-y:auto;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.modal.wide{max-width:560px}
+.modal-h{display:flex;align-items:flex-start;justify-content:space-between;padding:24px 26px 0}
+.modal-h h3{font-family:var(--serif);font-size:25px;font-weight:600}
+body.lang-ar .modal-h h3{font-family:var(--ar-head);font-weight:800}
+.modal-h p{color:var(--smoke);font-size:13.5px;margin-top:6px}
+.modal-close{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);color:var(--smoke);font-size:18px;display:flex;align-items:center;justify-content:center;transition:.2s;flex-shrink:0}
+.modal-close:hover{border-color:var(--rust);color:var(--rust)}
+.modal-body{padding:22px 26px 26px}
+.field{margin-bottom:16px}
+.field label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--smoke);margin-bottom:7px}
+body.lang-ar .field label{font-family:var(--ar-body);letter-spacing:0;font-weight:700;font-size:13px}
+.field input,.field select,.field textarea{width:100%;background:var(--ink);border:1px solid var(--line);border-radius:8px;color:var(--ivory);font-size:15px;padding:13px 14px;outline:none;transition:.2s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold)}
+.field .err{color:var(--rust);font-size:12px;margin-top:6px;display:none}
+.field.bad .err{display:block}
+.field.bad input,.field.bad select{border-color:var(--rust)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.modal-foot{margin-top:8px}
+.modal-foot .btn{width:100%;justify-content:center;font-size:13px;padding:15px}
+.alt-line{text-align:center;font-size:13px;color:var(--smoke);margin-top:16px}
+.alt-line a{color:var(--gold);cursor:pointer}
+
+/* trust note */
+.trust-note{display:flex;align-items:center;gap:9px;background:rgba(47,163,122,.08);border:1px solid var(--emerald-deep);border-radius:8px;padding:11px 13px;font-size:12.5px;color:var(--sand);margin-bottom:18px}
+.trust-note .ti{color:var(--emerald);flex-shrink:0}
+
+/* ---- RESERVE WIZARD ---- */
+.wiz-steps{display:flex;gap:6px;padding:6px 26px 4px}
+.wstep{flex:1;text-align:center}
+.wstep .wdot{height:7px;border-radius:6px;background:var(--line);transition:.3s}
+.wstep.done .wdot{background:var(--emerald-deep)}
+.wstep.cur .wdot{background:var(--emerald);box-shadow:0 0 0 3px rgba(47,163,122,.18)}
+.wstep .wl{display:none}
+#rsvStepName{font-family:var(--mono);font-size:14px;letter-spacing:.02em;color:var(--gold);font-weight:700;margin-top:8px}
+body.lang-ar #rsvStepName{font-family:var(--ar-body);font-size:16px}
+.wiz-pane{display:none}
+.wiz-pane.on{display:block;animation:fade .3s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.upload-box{border:1.5px dashed var(--line);border-radius:12px;padding:26px;text-align:center;cursor:pointer;transition:.2s;background:var(--ink)}
+.upload-box:hover{border-color:var(--gold)}
+.upload-box.has{border-color:var(--emerald);border-style:solid;background:rgba(47,163,122,.06)}
+.upload-box .ub-ic{color:var(--gold);margin-bottom:10px}
+.upload-box.has .ub-ic{color:var(--emerald)}
+.upload-box .ub-t{font-size:14px;font-weight:600}
+.upload-box .ub-s{font-size:12px;color:var(--smoke);margin-top:5px}
+.verify-row{display:flex;align-items:center;gap:9px;font-size:13px;margin-top:14px;color:var(--smoke)}
+.verify-row.ok{color:var(--sage)}
+.verify-row.bad{color:var(--rust)}
+.spin{width:16px;height:16px;border:2px solid var(--line);border-top-color:var(--gold);border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.sel-car{display:flex;gap:14px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:12px;background:var(--ink);margin-bottom:14px}
+.sel-car img{width:90px;height:60px;object-fit:cover;border-radius:7px;flex-shrink:0}
+.sel-car .scn{font-family:var(--serif);font-size:18px}
+body.lang-ar .sel-car .scn{font-family:var(--ar-head)}
+.sel-car .scp{font-family:var(--mono);font-size:13px;color:var(--gold);margin-top:4px}
+.summary-row{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line-soft);font-size:14px}
+.summary-row.total{border-top:1px solid var(--line);border-bottom:none;margin-top:6px;padding-top:14px;font-weight:700;font-size:17px}
+.summary-row.total .sv{color:var(--gold);font-family:var(--serif)}
+.feature-list{display:flex;flex-direction:column;gap:9px;margin:16px 0}
+.feature-list .fl{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--sand)}
+.feature-list .fl .fc{color:var(--emerald)}
+.tc-box{height:150px;overflow-y:auto;border:1px solid var(--line);border-radius:8px;padding:14px;font-size:12.5px;color:var(--smoke);line-height:1.6;background:var(--ink);margin-bottom:14px}
+.check-row{display:flex;align-items:flex-start;gap:11px;font-size:13.5px;cursor:pointer;user-select:none}
+.check-row input{width:20px;height:20px;margin-top:1px;accent-color:var(--emerald);flex-shrink:0}
+#sigPad{width:100%;height:150px;background:#fff;border-radius:8px;cursor:crosshair;touch-action:none}
+.pay-methods{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;margin-bottom:18px}
+.pay-opt{border:1px solid var(--line);border-radius:10px;padding:15px;text-align:center;cursor:pointer;transition:.2s;font-family:var(--mono);font-size:12px;letter-spacing:.04em;font-weight:700}
+.pay-opt:hover{border-color:var(--gold)}
+.pay-opt.sel{border-color:var(--emerald);background:rgba(47,163,122,.08);color:var(--emerald)}
+.wiz-nav{display:flex;gap:12px;margin-top:22px}
+.wiz-nav .btn{flex:1;justify-content:center}
+.success-wrap{text-align:center;padding:14px 0}
+.success-wrap .sc-ic{width:72px;height:72px;border-radius:50%;background:rgba(47,163,122,.14);color:var(--emerald);display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
+.success-wrap h3{font-family:var(--serif);font-size:26px;margin-bottom:8px}
+body.lang-ar .success-wrap h3{font-family:var(--ar-head);font-weight:800}
+
+/* ---- AI ASSISTANT WIDGET ---- */
+.ai-fab{position:fixed;bottom:24px;inset-inline-end:24px;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--emerald),var(--gold));color:var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:0 14px 40px rgba(47,163,122,.4);z-index:80;transition:.25s}
+.ai-fab:hover{transform:scale(1.06)}
+.ai-fab .nb{position:absolute;top:-2px;inset-inline-end:-2px;width:20px;height:20px;border-radius:50%;background:var(--rust);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid var(--ink)}
+.ai-panel{position:fixed;bottom:96px;inset-inline-end:24px;width:360px;max-width:calc(100vw - 32px);height:520px;max-height:calc(100vh - 130px);background:var(--graphite);border:1px solid var(--line);border-radius:16px;box-shadow:0 30px 80px rgba(0,0,0,.6);z-index:80;display:none;flex-direction:column;overflow:hidden}
+.ai-panel.open{display:flex}
+.ai-top{display:flex;align-items:center;gap:11px;padding:16px;border-bottom:1px solid var(--line-soft);background:linear-gradient(120deg,#0d211b,var(--graphite))}
+.ai-top .aiav{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--emerald),var(--gold));color:var(--ink);display:flex;align-items:center;justify-content:center;font-weight:900}
+.ai-top .ain{font-size:14px;font-weight:700}
+.ai-top .ais{font-size:11px;color:var(--emerald);display:flex;align-items:center;gap:5px}
+.ai-top .ais::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--emerald)}
+.ai-log{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+.msg{max-width:84%;padding:11px 14px;border-radius:14px;font-size:13.5px;line-height:1.5}
+.msg.bot{background:var(--raised);border-bottom-inline-start-radius:4px;align-self:flex-start}
+.msg.me{background:linear-gradient(120deg,var(--emerald-deep),var(--emerald));color:#fff;border-bottom-inline-end-radius:4px;align-self:flex-end}
+.ai-quick{display:flex;gap:7px;flex-wrap:wrap;padding:0 16px 10px}
+.ai-quick button{font-size:12px;border:1px solid var(--line);border-radius:30px;padding:7px 12px;color:var(--sand);transition:.2s}
+.ai-quick button:hover{border-color:var(--emerald);color:var(--emerald)}
+.ai-input{display:flex;gap:8px;padding:12px 14px;border-top:1px solid var(--line-soft)}
+.ai-input input{flex:1;background:var(--ink);border:1px solid var(--line);border-radius:30px;color:var(--ivory);font-size:14px;padding:11px 15px;outline:none}
+.ai-input button{width:42px;height:42px;border-radius:50%;background:var(--gold);color:var(--ink);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* ---- NOTIFICATIONS PANEL ---- */
+.notif-panel{position:fixed;top:80px;inset-inline-end:24px;width:340px;max-width:calc(100vw - 32px);background:var(--graphite);border:1px solid var(--line);border-radius:14px;box-shadow:0 24px 60px rgba(0,0,0,.55);z-index:75;display:none;overflow:hidden}
+.notif-panel.open{display:block}
+.notif-h{padding:16px;border-bottom:1px solid var(--line-soft);font-weight:700;display:flex;justify-content:space-between;align-items:center}
+.notif-item{display:flex;gap:11px;padding:14px 16px;border-bottom:1px solid var(--line-soft)}
+.notif-item:last-child{border:none}
+.notif-item .nic{width:34px;height:34px;border-radius:9px;background:rgba(47,163,122,.1);color:var(--emerald);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.notif-item .ntt{font-size:13px;font-weight:600}
+.notif-item .ntm{font-size:11.5px;color:var(--smoke);margin-top:3px}
+
+/* ---- TOAST ---- */
+.toast{position:fixed;bottom:24px;inset-inline-start:50%;transform:translateX(-50%) translateY(120px);background:var(--raised);border:1px solid var(--gold);border-radius:9px;padding:13px 20px;font-size:13.5px;z-index:99;transition:.4s;box-shadow:0 14px 40px rgba(0,0,0,.5)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+[dir=rtl] .toast{transform:translateX(50%) translateY(120px)}
+[dir=rtl] .toast.show{transform:translateX(50%) translateY(0)}
+
+.hide{display:none!important}
+
+/* ---- RESPONSIVE ---- */
+@media(max-width:980px){
+  .fleet{grid-template-columns:repeat(2,1fr)}
+  .hero-grid{grid-template-columns:1fr;gap:22px}
+  .hero-car{order:-1}
+  .ai-grid{grid-template-columns:1fr}
+  .member{grid-template-columns:1fr}
+  .ladder{grid-template-columns:repeat(2,1fr)}
+  .trust{grid-template-columns:repeat(2,1fr)}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:680px){
+  .wrap{padding:0 18px}
+  .nav-links{display:none}
+  .menu-btn{display:block}
+  section{padding:48px 0}
+  .fleet{grid-template-columns:1fr}
+  .ladder{grid-template-columns:1fr}
+  .trust{grid-template-columns:1fr}
+  .telemetry .tcell .num{font-size:24px}
+  .field-row{grid-template-columns:1fr}
+  .user-chip .unm{display:none}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body class="lang-ar">
+
+<header>
+  <div class="wrap nav">
+    <a href="#" class="brand"><span class="logo">C</span><span>City<b> Drive</b></span></a>
+    <nav class="nav-links">
+      <a href="#fleet" data-i18n="nav_fleet">الأسطول</a>
+      <a href="#ai" data-i18n="nav_ai">المساعد الذكي</a>
+      <a href="#membership" data-i18n="nav_membership">العضوية</a>
+      <a href="#" data-i18n="nav_support">الدعم</a>
+    </nav>
+    <div class="nav-cta">
+      <button class="lang-btn" id="langBtn"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></svg><span id="langLabel">EN</span></button>
+      <button class="icon-btn" id="notifBtn" aria-label="Notifications"><svg class="ic" viewBox="0 0 24 24"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/></svg><span class="ndot on" id="notifDot"></span></button>
+      <!-- guest -->
+      <div id="guestCta" class="nav-cta" style="gap:10px">
+        <button class="btn btn-ghost" id="signinOpen" data-i18n="signin">تسجيل الدخول</button>
+        <button class="btn btn-emerald" id="registerOpen" data-i18n="register">إنشاء حساب</button>
+      </div>
+      <!-- member -->
+      <div id="memberCta" class="user-chip hide" tabindex="0">
+        <span class="uav" id="userAv">ع</span>
+        <span class="unm" id="userNm">عبدالله</span>
+        <button class="modal-close" id="logoutBtn" title="Logout" style="width:28px;height:28px;font-size:14px">⎋</button>
+      </div>
+      <button class="menu-btn" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="reveal in">
+        <div class="ai-badge"><span class="pulse"></span><span data-i18n="hero_badge">أول نظام توصيل بالذكاء الاصطناعي في الكويت</span></div>
+        <h1 data-i18n="hero_title">سيارتك تصل إليك <em data-i18n="hero_title_em">بذكاء.</em></h1>
+        <p class="lead" data-i18n="hero_lead">أسطول مختار من أفخم وأحدث السيارات، يُوصَّل إلى بابك خلال 60 دقيقة. مساعد ذكي يرشدك، وإشعارات مبنية على اهتماماتك. بدون طوابير، بدون مكاتب.</p>
+        <div class="hero-cta">
+          <a href="#fleet" class="btn btn-gold" data-i18n="browse_fleet">تصفّح الأسطول</a>
+          <button class="btn btn-ghost" id="heroAi" data-i18n="meet_ai">تعرّف على المساعد الذكي</button>
+        </div>
+      </div>
+      <div class="hero-car reveal in">
+        <div class="glow"></div>
+        <img id="heroImg" alt="" src="" />
+        <div class="htag"><div class="hn" id="heroName"></div><div class="hp" id="heroPrice"></div></div>
+      </div>
+    </div>
+    <div class="telemetry reveal">
+      <div class="tcell"><div class="num">120+</div><div class="lbl" data-i18n="stat_fleet">سيارة في الأسطول</div></div>
+      <div class="tcell"><div class="num">60<span style="font-family:var(--mono);font-size:14px;color:var(--smoke)" data-i18n="min">د</span></div><div class="lbl" data-i18n="stat_delivery">متوسط وقت التوصيل</div></div>
+      <div class="tcell"><div class="num">4.96</div><div class="lbl" data-i18n="stat_rating">رضا الأعضاء</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- AI BAND -->
+<section class="ai-band" id="ai">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div><span class="eyebrow" data-i18n="ai_eyebrow">مدعوم بالذكاء الاصطناعي</span><h2 data-i18n="ai_title">مساعد ذكي يعمل لأجلك</h2></div>
+    </div>
+    <div class="ai-grid reveal">
+      <div class="ai-card">
+        <div class="aic"><svg class="ic" viewBox="0 0 24 24"><path d="M12 2a4 4 0 014 4v1a4 4 0 01-8 0V6a4 4 0 014-4zM6 11a6 6 0 0012 0M4 22a8 8 0 0116 0"/></svg></div>
+        <h3 data-i18n="ai_f1_t">مساعد محادثة فوري</h3>
+        <p data-i18n="ai_f1_d">دردش مع مساعدنا الذكي على مدار الساعة — يقترح السيارة الأنسب، يحجز، ويتابع التوصيل بالعربية والإنجليزية.</p>
+      </div>
+      <div class="ai-card">
+        <div class="aic"><svg class="ic" viewBox="0 0 24 24"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/></svg></div>
+        <h3 data-i18n="ai_f2_t">إشعارات مبنية على اهتماماتك</h3>
+        <p data-i18n="ai_f2_d">نتعلّم من نشاطك وتفضيلاتك لنرسل عروضاً وتذكيرات في الوقت المناسب — السيارة التي تحبها، حين تحتاجها.</p>
+      </div>
+      <div class="ai-card">
+        <div class="aic"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg></div>
+        <h3 data-i18n="ai_f3_t">توصيل ذكي حتى الباب</h3>
+        <p data-i18n="ai_f3_d">يخطط الذكاء الاصطناعي أسرع مسار توصيل ويعطيك وقت وصول مباشر — السيارة تأتي إليك أينما كنت في الكويت.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FLEET -->
+<section id="fleet">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div><span class="eyebrow" data-i18n="fleet_eyebrow">المجموعة</span><h2 data-i18n="fleet_title">متاح الآن</h2></div>
+    </div>
+    <div class="control reveal">
+      <div class="control-row">
+        <div class="search-field">
+          <span class="ico"><svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></span>
+          <input id="search" type="text" data-i18n-ph="search_ph" placeholder="ابحث بالاسم أو الفئة…" />
+        </div>
+        <select class="sel" id="sort">
+          <option value="featured" data-i18n="sort_featured">ترتيب · مميّز</option>
+          <option value="price-asc" data-i18n="sort_pl">السعر · من الأقل</option>
+          <option value="price-desc" data-i18n="sort_ph">السعر · من الأعلى</option>
+        </select>
+      </div>
+      <div class="chips" id="chips">
+        <button class="chip active" data-type="all" data-i18n="t_all">الكل</button>
+        <button class="chip" data-type="luxury" data-i18n="t_luxury">فاخرة</button>
+        <button class="chip" data-type="suv" data-i18n="t_suv">دفع رباعي</button>
+        <button class="chip" data-type="sedan" data-i18n="t_sedan">سيدان</button>
+        <button class="chip" data-type="eco" data-i18n="t_eco">اقتصادية</button>
+        <button class="chip" data-type="ev" data-i18n="t_ev">كهربائية</button>
+      </div>
+    </div>
+    <div class="result-count" id="count"></div>
+    <div class="fleet" id="fleetGrid"></div>
+
+    <div class="trust reveal">
+      <div class="trust-item"><span class="ti"><svg class="ic" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><div><div class="tt" data-i18n="trust1_t">تأمين شامل</div><div class="td" data-i18n="trust1_d">مشمول مع كل حجز</div></div></div>
+      <div class="trust-item"><span class="ti"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg></span><div><div class="tt" data-i18n="trust2_t">توصيل مجاني</div><div class="td" data-i18n="trust2_d">إلى أي موقع في الكويت</div></div></div>
+      <div class="trust-item"><span class="ti"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg></span><div><div class="tt" data-i18n="trust3_t">دفع آمن</div><div class="td" data-i18n="trust3_d">كي نت · فيزا · ماستركارد</div></div></div>
+      <div class="trust-item"><span class="ti"><svg class="ic" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 01-1.2 4.4A8.5 8.5 0 0112 20a8.4 8.4 0 01-4.4-1.2L3 20l1.2-4.6A8.5 8.5 0 0112 3a8.5 8.5 0 019 8.5z"/></svg></span><div><div class="tt" data-i18n="trust4_t">دعم 24/7</div><div class="td" data-i18n="trust4_d">مساعد ذكي + فريق بشري</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- MEMBERSHIP -->
+<section class="rewards" id="membership">
+  <div class="wrap">
+    <div class="sec-head reveal"><div><span class="eyebrow" data-i18n="circle_eyebrow">نادي City Drive</span><h2 data-i18n="circle_title">عضويتك</h2></div></div>
+    <div class="member reveal">
+      <div class="tier-card">
+        <div class="tlbl" data-i18n="current_tier">الفئة الحالية</div>
+        <div class="tname" data-i18n="tier_gold">ذهبي</div>
+        <div class="tid">No. CD-04417 · 2023</div>
+        <div class="pts"><div class="n">12,450</div><div class="u" data-i18n="points">نقطة</div></div>
+        <div class="prog"><div class="bar"><div class="fill" style="width:71%"></div></div><div class="ptxt" data-i18n="to_platinum">3,550 نقطة للوصول للبلاتيني</div></div>
+      </div>
+      <div class="ladder">
+        <div class="rung"><div class="rt" data-i18n="tier_silver">فضي</div><div class="rq">0+</div><ul><li data-i18n="perk_free_del">توصيل مجاني</li><li>10 pts / KWD</li></ul></div>
+        <div class="rung cur"><div class="rt" data-i18n="tier_gold">ذهبي</div><div class="rq">10k+</div><ul><li data-i18n="perk_priority">أولوية الأسطول</li><li>15 pts / KWD</li></ul></div>
+        <div class="rung"><div class="rt" data-i18n="tier_platinum">بلاتيني</div><div class="rq">16k+</div><ul><li data-i18n="perk_guaranteed">سيارات مضمونة</li><li>20 pts / KWD</li></ul></div>
+        <div class="rung"><div class="rt" data-i18n="tier_noir">نخبة</div><div class="rq" data-i18n="invitation">بدعوة</div><ul><li data-i18n="perk_concierge">كونسيرج مخصص</li></ul></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand"><span class="logo" style="width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,var(--emerald),var(--gold));display:flex;align-items:center;justify-content:center;color:var(--ink);font-weight:900">C</span>City<b style="color:var(--gold)"> Drive</b></div>
+        <p style="color:var(--smoke);font-size:14px;max-width:280px" data-i18n="foot_tag">أول خدمة لتوصيل سيارات الإيجار بالذكاء الاصطناعي في الكويت والخليج.</p>
+      </div>
+      <div><h5 data-i18n="foot_fleet">الأسطول</h5><a href="#" data-i18n="t_luxury">فاخرة</a><a href="#" data-i18n="t_suv">دفع رباعي</a><a href="#" data-i18n="t_ev">كهربائية</a></div>
+      <div><h5 data-i18n="foot_club">النادي</h5><a href="#" data-i18n="nav_membership">العضوية</a><a href="#" data-i18n="rewards">المكافآت</a></div>
+      <div><h5 data-i18n="foot_support">الدعم</h5><a href="#" data-i18n="nav_ai">المساعد الذكي</a><a href="#" data-i18n="contact">تواصل معنا</a><a href="#" data-i18n="terms">الشروط والأحكام</a></div>
+    </div>
+    <div class="foot-bottom">
+      <span data-i18n="copyright">© 2026 City Drive · نموذج أولي</span>
+      <span data-i18n="made_for">لأغراض العرض التوضيحي</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== AUTH MODALS ===== -->
+<div class="modal-bg" id="registerModal">
+  <div class="modal">
+    <div class="modal-h">
+      <div><h3 data-i18n="reg_title">إنشاء حساب</h3><p data-i18n="reg_sub">انضم إلى City Drive في خطوة واحدة.</p></div>
+      <button class="modal-close" data-close>×</button>
+    </div>
+    <div class="modal-body">
+      <div class="trust-note"><span class="ti"><svg class="ic" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><span data-i18n="reg_trust">بياناتك محمية ولن تُشارك مع أي طرف ثالث.</span></div>
+      <form id="regForm" novalidate>
+        <div class="field" id="f-name"><label data-i18n="lbl_name">الاسم الكامل</label><input name="name" data-i18n-ph="ph_name" placeholder="عبدالله الأحمد"/><div class="err" data-i18n="err_name">الرجاء إدخال الاسم.</div></div>
+        <div class="field" id="f-email"><label data-i18n="lbl_email">البريد الإلكتروني</label><input name="email" type="email" placeholder="name@email.com"/><div class="err" data-i18n="err_email">بريد إلكتروني غير صحيح.</div></div>
+        <div class="field-row">
+          <div class="field" id="f-gov"><label data-i18n="lbl_gov">المحافظة</label><select name="gov"><option value="" data-i18n="ph_select">اختر…</option><option data-i18n="gov_capital">العاصمة</option><option data-i18n="gov_hawalli">حولي</option><option data-i18n="gov_farwaniya">الفروانية</option><option data-i18n="gov_ahmadi">الأحمدي</option><option data-i18n="gov_jahra">الجهراء</option><option data-i18n="gov_mubarak">مبارك الكبير</option></select><div class="err" data-i18n="err_gov">اختر المحافظة.</div></div>
+          <div class="field" id="f-area"><label data-i18n="lbl_area">المنطقة / العنوان</label><input name="area" data-i18n-ph="ph_area" placeholder="السالمية، شارع…"/><div class="err" data-i18n="err_area">أدخل العنوان.</div></div>
+        </div>
+        <div class="modal-foot"><button type="submit" class="btn btn-emerald" data-i18n="create_account">إنشاء الحساب</button></div>
+        <div class="alt-line"><span data-i18n="have_account">لديك حساب؟</span> <a data-switch="signin" data-i18n="signin">تسجيل الدخول</a></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="signinModal">
+  <div class="modal">
+    <div class="modal-h"><div><h3 data-i18n="signin">تسجيل الدخول</h3><p data-i18n="signin_sub">مرحباً بعودتك.</p></div><button class="modal-close" data-close>×</button></div>
+    <div class="modal-body">
+      <form id="signinForm" novalidate>
+        <div class="field" id="f-siemail"><label data-i18n="lbl_email">البريد الإلكتروني</label><input name="email" type="email" placeholder="name@email.com"/><div class="err" data-i18n="err_email">بريد إلكتروني غير صحيح.</div></div>
+        <div class="modal-foot"><button type="submit" class="btn btn-emerald" data-i18n="signin">تسجيل الدخول</button></div>
+        <div class="alt-line"><span data-i18n="no_account">ليس لديك حساب؟</span> <a data-switch="register" data-i18n="register">إنشاء حساب</a></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ===== RESERVE WIZARD ===== -->
+<div class="modal-bg" id="reserveModal">
+  <div class="modal wide">
+    <div class="modal-h">
+      <div><h3 data-i18n="rsv_title">حجز سيارة</h3><p id="rsvStepName"></p></div>
+      <button class="modal-close" data-close>×</button>
+    </div>
+    <div class="wiz-steps" id="wizSteps"></div>
+    <div class="modal-body">
+      <!-- panes injected/handled via JS visibility -->
+      <div class="wiz-pane" data-step="0">
+        <div class="trust-note"><span class="ti">●</span><span data-i18n="rsv_guest">الحجز متاح للأعضاء المسجّلين فقط لضمان أمان وثائقك.</span></div>
+        <p style="color:var(--smoke);font-size:14px;margin-bottom:18px" data-i18n="rsv_guest_d">أنشئ حساباً مجانياً للمتابعة — يستغرق أقل من دقيقة.</p>
+        <button class="btn btn-emerald" style="width:100%;justify-content:center" id="rsvToRegister" data-i18n="create_account">إنشاء الحساب</button>
+      </div>
+
+      <div class="wiz-pane" data-step="1">
+        <p style="color:var(--smoke);font-size:14px;margin-bottom:16px" data-i18n="rsv_civil_d">حمّل صورة البطاقة المدنية. تُستخدم للتحقق من هويتك فقط.</p>
+        <div class="upload-box" id="upCivil">
+          <div class="ub-ic"><svg class="ic" viewBox="0 0 24 24" style="width:30px;height:30px;margin:0 auto"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h5"/></svg></div>
+          <div class="ub-t" data-i18n="up_civil">البطاقة المدنية الكويتية</div>
+          <div class="ub-s" data-i18n="up_hint">اضغط للرفع · JPG / PNG</div>
+        </div>
+        <input type="file" id="fileCivil" accept="image/*" class="hide"/>
+        <div class="verify-row" id="vCivil" style="display:none"></div>
+      </div>
+
+      <div class="wiz-pane" data-step="2">
+        <p style="color:var(--smoke);font-size:14px;margin-bottom:16px" data-i18n="rsv_lic_d">حمّل رخصة قيادة محلية سارية المفعول. نتحقق من صلاحيتها عبر النظام.</p>
+        <div class="upload-box" id="upLic">
+          <div class="ub-ic"><svg class="ic" viewBox="0 0 24 24" style="width:30px;height:30px;margin:0 auto"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8" cy="12" r="2"/><path d="M13 10h5M13 14h5"/></svg></div>
+          <div class="ub-t" data-i18n="up_lic">رخصة القيادة المحلية</div>
+          <div class="ub-s" data-i18n="up_hint">اضغط للرفع · JPG / PNG</div>
+        </div>
+        <input type="file" id="fileLic" accept="image/*" class="hide"/>
+        <div class="field" style="margin-top:16px"><label data-i18n="lbl_lic_no">رقم الرخصة أو الرقم المدني</label><input id="licNo" data-i18n-ph="ph_lic_no" placeholder="123456789012"/></div>
+        <button class="btn btn-ghost" id="verifyLic" style="width:100%;justify-content:center" data-i18n="verify_lic">التحقق من الرخصة</button>
+        <div class="verify-row" id="vLic" style="display:none"></div>
+      </div>
+
+      <div class="wiz-pane" data-step="3">
+        <div class="sel-car" id="rsvCar"></div>
+        <div class="field-row">
+          <div class="field"><label data-i18n="lbl_start">تاريخ الاستلام</label><input type="date" id="startDate"/></div>
+          <div class="field"><label data-i18n="lbl_days">المدة (أيام)</label><input type="number" id="days" min="1" max="90" value="1"/></div>
+        </div>
+        <div class="verify-row" id="periodNote" style="color:var(--smoke)"></div>
+        <div class="summary-row total"><span data-i18n="est_total">الإجمالي التقديري</span><span class="sv" id="estTotal"></span></div>
+      </div>
+
+      <div class="wiz-pane" data-step="4">
+        <div class="sel-car" id="rsvCar2"></div>
+        <div class="feature-list">
+          <div class="fl"><span class="fc">✓</span><span data-i18n="feat_ins">تأمين شامل ضد الحوادث</span></div>
+          <div class="fl"><span class="fc">✓</span><span data-i18n="feat_del">توصيل واستلام مجاني</span></div>
+          <div class="fl"><span class="fc">✓</span><span data-i18n="feat_24">مساعدة على الطريق 24/7</span></div>
+          <div class="fl"><span class="fc">✓</span><span data-i18n="feat_ai">متابعة ذكية عبر المساعد</span></div>
+        </div>
+        <div class="summary-row"><span data-i18n="sum_car">السيارة</span><span class="sv" id="sumCar"></span></div>
+        <div class="summary-row"><span data-i18n="sum_period">المدة</span><span class="sv" id="sumPeriod"></span></div>
+        <div class="summary-row"><span data-i18n="sum_rate">السعر اليومي</span><span class="sv" id="sumRate"></span></div>
+        <div class="summary-row total"><span data-i18n="sum_total">الإجمالي</span><span class="sv" id="sumTotal"></span></div>
+      </div>
+
+      <div class="wiz-pane" data-step="5">
+        <div class="tc-box" data-i18n="tc_body">باستخدامك خدمة City Drive فإنك توافق على إعادة السيارة في الموعد والحالة المتفق عليها، وعلى استخدامها داخل دولة الكويت فقط، وعلى مسؤوليتك عن المخالفات المرورية خلال فترة الإيجار. يشمل التأمين الأضرار العرضية مع تحمّل بسيط. لا يُسمح بالتدخين أو نقل الخدمة لطرف آخر. تُطبّق رسوم تأخير على الإرجاع المتأخر. الحد الأدنى لعمر السائق 21 عاماً مع رخصة سارية لا تقل عن سنة.</div>
+        <label class="check-row"><input type="checkbox" id="tcCheck"/><span data-i18n="tc_agree">أوافق على الشروط والأحكام وسياسة الخصوصية.</span></label>
+      </div>
+
+      <div class="wiz-pane" data-step="6">
+        <p style="color:var(--smoke);font-size:14px;margin-bottom:12px" data-i18n="sig_d">وقّع رقمياً أدناه ثم التقط صورة سيلفي مع رخصتك وبطاقتك المدنية للتحقق النهائي.</p>
+        <label data-i18n="lbl_sig" style="font-family:var(--mono);font-size:11px;color:var(--smoke);text-transform:uppercase">التوقيع الرقمي</label>
+        <canvas id="sigPad"></canvas>
+        <button class="btn btn-ghost" id="clearSig" style="margin-top:8px;font-size:11px;padding:8px 14px" data-i18n="clear">مسح</button>
+        <div class="upload-box" id="upSelfie" style="margin-top:14px">
+          <div class="ub-ic"><svg class="ic" viewBox="0 0 24 24" style="width:30px;height:30px;margin:0 auto"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
+          <div class="ub-t" data-i18n="up_selfie">سيلفي مع الرخصة والبطاقة</div>
+          <div class="ub-s" data-i18n="up_selfie_h">اضغط لالتقاط / رفع الصورة</div>
+        </div>
+        <input type="file" id="fileSelfie" accept="image/*" class="hide"/>
+        <div class="verify-row" id="vSelfie" style="display:none"></div>
+      </div>
+
+      <div class="wiz-pane" data-step="7">
+        <div class="summary-row total" style="margin-top:0;border-top:none"><span data-i18n="amount_due">المبلغ المستحق</span><span class="sv" id="payTotal"></span></div>
+        <label style="font-family:var(--mono);font-size:11px;color:var(--smoke);text-transform:uppercase;display:block;margin:16px 0 10px" data-i18n="choose_pay">اختر وسيلة الدفع</label>
+        <div class="pay-methods" id="payMethods">
+          <div class="pay-opt sel" data-pay="knet">KNET · كي نت</div>
+          <div class="pay-opt" data-pay="visa">Visa / Master</div>
+          <div class="pay-opt" data-pay="paypal">PayPal</div>
+          <div class="pay-opt" data-pay="apple">Apple Pay</div>
+        </div>
+        <div class="field"><label data-i18n="lbl_card">رقم البطاقة</label><input id="cardNo" placeholder="•••• •••• •••• ••••" inputmode="numeric"/></div>
+        <div class="field-row">
+          <div class="field"><label data-i18n="lbl_exp">تاريخ الانتهاء</label><input placeholder="MM/YY"/></div>
+          <div class="field"><label>CVV</label><input placeholder="•••" inputmode="numeric"/></div>
+        </div>
+        <div class="trust-note"><span class="ti">🔒</span><span data-i18n="pay_secure">دفع مشفّر وآمن — بوابة كي نت المعتمدة في الكويت.</span></div>
+      </div>
+
+      <div class="wiz-pane" data-step="8">
+        <div class="success-wrap">
+          <div class="sc-ic"><svg class="ic" viewBox="0 0 24 24" style="width:34px;height:34px;stroke-width:2.2"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <h3 data-i18n="rsv_done_t">تم تأكيد الحجز!</h3>
+          <p style="color:var(--smoke);font-size:14px;max-width:340px;margin:0 auto" id="rsvDoneMsg"></p>
+        </div>
+      </div>
+
+      <div class="wiz-nav" id="wizNav">
+        <button class="btn btn-ghost" id="wizBack" data-i18n="back">رجوع</button>
+        <button class="btn btn-emerald" id="wizNext" data-i18n="next">التالي</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== AI ASSISTANT ===== -->
+<button class="ai-fab" id="aiFab" aria-label="AI assistant">
+  <svg class="ic" viewBox="0 0 24 24" style="width:26px;height:26px;stroke-width:2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+  <span class="nb">1</span>
+</button>
+<div class="ai-panel" id="aiPanel">
+  <div class="ai-top">
+    <span class="aiav">C</span>
+    <div><div class="ain" data-i18n="ai_name">مساعد City Drive</div><div class="ais" data-i18n="ai_online">متصل الآن</div></div>
+    <button class="modal-close" id="aiClose" style="margin-inline-start:auto">×</button>
+  </div>
+  <div class="ai-log" id="aiLog"></div>
+  <div class="ai-quick" id="aiQuick"></div>
+  <div class="ai-input"><input id="aiText" data-i18n-ph="ai_ph" placeholder="اكتب رسالتك…"/><button id="aiSend"><svg class="ic" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></button></div>
+</div>
+
+<!-- ===== NOTIFICATIONS ===== -->
+<div class="notif-panel" id="notifPanel">
+  <div class="notif-h"><span data-i18n="notif_title">الإشعارات</span><button class="modal-close" id="notifClose" style="width:28px;height:28px;font-size:15px">×</button></div>
+  <div id="notifList"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ===================== i18n ===================== */
+const I18N={
+ ar:{
+  nav_fleet:"الأسطول",nav_ai:"المساعد الذكي",nav_membership:"العضوية",nav_support:"الدعم",
+  signin:"تسجيل الدخول",register:"إنشاء حساب",
+  hero_badge:"أول نظام توصيل بالذكاء الاصطناعي في الكويت",hero_title:"سيارتك تصل إليك",hero_title_em:"بذكاء.",
+  hero_lead:"أسطول مختار من أفخم وأحدث السيارات، يُوصَّل إلى بابك خلال 60 دقيقة. مساعد ذكي يرشدك، وإشعارات مبنية على اهتماماتك. بدون طوابير، بدون مكاتب.",
+  browse_fleet:"تصفّح الأسطول",meet_ai:"تعرّف على المساعد الذكي",min:"د",
+  stat_fleet:"سيارة في الأسطول",stat_delivery:"متوسط وقت التوصيل",stat_rating:"رضا الأعضاء",
+  ai_eyebrow:"مدعوم بالذكاء الاصطناعي",ai_title:"مساعد ذكي يعمل لأجلك",
+  ai_f1_t:"مساعد محادثة فوري",ai_f1_d:"دردش مع مساعدنا الذكي على مدار الساعة — يقترح السيارة الأنسب، يحجز، ويتابع التوصيل بالعربية والإنجليزية.",
+  ai_f2_t:"إشعارات مبنية على اهتماماتك",ai_f2_d:"نتعلّم من نشاطك وتفضيلاتك لنرسل عروضاً وتذكيرات في الوقت المناسب — السيارة التي تحبها، حين تحتاجها.",
+  ai_f3_t:"توصيل ذكي حتى الباب",ai_f3_d:"يخطط الذكاء الاصطناعي أسرع مسار توصيل ويعطيك وقت وصول مباشر — السيارة تأتي إليك أينما كنت في الكويت.",
+  fleet_eyebrow:"المجموعة",fleet_title:"متاح الآن",search_ph:"ابحث بالاسم أو الفئة…",
+  sort_featured:"ترتيب · مميّز",sort_pl:"السعر · من الأقل",sort_ph:"السعر · من الأعلى",
+  t_all:"الكل",t_luxury:"فاخرة",t_suv:"دفع رباعي",t_sedan:"سيدان",t_eco:"اقتصادية",t_ev:"كهربائية",
+  avail:"متاح الآن",req:"عند الطلب",reserve:"احجز",notify:"أبلغني",per_day:"/ يوم",
+  showing:"عرض",of:"من",cars:"سيارة",no_match:"لا توجد سيارات مطابقة.",
+  trust1_t:"تأمين شامل",trust1_d:"مشمول مع كل حجز",trust2_t:"توصيل مجاني",trust2_d:"إلى أي موقع في الكويت",
+  trust3_t:"دفع آمن",trust3_d:"كي نت · فيزا · ماستركارد",trust4_t:"دعم 24/7",trust4_d:"مساعد ذكي + فريق بشري",
+  circle_eyebrow:"نادي City Drive",circle_title:"عضويتك",current_tier:"الفئة الحالية",points:"نقطة",to_platinum:"3,550 نقطة للوصول للبلاتيني",
+  tier_silver:"فضي",tier_gold:"ذهبي",tier_platinum:"بلاتيني",tier_noir:"نخبة",invitation:"بدعوة",
+  perk_free_del:"توصيل مجاني",perk_priority:"أولوية الأسطول",perk_guaranteed:"سيارات مضمونة",perk_concierge:"كونسيرج مخصص",
+  rewards:"المكافآت",foot_fleet:"الأسطول",foot_club:"النادي",foot_support:"الدعم",contact:"تواصل معنا",terms:"الشروط والأحكام",
+  foot_tag:"أول خدمة لتوصيل سيارات الإيجار بالذكاء الاصطناعي في الكويت والخليج.",copyright:"© 2026 City Drive · نموذج أولي",made_for:"لأغراض العرض التوضيحي",
+  reg_title:"إنشاء حساب",reg_sub:"انضم إلى City Drive في خطوة واحدة.",reg_trust:"بياناتك محمية ولن تُشارك مع أي طرف ثالث.",
+  lbl_name:"الاسم الكامل",ph_name:"عبدالله الأحمد",lbl_email:"البريد الإلكتروني",lbl_gov:"المحافظة",ph_select:"اختر…",
+  gov_capital:"العاصمة",gov_hawalli:"حولي",gov_farwaniya:"الفروانية",gov_ahmadi:"الأحمدي",gov_jahra:"الجهراء",gov_mubarak:"مبارك الكبير",
+  lbl_area:"المنطقة / العنوان",ph_area:"السالمية، شارع…",create_account:"إنشاء الحساب",have_account:"لديك حساب؟",no_account:"ليس لديك حساب؟",
+  err_name:"الرجاء إدخال الاسم.",err_email:"بريد إلكتروني غير صحيح.",err_gov:"اختر المحافظة.",err_area:"أدخل العنوان.",
+  signin_sub:"مرحباً بعودتك.",
+  rsv_title:"حجز سيارة",rsv_guest:"الحجز متاح للأعضاء المسجّلين فقط لضمان أمان وثائقك.",rsv_guest_d:"أنشئ حساباً مجانياً للمتابعة — يستغرق أقل من دقيقة.",
+  rsv_civil_d:"حمّل صورة البطاقة المدنية. تُستخدم للتحقق من هويتك فقط.",up_civil:"البطاقة المدنية الكويتية",up_hint:"اضغط للرفع · JPG / PNG",
+  rsv_lic_d:"حمّل رخصة قيادة محلية سارية المفعول. نتحقق من صلاحيتها عبر النظام.",up_lic:"رخصة القيادة المحلية",lbl_lic_no:"رقم الرخصة أو الرقم المدني",ph_lic_no:"123456789012",verify_lic:"التحقق من الرخصة",
+  lbl_start:"تاريخ الاستلام",lbl_days:"المدة (أيام)",est_total:"الإجمالي التقديري",
+  feat_ins:"تأمين شامل ضد الحوادث",feat_del:"توصيل واستلام مجاني",feat_24:"مساعدة على الطريق 24/7",feat_ai:"متابعة ذكية عبر المساعد",
+  sum_car:"السيارة",sum_period:"المدة",sum_rate:"السعر اليومي",sum_total:"الإجمالي",
+  tc_body:"باستخدامك خدمة City Drive فإنك توافق على إعادة السيارة في الموعد والحالة المتفق عليها، وعلى استخدامها داخل دولة الكويت فقط، وعلى مسؤوليتك عن المخالفات المرورية خلال فترة الإيجار. يشمل التأمين الأضرار العرضية مع تحمّل بسيط. لا يُسمح بالتدخين أو نقل الخدمة لطرف آخر. تُطبّق رسوم تأخير على الإرجاع المتأخر. الحد الأدنى لعمر السائق 21 عاماً مع رخصة سارية لا تقل عن سنة.",
+  tc_agree:"أوافق على الشروط والأحكام وسياسة الخصوصية.",
+  sig_d:"وقّع رقمياً أدناه ثم التقط صورة سيلفي مع رخصتك وبطاقتك المدنية للتحقق النهائي.",lbl_sig:"التوقيع الرقمي",clear:"مسح",up_selfie:"سيلفي مع الرخصة والبطاقة",up_selfie_h:"اضغط لالتقاط / رفع الصورة",
+  amount_due:"المبلغ المستحق",choose_pay:"اختر وسيلة الدفع",lbl_card:"رقم البطاقة",lbl_exp:"تاريخ الانتهاء",pay_secure:"دفع مشفّر وآمن — بوابة كي نت المعتمدة في الكويت.",
+  rsv_done_t:"تم تأكيد الحجز!",back:"رجوع",next:"التالي",
+  ai_name:"مساعد City Drive",ai_online:"متصل الآن",ai_ph:"اكتب رسالتك…",notif_title:"الإشعارات",
+  kwd:"د.ك",
+  pane_names:["تسجيل الدخول","البطاقة المدنية","رخصة القيادة","السيارة والمدة","الملخص","الشروط","التوقيع","الدفع","تم"]
+ },
+ en:{
+  nav_fleet:"Fleet",nav_ai:"AI Assistant",nav_membership:"Membership",nav_support:"Support",
+  signin:"Sign in",register:"Register",
+  hero_badge:"Kuwait's first AI car-delivery system",hero_title:"Your car comes to you,",hero_title_em:"intelligently.",
+  hero_lead:"A curated fleet of the finest and newest cars, delivered to your door in 60 minutes. A smart assistant guides you, with notifications built around your interests. No queues, no counters.",
+  browse_fleet:"Browse the fleet",meet_ai:"Meet the AI assistant",min:"min",
+  stat_fleet:"Cars in fleet",stat_delivery:"Avg. delivery time",stat_rating:"Member satisfaction",
+  ai_eyebrow:"Powered by AI",ai_title:"A smart assistant working for you",
+  ai_f1_t:"Instant chat assistant",ai_f1_d:"Chat with our AI 24/7 — it recommends the right car, books it, and tracks delivery, in Arabic and English.",
+  ai_f2_t:"Interest-based notifications",ai_f2_d:"We learn from your activity and preferences to send timely offers and reminders — the car you love, when you need it.",
+  ai_f3_t:"Smart door delivery",ai_f3_d:"AI plans the fastest delivery route and gives you a live arrival time — the car comes to you anywhere in Kuwait.",
+  fleet_eyebrow:"The Collection",fleet_title:"Available now",search_ph:"Search by name or category…",
+  sort_featured:"Sort · Featured",sort_pl:"Price · Low to high",sort_ph:"Price · High to low",
+  t_all:"All",t_luxury:"Luxury",t_suv:"SUV",t_sedan:"Sedan",t_eco:"Economy",t_ev:"Electric",
+  avail:"Available now",req:"On request",reserve:"Reserve",notify:"Notify me",per_day:"/ day",
+  showing:"Showing",of:"of",cars:"cars",no_match:"No cars match your search.",
+  trust1_t:"Full insurance",trust1_d:"Included with every booking",trust2_t:"Free delivery",trust2_d:"To any location in Kuwait",
+  trust3_t:"Secure payment",trust3_d:"KNET · Visa · Mastercard",trust4_t:"24/7 support",trust4_d:"AI assistant + human team",
+  circle_eyebrow:"City Drive Club",circle_title:"Your membership",current_tier:"Current tier",points:"points",to_platinum:"3,550 pts to Platinum",
+  tier_silver:"Silver",tier_gold:"Gold",tier_platinum:"Platinum",tier_noir:"Elite",invitation:"By invitation",
+  perk_free_del:"Free delivery",perk_priority:"Priority fleet",perk_guaranteed:"Guaranteed cars",perk_concierge:"Dedicated concierge",
+  rewards:"Rewards",foot_fleet:"Fleet",foot_club:"Club",foot_support:"Support",contact:"Contact us",terms:"Terms & conditions",
+  foot_tag:"Kuwait & the Gulf's first AI-powered rental-car delivery service.",copyright:"© 2026 City Drive · Prototype",made_for:"For demonstration purposes",
+  reg_title:"Create account",reg_sub:"Join City Drive in one step.",reg_trust:"Your data is protected and never shared with third parties.",
+  lbl_name:"Full name",ph_name:"Abdullah Al-Ahmad",lbl_email:"Email",lbl_gov:"Governorate",ph_select:"Select…",
+  gov_capital:"Capital",gov_hawalli:"Hawalli",gov_farwaniya:"Farwaniya",gov_ahmadi:"Ahmadi",gov_jahra:"Jahra",gov_mubarak:"Mubarak Al-Kabeer",
+  lbl_area:"Area / address",ph_area:"Salmiya, street…",create_account:"Create account",have_account:"Have an account?",no_account:"No account?",
+  err_name:"Please enter your name.",err_email:"Invalid email.",err_gov:"Select a governorate.",err_area:"Enter your address.",
+  signin_sub:"Welcome back.",
+  rsv_title:"Reserve a car",rsv_guest:"Booking is for registered members only, to keep your documents secure.",rsv_guest_d:"Create a free account to continue — takes under a minute.",
+  rsv_civil_d:"Upload your Civil ID. Used only to verify your identity.",up_civil:"Kuwait Civil ID",up_hint:"Tap to upload · JPG / PNG",
+  rsv_lic_d:"Upload a valid local driver licence. We verify validity via the system.",up_lic:"Local driver licence",lbl_lic_no:"Licence or Civil ID number",ph_lic_no:"123456789012",verify_lic:"Verify licence",
+  lbl_start:"Pickup date",lbl_days:"Duration (days)",est_total:"Estimated total",
+  feat_ins:"Comprehensive accident insurance",feat_del:"Free delivery & collection",feat_24:"24/7 roadside assistance",feat_ai:"Smart tracking via assistant",
+  sum_car:"Car",sum_period:"Period",sum_rate:"Daily rate",sum_total:"Total",
+  tc_body:"By using City Drive you agree to return the car on time and in the agreed condition, to use it within the State of Kuwait only, and to be responsible for traffic violations during the rental. Insurance covers accidental damage with a small excess. No smoking or transfer of service to others. Late-return fees apply. Minimum driver age 21 with a valid licence held at least one year.",
+  tc_agree:"I agree to the Terms & Conditions and Privacy Policy.",
+  sig_d:"Sign digitally below, then take a selfie with your licence and Civil ID for final verification.",lbl_sig:"Digital signature",clear:"Clear",up_selfie:"Selfie with licence & Civil ID",up_selfie_h:"Tap to capture / upload",
+  amount_due:"Amount due",choose_pay:"Choose payment method",lbl_card:"Card number",lbl_exp:"Expiry",pay_secure:"Encrypted & secure — Kuwait's certified KNET gateway.",
+  rsv_done_t:"Booking confirmed!",back:"Back",next:"Next",
+  ai_name:"City Drive Assistant",ai_online:"Online now",ai_ph:"Type your message…",notif_title:"Notifications",
+  kwd:"KWD",
+  pane_names:["Sign in","Civil ID","Driver licence","Car & period","Summary","Terms","Signature","Payment","Done"]
+ }
+};
+let LANG=localStorage.getItem('cd_lang')||'ar';
+function t(k){return (I18N[LANG][k]!==undefined?I18N[LANG][k]:I18N.en[k]!==undefined?I18N.en[k]:k);}
+function applyLang(){
+  document.documentElement.lang=LANG;
+  document.documentElement.dir=LANG==='ar'?'rtl':'ltr';
+  document.body.classList.toggle('lang-ar',LANG==='ar');
+  document.getElementById('langLabel').textContent=LANG==='ar'?'EN':'عربي';
+  document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(I18N[LANG][k]!==undefined)el.textContent=I18N[LANG][k];});
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{const k=el.getAttribute('data-i18n-ph');if(I18N[LANG][k]!==undefined)el.placeholder=I18N[LANG][k];});
+  localStorage.setItem('cd_lang',LANG);
+  renderFleet();renderNotif();buildWizSteps();
+}
+document.getElementById('langBtn').onclick=()=>{LANG=LANG==='ar'?'en':'ar';applyLang();};
+
+/* ===================== store ===================== */
+const store={
+  get user(){try{return JSON.parse(localStorage.getItem('cd_user'))}catch(e){return null}},
+  set user(u){u?localStorage.setItem('cd_user',JSON.stringify(u)):localStorage.removeItem('cd_user');},
+};
+function refreshAuthUI(){
+  const u=store.user;
+  document.getElementById('guestCta').classList.toggle('hide',!!u);
+  document.getElementById('memberCta').classList.toggle('hide',!u);
+  if(u){document.getElementById('userNm').textContent=u.name.split(' ')[0];document.getElementById('userAv').textContent=u.name.trim()[0];}
+}
+
+/* ===================== fleet ===================== */
+const IMG='https://upload.wikimedia.org/wikipedia/commons/thumb/';
+function pic(p,f){return IMG+p+'/330px-'+f;}
+const FLEET=[
+ {brand:'Toyota',model:'Land Cruiser 300',ar:'لاند كروزر 300',type:'luxury',seg:{en:'Luxury SUV',ar:'دفع رباعي فاخر'},seats:7,fuel:{en:'V6',ar:'٦ سلندر'},trans:{en:'Auto',ar:'أوتوماتيك'},price:55,avail:true,feat:true,img:pic('6/6d/2021_Toyota_Land_Cruiser_300_3.4_ZX_%28Colombia%29_front_view_04.png','2021_Toyota_Land_Cruiser_300_3.4_ZX_%28Colombia%29_front_view_04.png')},
+ {brand:'Mercedes',model:'GLE',ar:'مرسيدس GLE',type:'luxury',seg:{en:'Luxury SUV',ar:'دفع رباعي فاخر'},seats:5,fuel:{en:'Diesel',ar:'ديزل'},trans:{en:'Auto',ar:'أوتوماتيك'},price:70,avail:true,feat:true,img:pic('8/8b/Mercedes-Benz_GLE_350_d_4MATIC_AMG_Line_%28V_167%29_%E2%80%93_f_18042021.jpg','Mercedes-Benz_GLE_350_d_4MATIC_AMG_Line_%28V_167%29_%E2%80%93_f_18042021.jpg')},
+ {brand:'Range Rover',model:'Vogue',ar:'رنج روفر فوغ',type:'luxury',seg:{en:'Luxury SUV',ar:'دفع رباعي فاخر'},seats:5,fuel:{en:'Hybrid',ar:'هجين'},trans:{en:'Auto',ar:'أوتوماتيك'},price:90,avail:true,feat:true,img:pic('1/17/2022_Land_Rover_Range_Rover_SE_P440e_AWD_Automatic_3.0_Front.jpg','2022_Land_Rover_Range_Rover_SE_P440e_AWD_Automatic_3.0_Front.jpg')},
+ {brand:'Range Rover',model:'Sport',ar:'رنج روفر سبورت',type:'suv',seg:{en:'Sport SUV',ar:'دفع رباعي رياضي'},seats:5,fuel:{en:'V6',ar:'٦ سلندر'},trans:{en:'Auto',ar:'أوتوماتيك'},price:75,avail:true,feat:false,img:pic('a/aa/2015_Land_Rover_Range_Rover_Sport_HSE_3.0_Front.jpg','2015_Land_Rover_Range_Rover_Sport_HSE_3.0_Front.jpg')},
+ {brand:'BMW',model:'5 Series',ar:'بي إم دبليو الفئة الخامسة',type:'luxury',seg:{en:'Luxury Sedan',ar:'سيدان فاخرة'},seats:5,fuel:{en:'Petrol',ar:'بنزين'},trans:{en:'Auto',ar:'أوتوماتيك'},price:55,avail:true,feat:false,img:pic('8/86/BMW_G60_520i_1X7A2443.jpg','BMW_G60_520i_1X7A2443.jpg')},
+ {brand:'BMW',model:'X5',ar:'بي إم دبليو X5',type:'suv',seg:{en:'Luxury SUV',ar:'دفع رباعي فاخر'},seats:5,fuel:{en:'Diesel',ar:'ديزل'},trans:{en:'Auto',ar:'أوتوماتيك'},price:65,avail:true,feat:false,img:pic('f/f1/2019_BMW_X5_M50d_Automatic_3.0.jpg','2019_BMW_X5_M50d_Automatic_3.0.jpg')},
+ {brand:'Mercedes',model:'E-Class',ar:'مرسيدس الفئة E',type:'luxury',seg:{en:'Luxury Sedan',ar:'سيدان فاخرة'},seats:5,fuel:{en:'Petrol',ar:'بنزين'},trans:{en:'Auto',ar:'أوتوماتيك'},price:60,avail:true,feat:false,img:pic('f/fd/Mercedes-Benz_W214_1X7A1841.jpg','Mercedes-Benz_W214_1X7A1841.jpg')},
+ {brand:'Nissan',model:'Patrol',ar:'نيسان باترول',type:'suv',seg:{en:'Full-size SUV',ar:'دفع رباعي كبير'},seats:8,fuel:{en:'V8',ar:'٨ سلندر'},trans:{en:'Auto',ar:'أوتوماتيك'},price:48,avail:true,feat:true,img:pic('9/9d/2016_Nissan_Patrol_%28Y62%29_Ti-L_wagon_%282018-09-17%29_01.jpg','2016_Nissan_Patrol_%28Y62%29_Ti-L_wagon_%282018-09-17%29_01.jpg')},
+ {brand:'Hyundai',model:'Tucson',ar:'هيونداي توسان',type:'suv',seg:{en:'Compact SUV',ar:'دفع رباعي متوسط'},seats:5,fuel:{en:'Petrol',ar:'بنزين'},trans:{en:'Auto',ar:'أوتوماتيك'},price:22,avail:true,feat:false,img:pic('c/c6/2022_Hyundai_Tucson_Preferred%2C_Front_Right%2C_05-24-2021.jpg','2022_Hyundai_Tucson_Preferred%2C_Front_Right%2C_05-24-2021.jpg')},
+ {brand:'Hyundai',model:'Ioniq 5',ar:'هيونداي أيونيك 5',type:'ev',seg:{en:'Electric',ar:'كهربائية'},seats:5,fuel:{en:'Electric',ar:'كهرباء'},trans:{en:'Auto',ar:'أوتوماتيك'},price:28,avail:true,feat:true,img:pic('8/85/Hyundai_Ioniq_5_AWD_Techniq-Paket_%E2%80%93_f_31122024.jpg','Hyundai_Ioniq_5_AWD_Techniq-Paket_%E2%80%93_f_31122024.jpg')},
+ {brand:'Toyota',model:'Corolla Cross Hybrid',ar:'تويوتا كورولا كروس هايبرد',type:'eco',seg:{en:'Eco SUV',ar:'دفع رباعي اقتصادي'},seats:5,fuel:{en:'Hybrid',ar:'هجين'},trans:{en:'Auto',ar:'أوتوماتيك'},price:20,avail:true,feat:false,img:pic('4/43/2023_Toyota_Corolla_Cross_XLE_4WD_in_Wind_Chill_Pearl%2C_front_left.jpg','2023_Toyota_Corolla_Cross_XLE_4WD_in_Wind_Chill_Pearl%2C_front_left.jpg')},
+ {brand:'Toyota',model:'Camry',ar:'تويوتا كامري',type:'sedan',seg:{en:'Sedan',ar:'سيدان'},seats:5,fuel:{en:'Petrol',ar:'بنزين'},trans:{en:'Auto',ar:'أوتوماتيك'},price:16,avail:true,feat:false,img:pic('a/ac/2018_Toyota_Camry_%28ASV70R%29_Ascent_sedan_%282018-08-27%29_01.jpg','2018_Toyota_Camry_%28ASV70R%29_Ascent_sedan_%282018-08-27%29_01.jpg')},
+ {brand:'Nissan',model:'Altima',ar:'نيسان التيما',type:'sedan',seg:{en:'Sedan',ar:'سيدان'},seats:5,fuel:{en:'Petrol',ar:'بنزين'},trans:{en:'Auto',ar:'أوتوماتيك'},price:15,avail:true,feat:false,img:pic('5/59/2024_Nissan_Altima_SR%2C_front_left%2C_05-05-2025.jpg','2024_Nissan_Altima_SR%2C_front_left%2C_05-05-2025.jpg')},
+ {brand:'Geely',model:'Coolray',ar:'جيلي كولراي',type:'eco',seg:{en:'Compact SUV',ar:'دفع رباعي مدمج'},seats:5,fuel:{en:'Petrol',ar:'بنزين'},trans:{en:'Auto',ar:'أوتوماتيك'},price:18,avail:false,feat:false,img:pic('c/c1/2018_Geely_Binyue.jpg','2018_Geely_Binyue.jpg')}
+];
+let fState={type:'all',q:'',sort:'featured'};
+function carName(c){return LANG==='ar'?c.ar:(c.brand+' '+c.model);}
+function fb(img){img.onerror=null;img.src='data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360"><rect width="640" height="360" fill="#16261F"/><text x="50%" y="50%" fill="#6E8076" font-family="sans-serif" font-size="22" text-anchor="middle">City Drive</text></svg>');}
+function renderFleet(){
+  let list=FLEET.filter(c=>{
+    if(fState.type!=='all'&&c.type!==fState.type)return false;
+    if(fState.q){const s=fState.q.toLowerCase();if(!((c.brand+' '+c.model+' '+c.ar).toLowerCase().includes(s)))return false;}
+    return true;
+  });
+  if(fState.sort==='price-asc')list.sort((a,b)=>a.price-b.price);
+  else if(fState.sort==='price-desc')list.sort((a,b)=>b.price-a.price);
+  else list.sort((a,b)=>(b.feat-a.feat)||(b.avail-a.avail));
+  document.getElementById('count').textContent=`${t('showing')} ${list.length} ${t('of')} ${FLEET.length} ${t('cars')}`;
+  const el=document.getElementById('fleetGrid');
+  if(!list.length){el.innerHTML=`<div class="empty">${t('no_match')}</div>`;return;}
+  el.innerHTML=list.map((c,i)=>{const idx=FLEET.indexOf(c);return `
+   <div class="card">
+     <div class="card-vis">
+       <div class="status ${c.avail?'avail':'req'}"><span class="dot"></span>${c.avail?t('avail'):t('req')}</div>
+       <button class="fav" aria-label="Save" data-fav="${idx}">♥</button>
+       <img loading="lazy" alt="${c.brand} ${c.model}" src="${c.img}" onerror="fb(this)"/>
+     </div>
+     <div class="card-body">
+       <div class="seg">${LANG==='ar'?c.seg.ar:c.seg.en}</div>
+       <h3>${carName(c)}</h3>
+       <div class="spec-plate">
+         <div class="spec"><div class="v">${c.seats}</div><div class="k">${LANG==='ar'?'مقاعد':'Seats'}</div></div>
+         <div class="spec"><div class="v">${LANG==='ar'?c.fuel.ar:c.fuel.en}</div><div class="k">${LANG==='ar'?'المحرك':'Engine'}</div></div>
+         <div class="spec"><div class="v">${LANG==='ar'?c.trans.ar:c.trans.en}</div><div class="k">${LANG==='ar'?'الناقل':'Trans'}</div></div>
+       </div>
+       <div class="card-foot">
+         <div class="price">${t('kwd')} ${c.price}<span> ${t('per_day')}</span></div>
+         <button class="reserve" data-reserve="${idx}">${c.avail?t('reserve'):t('notify')}</button>
+       </div>
+     </div>
+   </div>`;}).join('');
+}
+document.getElementById('search').addEventListener('input',e=>{fState.q=e.target.value;renderFleet();});
+document.getElementById('sort').addEventListener('change',e=>{fState.sort=e.target.value;renderFleet();});
+document.getElementById('chips').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));b.classList.add('active');fState.type=b.dataset.type;renderFleet();});
+document.getElementById('fleetGrid').addEventListener('click',e=>{
+  const fav=e.target.closest('[data-fav]');if(fav){fav.classList.toggle('on');const c=FLEET[+fav.dataset.fav];if(fav.classList.contains('on'))pushNotif('fav',c);return;}
+  const r=e.target.closest('[data-reserve]');if(r){openReserve(+r.dataset.reserve);}
+});
+
+/* hero featured */
+function setHero(){const c=FLEET[0];const img=document.getElementById('heroImg');img.src=c.img;img.onerror=()=>fb(img);img.alt=c.brand+' '+c.model;document.getElementById('heroName').textContent=carName(c);document.getElementById('heroPrice').textContent=t('kwd')+' '+c.price+' '+t('per_day');}
+
+/* ===================== modals ===================== */
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(el){el.classList.remove('open');}
+document.querySelectorAll('.modal-bg').forEach(m=>{
+  m.addEventListener('click',e=>{if(e.target===m||e.target.closest('[data-close]'))closeModal(m);});
+});
+document.querySelectorAll('[data-switch]').forEach(a=>a.onclick=()=>{document.querySelectorAll('.modal-bg').forEach(m=>m.classList.remove('open'));openModal(a.dataset.switch==='signin'?'signinModal':'registerModal');});
+document.getElementById('registerOpen').onclick=()=>openModal('registerModal');
+document.getElementById('signinOpen').onclick=()=>openModal('signinModal');
+document.getElementById('logoutBtn').onclick=(e)=>{e.stopPropagation();store.user=null;refreshAuthUI();toast(LANG==='ar'?'تم تسجيل الخروج':'Signed out');};
+
+/* validation helpers */
+function setBad(id,bad){document.getElementById(id).classList.toggle('bad',bad);return !bad;}
+const emailOk=v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+
+document.getElementById('regForm').addEventListener('submit',e=>{
+  e.preventDefault();const f=e.target;let ok=true;
+  ok=setBad('f-name',!f.name.value.trim())&&ok;
+  ok=setBad('f-email',!emailOk(f.email.value))&&ok;
+  ok=setBad('f-gov',!f.gov.value)&&ok;
+  ok=setBad('f-area',!f.area.value.trim())&&ok;
+  if(!ok)return;
+  store.user={name:f.name.value.trim(),email:f.email.value.trim(),gov:f.gov.value,area:f.area.value.trim(),civil:false,licence:false};
+  refreshAuthUI();closeModal(document.getElementById('registerModal'));f.reset();
+  toast((LANG==='ar'?'أهلاً بك ':'Welcome ')+store.user.name.split(' ')[0]+' 🎉');
+  setTimeout(()=>pushNotif('welcome'),700);
+});
+document.getElementById('signinForm').addEventListener('submit',e=>{
+  e.preventDefault();const f=e.target;if(!setBad('f-siemail',!emailOk(f.email.value)))return;
+  store.user=store.user||{name:LANG==='ar'?'عبدالله الأحمد':'Abdullah Al-Ahmad',email:f.email.value,civil:false,licence:false};
+  refreshAuthUI();closeModal(document.getElementById('signinModal'));f.reset();toast(LANG==='ar'?'مرحباً بعودتك':'Welcome back');
+});
+
+/* ===================== reserve wizard ===================== */
+let wiz={step:0,car:null};
+const PANE_FLOW=[0,1,2,3,4,5,6,7,8]; // logical steps
+function buildWizSteps(){
+  const names=I18N[LANG].pane_names;
+  document.getElementById('wizSteps').innerHTML=names.map((n,i)=>`<div class="wstep" data-s="${i}"><div class="wdot"></div><div class="wl">${n}</div></div>`).join('');
+  paintSteps();
+}
+function paintSteps(){
+  document.querySelectorAll('.wstep').forEach((s,i)=>{s.classList.toggle('done',i<wiz.step);s.classList.toggle('cur',i===wiz.step);});
+  document.getElementById('rsvStepName').textContent=(wiz.step+1)+' / '+I18N[LANG].pane_names.length+' · '+I18N[LANG].pane_names[wiz.step];
+}
+function showPane(){
+  document.querySelectorAll('.wiz-pane').forEach(p=>p.classList.toggle('on',+p.dataset.step===wiz.step));
+  paintSteps();
+  const back=document.getElementById('wizBack'),next=document.getElementById('wizNext'),nav=document.getElementById('wizNav');
+  back.style.visibility=wiz.step<=0?'hidden':'visible';
+  nav.style.display=(wiz.step===0||wiz.step===8)?'none':'flex';
+  next.textContent=wiz.step===7?(LANG==='ar'?'ادفع وأكّد':'Pay & confirm'):t('next');
+}
+function openReserve(carIdx){
+  wiz={step:0,car:FLEET[carIdx]};
+  const u=store.user;
+  // step gating: registered? civil? licence?
+  if(u){wiz.step=u.civil?(u.licence?3:2):1;}
+  fillCarPanes();buildWizSteps();showPane();openModal('reserveModal');
+}
+document.getElementById('rsvToRegister').onclick=()=>{closeModal(document.getElementById('reserveModal'));openModal('registerModal');};
+function fillCarPanes(){
+  const c=wiz.car;if(!c)return;
+  const html=`<img src="${c.img}" onerror="fb(this)" alt=""/><div><div class="scn">${carName(c)}</div><div class="scp">${t('kwd')} ${c.price} ${t('per_day')}</div></div>`;
+  document.getElementById('rsvCar').innerHTML=html;document.getElementById('rsvCar2').innerHTML=html;
+  const today=new Date().toISOString().slice(0,10);document.getElementById('startDate').value=today;document.getElementById('startDate').min=today;
+  updatePeriod();
+}
+function updatePeriod(){
+  let d=parseInt(document.getElementById('days').value)||1;d=Math.max(1,Math.min(90,d));
+  const note=document.getElementById('periodNote');
+  note.textContent=LANG==='ar'?`الحد الأدنى يوم واحد (٢٤ ساعة) · الحد الأقصى ٩٠ يوماً (٣ أشهر)`:`Min 1 day (24h) · Max 90 days (3 months)`;
+  const total=d*wiz.car.price;
+  document.getElementById('estTotal').textContent=t('kwd')+' '+total;
+  return {d,total};
+}
+document.getElementById('days').addEventListener('input',updatePeriod);
+document.getElementById('startDate').addEventListener('change',updatePeriod);
+
+/* uploads + mock verify */
+function bindUpload(boxId,inputId,rowId,verifyMsg){
+  const box=document.getElementById(boxId),inp=document.getElementById(inputId),row=document.getElementById(rowId);
+  box.onclick=()=>inp.click();
+  inp.onchange=()=>{
+    if(!inp.files[0])return;
+    box.classList.add('has');box.querySelector('.ub-t').textContent=inp.files[0].name;
+    row.style.display='flex';row.className='verify-row';row.innerHTML=`<span class="spin"></span><span>${LANG==='ar'?'جارٍ التحقق…':'Verifying…'}</span>`;
+    setTimeout(()=>{row.className='verify-row ok';row.innerHTML=`<span>✓</span><span>${verifyMsg()}</span>`;box._ok=true;},1400);
+  };
+  return box;
+}
+bindUpload('upCivil','fileCivil','vCivil',()=>LANG==='ar'?'تم التحقق من البطاقة المدنية':'Civil ID verified');
+bindUpload('upLic','fileLic','vLic',()=>LANG==='ar'?'تم استلام الرخصة':'Licence received');
+bindUpload('upSelfie','fileSelfie','vSelfie',()=>LANG==='ar'?'تم استلام صورة التحقق':'Verification selfie received');
+/* MOCK licence verification API (by number) */
+document.getElementById('verifyLic').onclick=()=>{
+  const row=document.getElementById('vLic');row.style.display='flex';row.className='verify-row';
+  row.innerHTML=`<span class="spin"></span><span>${LANG==='ar'?'جارٍ التحقق من الصلاحية…':'Checking validity…'}</span>`;
+  const num=document.getElementById('licNo').value.trim();
+  setTimeout(()=>{
+    const valid=num.length>=6; // MOCK: short = expired/invalid demo path
+    if(valid){row.className='verify-row ok';row.innerHTML=`<span>✓</span><span>${LANG==='ar'?'رخصة سارية · غير منتهية':'Licence valid · not expired'}</span>`;document.getElementById('upLic')._ok=true;}
+    else{row.className='verify-row bad';row.innerHTML=`<span>✕</span><span>${LANG==='ar'?'رقم غير صالح أو الرخصة منتهية':'Invalid number or licence expired'}</span>`;}
+  },1500);
+};
+
+/* signature pad */
+let sigCtx,sigDrawn=false;
+function initSig(){
+  const cv=document.getElementById('sigPad');const r=cv.getBoundingClientRect();cv.width=r.width;cv.height=150;
+  sigCtx=cv.getContext('2d');sigCtx.strokeStyle='#0B1512';sigCtx.lineWidth=2.4;sigCtx.lineCap='round';
+  let drawing=false;
+  const pos=e=>{const b=cv.getBoundingClientRect();const x=(e.touches?e.touches[0].clientX:e.clientX)-b.left;const y=(e.touches?e.touches[0].clientY:e.clientY)-b.top;return[x,y];};
+  const down=e=>{drawing=true;sigDrawn=true;const[x,y]=pos(e);sigCtx.beginPath();sigCtx.moveTo(x,y);e.preventDefault();};
+  const move=e=>{if(!drawing)return;const[x,y]=pos(e);sigCtx.lineTo(x,y);sigCtx.stroke();e.preventDefault();};
+  const up=()=>drawing=false;
+  cv.onmousedown=down;cv.onmousemove=move;window.addEventListener('mouseup',up);
+  cv.ontouchstart=down;cv.ontouchmove=move;cv.ontouchend=up;
+}
+document.getElementById('clearSig').onclick=()=>{if(sigCtx){sigCtx.clearRect(0,0,document.getElementById('sigPad').width,150);sigDrawn=false;}};
+
+/* payment method select */
+document.getElementById('payMethods').addEventListener('click',e=>{const o=e.target.closest('.pay-opt');if(!o)return;document.querySelectorAll('.pay-opt').forEach(p=>p.classList.remove('sel'));o.classList.add('sel');});
+
+/* wizard navigation with validation */
+document.getElementById('wizBack').onclick=()=>{if(wiz.step>0){wiz.step--;showPane();}};
+document.getElementById('wizNext').onclick=()=>{
+  const s=wiz.step;
+  if(s===1&&!document.getElementById('upCivil')._ok){toast(LANG==='ar'?'حمّل البطاقة المدنية أولاً':'Upload your Civil ID first');return;}
+  if(s===2&&!document.getElementById('upLic')._ok){toast(LANG==='ar'?'تحقّق من رخصة سارية أولاً':'Verify a valid licence first');return;}
+  if(s===3){const{d,total}=updatePeriod();wiz.days=d;wiz.total=total;}
+  if(s===4){ // populate summary already done on enter; nothing
+  }
+  if(s===5&&!document.getElementById('tcCheck').checked){toast(LANG==='ar'?'وافق على الشروط للمتابعة':'Accept the terms to continue');return;}
+  if(s===6){if(!sigDrawn){toast(LANG==='ar'?'وقّع رقمياً أولاً':'Add your signature first');return;}if(!document.getElementById('upSelfie')._ok){toast(LANG==='ar'?'أرفق صورة التحقق':'Add the verification selfie');return;}}
+  if(s===7){return doPayment();}
+  // mark docs uploaded on the user for future bookings
+  if(s===1){const u=store.user;if(u){u.civil=true;store.user=u;}}
+  if(s===2){const u=store.user;if(u){u.licence=true;store.user=u;}}
+  wiz.step++;
+  if(wiz.step===4)fillSummary();
+  if(wiz.step===6&&!sigCtx)setTimeout(initSig,30);
+  if(wiz.step===7)document.getElementById('payTotal').textContent=t('kwd')+' '+(wiz.total||updatePeriod().total);
+  showPane();
+};
+function fillSummary(){
+  const c=wiz.car,d=wiz.days||updatePeriod().d,total=wiz.total||d*c.price;
+  document.getElementById('sumCar').textContent=carName(c);
+  document.getElementById('sumPeriod').textContent=d+' '+(LANG==='ar'?'يوم':'days');
+  document.getElementById('sumRate').textContent=t('kwd')+' '+c.price;
+  document.getElementById('sumTotal').textContent=t('kwd')+' '+total;
+}
+function doPayment(){
+  const next=document.getElementById('wizNext');next.disabled=true;next.textContent=LANG==='ar'?'جارٍ الدفع…':'Processing…';
+  setTimeout(()=>{ // MOCK payment gateway
+    next.disabled=false;
+    wiz.step=8;
+    document.getElementById('rsvDoneMsg').textContent=(LANG==='ar'
+      ? `${carName(wiz.car)} في الطريق إليك. سيصلك المساعد الذكي بتفاصيل التوصيل ووقت الوصول.`
+      : `${carName(wiz.car)} is on its way. The AI assistant will message you delivery details and arrival time.`);
+    showPane();
+    pushNotif('booked',wiz.car);
+    toast(LANG==='ar'?'تم الدفع بنجاح ✓':'Payment successful ✓');
+  },1600);
+}
+
+/* ===================== AI assistant ===================== */
+const AI_FLOW={
+ ar:{
+  greet:"أهلاً بك في City Drive! 👋 أنا مساعدك الذكي. كيف أقدر أساعدك اليوم؟",
+  quick:["أبغى سيارة عائلية","أرخص سيارة","كيف أحجز؟","سيارة كهربائية"],
+  replies:{
+   "أبغى سيارة عائلية":"أنصحك بـ نيسان باترول (٨ مقاعد، ٤٨ د.ك/يوم) أو تويوتا لاند كروزر. أحجزها لك الحين؟",
+   "أرخص سيارة":"أوفر خيار هو نيسان التيما بـ ١٥ د.ك/يوم، سيدان مريحة واقتصادية. تبي تحجزها؟",
+   "كيف أحجز؟":"سهلة: سجّل حسابك، ارفع البطاقة المدنية والرخصة، اختر السيارة والمدة، وقّع وادفع عبر كي نت. كل شي من جوالك!",
+   "سيارة كهربائية":"عندنا هيونداي أيونيك 5 الكهربائية بـ ٢٨ د.ك/يوم — توصيل مجاني وشحن سريع. أعرض لك التفاصيل؟"
+  },
+  fallback:"وصلت رسالتك! فريقنا والمساعد الذكي يقدر يساعدك في الحجز، الأسعار، والتوصيل. جرّب أحد الأزرار السريعة فوق."
+ },
+ en:{
+  greet:"Welcome to City Drive! 👋 I'm your AI assistant. How can I help you today?",
+  quick:["I need a family car","Cheapest car","How to book?","Electric car"],
+  replies:{
+   "I need a family car":"I recommend the Nissan Patrol (8 seats, KWD 48/day) or the Toyota Land Cruiser. Want me to reserve one now?",
+   "Cheapest car":"The most affordable is the Nissan Altima at KWD 15/day — a comfortable, economical sedan. Shall I book it?",
+   "How to book?":"Easy: register, upload your Civil ID & licence, pick a car and dates, sign and pay via KNET. All from your phone!",
+   "Electric car":"We have the electric Hyundai Ioniq 5 at KWD 28/day — free delivery and fast charging. Want the details?"
+  },
+  fallback:"Got your message! Our AI and team can help with booking, prices, and delivery. Try one of the quick buttons above."
+ }
+};
+function aiAdd(text,who){const log=document.getElementById('aiLog');const d=document.createElement('div');d.className='msg '+who;d.textContent=text;log.appendChild(d);log.scrollTop=log.scrollHeight;}
+function aiBootstrap(){
+  document.getElementById('aiLog').innerHTML='';
+  aiAdd(AI_FLOW[LANG].greet,'bot');
+  document.getElementById('aiQuick').innerHTML=AI_FLOW[LANG].quick.map(q=>`<button>${q}</button>`).join('');
+  document.querySelectorAll('#aiQuick button').forEach(b=>b.onclick=()=>aiUser(b.textContent));
+}
+function aiUser(text){
+  if(!text.trim())return;aiAdd(text,'me');document.getElementById('aiText').value='';
+  const r=AI_FLOW[LANG].replies[text]||AI_FLOW[LANG].fallback;
+  setTimeout(()=>aiAdd(r,'bot'),600);
+}
+document.getElementById('aiFab').onclick=()=>{const p=document.getElementById('aiPanel');p.classList.toggle('open');document.querySelector('.ai-fab .nb').style.display='none';if(p.classList.contains('open')&&!document.getElementById('aiLog').children.length)aiBootstrap();};
+document.getElementById('aiClose').onclick=()=>document.getElementById('aiPanel').classList.remove('open');
+document.getElementById('aiSend').onclick=()=>aiUser(document.getElementById('aiText').value);
+document.getElementById('aiText').addEventListener('keydown',e=>{if(e.key==='Enter')aiUser(e.target.value);});
+document.getElementById('heroAi').onclick=()=>document.getElementById('aiFab').click();
+
+/* ===================== notifications ===================== */
+let NOTIFS=[
+ {ar:{t:"عرض خاص للأعضاء الذهبيين",m:"خصم ١٥٪ على رنج روفر هذا الأسبوع"},en:{t:"Gold member offer",m:"15% off Range Rover this week"}},
+ {ar:{t:"بناءً على اهتمامك بالدفع الرباعي",m:"باترول ولاند كروزر متوفرة الآن للتوصيل"},en:{t:"Based on your SUV interest",m:"Patrol & Land Cruiser available now for delivery"}}
+];
+function renderNotif(){
+  document.getElementById('notifList').innerHTML=NOTIFS.map(n=>{const x=n[LANG];return `<div class="notif-item"><div class="nic"><svg class="ic" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/></svg></div><div><div class="ntt">${x.t}</div><div class="ntm">${x.m}</div></div></div>`;}).join('');
+  document.getElementById('notifDot').classList.toggle('on',NOTIFS.length>0);
+}
+function pushNotif(kind,car){
+  let n;
+  if(kind==='welcome')n={ar:{t:"أهلاً بك في City Drive",m:"حسابك جاهز — تصفّح الأسطول واحجز بثوانٍ"},en:{t:"Welcome to City Drive",m:"Your account is ready — browse and book in seconds"}};
+  else if(kind==='fav'&&car)n={ar:{t:"أضفت سيارة لمفضلتك",m:`سنخبرك بأي عرض على ${car.ar}`},en:{t:"Added to favourites",m:`We'll alert you to offers on ${car.brand} ${car.model}`}};
+  else if(kind==='booked'&&car)n={ar:{t:"تم تأكيد حجزك",m:`${car.ar} في الطريق إليك الآن`},en:{t:"Booking confirmed",m:`${car.brand} ${car.model} is on its way`}};
+  if(n){NOTIFS.unshift(n);renderNotif();document.getElementById('notifDot').classList.add('on');}
+}
+document.getElementById('notifBtn').onclick=e=>{e.stopPropagation();document.getElementById('notifPanel').classList.toggle('open');};
+document.getElementById('notifClose').onclick=()=>document.getElementById('notifPanel').classList.remove('open');
+document.addEventListener('click',e=>{if(!e.target.closest('#notifPanel')&&!e.target.closest('#notifBtn'))document.getElementById('notifPanel').classList.remove('open');});
+
+/* ===================== toast ===================== */
+let _tt;function toast(m){const el=document.getElementById('toast');el.textContent=m;el.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('show'),2600);}
+
+/* ===================== reveal ===================== */
+const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}}),{threshold:.12});
+document.querySelectorAll('.reveal:not(.in)').forEach(el=>io.observe(el));
+
+/* ===================== boot ===================== */
+applyLang();refreshAuthUI();setHero();renderNotif();
+</script>
+</body>
+</html>

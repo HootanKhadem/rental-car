@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>City Drive · Operations CRM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Cairo:wght@600;700;900&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --ink:#0B1512;--obsidian:#10201B;--graphite:#16261F;--raised:#1C2E27;--raised2:#223a31;
+  --line:#28392F;--line-soft:#1F2C25;
+  --champagne:#C6A664;--champagne-bright:#E3C485;--gold-deep:#9C7E45;
+  --emerald:#2FA37A;--emerald-deep:#1F7A5C;
+  --ivory:#F4F1EA;--smoke:#9FB0A6;--smoke-dim:#6E8076;
+  --sage:#7FAE94;--rust:#C77A68;--sky:#79B7D6;--wa:#25D366;
+  --serif:'Playfair Display',Georgia,serif;--sans:'Inter',system-ui,sans-serif;--mono:'Space Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--ink);color:var(--ivory);font-family:var(--sans);font-size:14px;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,select,textarea{font-family:inherit}
+::selection{background:var(--champagne);color:var(--ink)}
+.mono{font-family:var(--mono)}
+.app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+
+/* ---- SIDEBAR ---- */
+.side{background:var(--obsidian);border-right:1px solid var(--line-soft);display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.side-brand{padding:22px 22px 18px;font-family:var(--serif);font-size:22px;letter-spacing:.14em;border-bottom:1px solid var(--line-soft)}
+.side-brand b{color:var(--champagne)}
+.side-brand .sub{font-family:var(--mono);font-size:9px;letter-spacing:.24em;color:var(--smoke);margin-top:4px;text-transform:uppercase}
+.nav{padding:14px 12px;flex:1;overflow-y:auto}
+.nav-sec{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--smoke-dim);padding:14px 12px 8px}
+.nav-item{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:5px;color:var(--smoke);font-size:13.5px;font-weight:500;transition:.15s;width:100%;text-align:left;margin-bottom:2px}
+.nav-item .ic{width:18px;text-align:center;font-size:15px}
+.nav-item:hover{background:var(--graphite);color:var(--ivory)}
+.nav-item.active{background:linear-gradient(90deg,rgba(198,166,100,.14),transparent);color:var(--champagne)}
+.nav-item.active .ic{color:var(--champagne)}
+.side-foot{padding:14px;border-top:1px solid var(--line-soft)}
+.role-badge{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--smoke);padding:8px 10px;border:1px solid var(--line);border-radius:5px;text-align:center}
+
+/* ---- TOPBAR ---- */
+.main{display:flex;flex-direction:column;min-width:0}
+.top{height:64px;border-bottom:1px solid var(--line-soft);display:flex;align-items:center;justify-content:space-between;padding:0 26px;background:rgba(12,12,14,.7);backdrop-filter:blur(10px);position:sticky;top:0;z-index:40}
+.top-search{display:flex;align-items:center;gap:10px;background:var(--obsidian);border:1px solid var(--line);border-radius:6px;padding:9px 14px;width:320px;max-width:40vw}
+.top-search input{background:none;border:none;outline:none;color:var(--ivory);font-size:13px;flex:1}
+.top-search input::placeholder{color:var(--smoke-dim)}
+.top-right{display:flex;align-items:center;gap:18px}
+.bell{font-size:17px;color:var(--smoke);position:relative}
+.bell::after{content:'';position:absolute;top:-1px;right:-1px;width:7px;height:7px;background:var(--champagne);border-radius:50%}
+.role-switch{display:flex;align-items:center;gap:10px;background:var(--obsidian);border:1px solid var(--line);border-radius:8px;padding:6px 8px 6px 6px;cursor:pointer;position:relative}
+.avatar{width:32px;height:32px;border-radius:7px;background:linear-gradient(140deg,var(--gold-deep),var(--champagne-bright));color:var(--ink);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;font-family:var(--mono)}
+.role-meta .nm{font-size:13px;font-weight:600;line-height:1.2}
+.role-meta .rl{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--champagne)}
+.role-menu{position:absolute;top:54px;right:0;background:var(--raised);border:1px solid var(--line);border-radius:9px;padding:8px;width:230px;box-shadow:0 20px 50px rgba(0,0,0,.5);z-index:50;display:none}
+.role-menu.open{display:block}
+.role-menu .rm-h{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--smoke);padding:8px 10px}
+.role-opt{display:flex;align-items:center;gap:11px;padding:10px;border-radius:6px;width:100%;text-align:left;transition:.15s}
+.role-opt:hover{background:var(--graphite)}
+.role-opt.sel{background:rgba(198,166,100,.1)}
+.role-opt .ra{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:12px;background:var(--raised2);color:var(--champagne)}
+.role-opt .rnm{font-size:13px;font-weight:600}
+.role-opt .rds{font-size:11px;color:var(--smoke)}
+
+/* ---- CONTENT ---- */
+.content{padding:28px 30px;flex:1;overflow-y:auto;max-width:1500px;width:100%}
+.page-head{margin-bottom:26px}
+.page-head .eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--champagne)}
+.page-head h1{font-family:var(--serif);font-size:34px;font-weight:600;margin-top:8px}
+.page-head p{color:var(--smoke);margin-top:6px;font-size:14px}
+
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:26px}
+.kpi{background:linear-gradient(180deg,var(--graphite),var(--obsidian));border:1px solid var(--line);border-radius:9px;padding:20px}
+.kpi .kl{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--smoke)}
+.kpi .kv{font-family:var(--serif);font-size:32px;margin:12px 0 6px}
+.kpi .kd{font-family:var(--mono);font-size:11px;letter-spacing:.04em}
+.kd.up{color:var(--sage)}.kd.down{color:var(--rust)}.kd.flat{color:var(--smoke)}
+
+.panel{background:var(--obsidian);border:1px solid var(--line);border-radius:10px;padding:22px;margin-bottom:18px}
+.panel-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.panel-h h3{font-size:16px;font-weight:600}
+.panel-h .eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--smoke)}
+.grid-2{display:grid;grid-template-columns:1.6fr 1fr;gap:18px}
+.grid-2b{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+
+/* chart */
+.chart{display:flex;align-items:flex-end;gap:14px;height:180px;padding-top:10px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end}
+.bar{width:60%;max-width:34px;background:linear-gradient(180deg,var(--champagne),var(--gold-deep));border-radius:4px 4px 0 0;transition:.4s;min-height:4px}
+.bar.muted{background:linear-gradient(180deg,var(--raised2),var(--graphite))}
+.bar-lbl{font-family:var(--mono);font-size:10px;color:var(--smoke);letter-spacing:.04em}
+
+/* donut/status bars */
+.stat-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line-soft)}
+.stat-row:last-child{border:none}
+.stat-row .sl{display:flex;align-items:center;gap:10px;font-size:13px}
+.swatch{width:10px;height:10px;border-radius:3px}
+.stat-row .sv{font-family:var(--mono);font-size:13px}
+
+/* feed */
+.feed-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line-soft)}
+.feed-item:last-child{border:none}
+.feed-dot{width:9px;height:9px;border-radius:50%;margin-top:5px;flex-shrink:0}
+.feed-item .ft{font-size:13px}
+.feed-item .fm{font-family:var(--mono);font-size:10px;color:var(--smoke);margin-top:3px;letter-spacing:.04em}
+
+/* tables */
+table.dt{width:100%;border-collapse:collapse}
+table.dt th{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--smoke);text-align:left;padding:12px 14px;border-bottom:1px solid var(--line)}
+table.dt td{padding:14px;border-bottom:1px solid var(--line-soft);font-size:13.5px;vertical-align:middle}
+table.dt tr:hover td{background:var(--graphite)}
+.badge{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;padding:5px 9px;border-radius:30px;display:inline-flex;align-items:center;gap:5px}
+.b-green{color:var(--sage);background:rgba(127,174,148,.12)}
+.b-gold{color:var(--champagne);background:rgba(198,166,100,.12)}
+.b-sky{color:var(--sky);background:rgba(121,183,214,.12)}
+.b-rust{color:var(--rust);background:rgba(199,122,104,.14)}
+.b-grey{color:var(--smoke);background:rgba(154,152,143,.1)}
+.dot-s{width:5px;height:5px;border-radius:50%;background:currentColor}
+.tname{font-weight:600}
+.tsub{font-family:var(--mono);font-size:10px;color:var(--smoke);margin-top:3px}
+.mini-car{width:54px;height:30px}
+
+.act-btn{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:7px 11px;border:1px solid var(--line);border-radius:5px;color:var(--smoke);transition:.15s}
+.act-btn:hover{border-color:var(--champagne);color:var(--champagne)}
+.act-btn.wa:hover{border-color:var(--wa);color:var(--wa)}
+
+/* automations */
+.auto-rule{display:flex;align-items:center;gap:14px;padding:15px;border:1px solid var(--line);border-radius:8px;margin-bottom:10px;background:var(--graphite)}
+.chan{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:700;font-family:var(--mono);font-size:11px;flex-shrink:0}
+.chan.wa{background:rgba(37,211,102,.14);color:var(--wa)}
+.chan.sms{background:rgba(121,183,214,.14);color:var(--sky)}
+.auto-rule .ar-body{flex:1;min-width:0}
+.auto-rule .ar-trig{font-weight:600;font-size:13.5px}
+.auto-rule .ar-desc{font-size:12px;color:var(--smoke);margin-top:3px}
+.auto-rule .ar-stat{font-family:var(--mono);font-size:9.5px;color:var(--smoke-dim);letter-spacing:.06em;margin-top:5px;text-transform:uppercase}
+.switch{width:42px;height:23px;border-radius:20px;background:var(--line);position:relative;transition:.25s;flex-shrink:0;cursor:pointer}
+.switch::after{content:'';position:absolute;top:3px;left:3px;width:17px;height:17px;border-radius:50%;background:var(--smoke);transition:.25s}
+.switch.on{background:var(--gold-deep)}
+.switch.on::after{left:22px;background:var(--champagne-bright)}
+.phone-preview{background:#0a0f0c;border:1px solid var(--line);border-radius:14px;padding:18px;background-image:radial-gradient(circle at 20% 10%,rgba(37,211,102,.04),transparent 40%)}
+.wa-head{display:flex;align-items:center;gap:10px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:14px}
+.wa-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(140deg,var(--gold-deep),var(--champagne-bright));color:var(--ink);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;font-family:var(--serif)}
+.wa-name{font-size:13px;font-weight:600}
+.wa-status{font-size:10px;color:var(--wa)}
+.bubble{background:#1f2c23;border-radius:4px 12px 12px 12px;padding:12px 14px;font-size:13px;line-height:1.5;max-width:88%;position:relative;white-space:pre-wrap}
+.bubble .bt{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.4);text-align:right;margin-top:6px;letter-spacing:.04em}
+.tmpl-editor{width:100%;background:var(--ink);border:1px solid var(--line);border-radius:7px;color:var(--ivory);font-size:13px;padding:13px;min-height:120px;resize:vertical;line-height:1.55;outline:none}
+.tmpl-editor:focus{border-color:var(--champagne)}
+.merge-tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.mtag{font-family:var(--mono);font-size:10px;color:var(--champagne);background:rgba(198,166,100,.1);border:1px solid var(--line);padding:5px 9px;border-radius:5px;cursor:pointer}
+.mtag:hover{background:rgba(198,166,100,.2)}
+.log-item{display:flex;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line-soft)}
+.log-item:last-child{border:none}
+.log-chan{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9px;font-weight:700;flex-shrink:0}
+
+/* finance breakdown */
+.exp-row{margin-bottom:14px}
+.exp-top{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px}
+.exp-top .ev{font-family:var(--mono);color:var(--smoke)}
+.exp-bar{height:7px;border-radius:7px;background:rgba(0,0,0,.4);overflow:hidden}
+.exp-bar i{display:block;height:100%;border-radius:7px}
+.pnl-row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line-soft);font-size:14px}
+.pnl-row.total{border-top:1px solid var(--line);border-bottom:none;margin-top:6px;padding-top:14px;font-weight:700}
+.pnl-row .pv{font-family:var(--mono)}
+.pnl-row.total .pv{color:var(--champagne);font-size:18px}
+
+/* permission matrix */
+.matrix{width:100%;border-collapse:collapse}
+.matrix th,.matrix td{padding:13px 14px;border-bottom:1px solid var(--line-soft);text-align:center;font-size:13px}
+.matrix th:first-child,.matrix td:first-child{text-align:left;font-weight:600}
+.matrix th{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--champagne);border-bottom:1px solid var(--line)}
+.yes{color:var(--sage);font-size:15px}.no{color:var(--smoke-dim);font-size:15px}.read{color:var(--smoke);font-family:var(--mono);font-size:9px;letter-spacing:.08em}
+
+.no-access{text-align:center;padding:80px 20px;color:var(--smoke)}
+.no-access .lock{font-size:42px;margin-bottom:18px}
+.no-access h2{font-family:var(--serif);font-size:26px;color:var(--ivory);margin-bottom:10px}
+
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--raised);border:1px solid var(--champagne);border-radius:8px;padding:13px 20px;font-size:13px;box-shadow:0 16px 40px rgba(0,0,0,.5);transition:.4s;z-index:90}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast .tt{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--champagne)}
+
+/* ---- MODAL / FORMS ---- */
+.modal-bg{position:fixed;inset:0;background:rgba(6,11,9,.78);backdrop-filter:blur(4px);z-index:95;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-bg.open{display:flex}
+.modal{background:var(--graphite);border:1px solid var(--line);border-radius:14px;width:100%;max-width:520px;max-height:92vh;overflow-y:auto;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.modal-h{display:flex;align-items:flex-start;justify-content:space-between;padding:22px 24px 0}
+.modal-h h3{font-family:var(--serif);font-size:22px;font-weight:600}
+.modal-h p{color:var(--smoke);font-size:13px;margin-top:5px}
+.modal-x{width:32px;height:32px;border-radius:8px;border:1px solid var(--line);color:var(--smoke);font-size:17px;display:flex;align-items:center;justify-content:center;transition:.2s}
+.modal-x:hover{border-color:var(--rust);color:var(--rust)}
+.modal-b{padding:20px 24px 24px}
+.fld{margin-bottom:14px}
+.fld label{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--smoke);margin-bottom:6px}
+.fld input,.fld select{width:100%;background:var(--ink);border:1px solid var(--line);border-radius:7px;color:var(--ivory);font-size:14px;padding:11px 12px;outline:none;font-family:inherit}
+.fld input:focus,.fld select:focus{border-color:var(--emerald)}
+.fld.bad input,.fld.bad select{border-color:var(--rust)}
+.fld-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fld-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.btn-primary{width:100%;justify-content:center;background:linear-gradient(120deg,var(--emerald-deep),var(--emerald));color:#fff;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;padding:13px;border-radius:8px;margin-top:6px;display:flex;align-items:center;gap:8px}
+.btn-primary:hover{filter:brightness(1.08)}
+.perm-pick{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.perm-pick .pp{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.06em;padding:8px 12px;border:1px solid var(--line);border-radius:6px;color:var(--smoke);cursor:pointer}
+.perm-pick .pp.on{border-color:var(--emerald);background:rgba(47,163,122,.1);color:var(--emerald)}
+.mobile-warn{display:none}
+@media(max-width:1080px){.kpis{grid-template-columns:repeat(2,1fr)}.grid-2,.grid-2b{grid-template-columns:1fr}}
+@media(max-width:820px){
+  .app{grid-template-columns:1fr}
+  .side{display:none}
+  .mobile-warn{display:block;background:var(--obsidian);border:1px solid var(--gold-deep);border-radius:8px;padding:14px 16px;margin:14px;font-size:13px;color:var(--smoke)}
+  .top-search{display:none}
+  .content{padding:18px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="side">
+    <div class="side-brand">City<b> Drive</b><div class="sub">Operations CRM</div></div>
+    <nav class="nav" id="nav"></nav>
+    <div class="side-foot"><div class="role-badge" id="roleFoot">Signed in as Manager</div></div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="top">
+      <div class="top-search"><span style="color:var(--champagne)">⌕</span><input placeholder="Search bookings, customers, vehicles…"/></div>
+      <div class="top-right">
+        <div class="bell">🔔</div>
+        <div class="role-switch" id="roleSwitch">
+          <div class="avatar" id="avatar">MR</div>
+          <div class="role-meta"><div class="nm" id="userName">Mishari Al-Rashid</div><div class="rl" id="userRole">Manager</div></div>
+          <span style="color:var(--smoke);font-size:11px">▾</span>
+          <div class="role-menu" id="roleMenu">
+            <div class="rm-h">Switch role · demo</div>
+            <button class="role-opt sel" data-role="manager"><div class="ra">MR</div><div><div class="rnm">Mishari Al-Rashid</div><div class="rds">Manager · full access</div></div></button>
+            <button class="role-opt" data-role="accountant"><div class="ra">LN</div><div><div class="rnm">Latifa Al-Najjar</div><div class="rds">Accountant · finance</div></div></button>
+            <button class="role-opt" data-role="support"><div class="ra">FA</div><div><div class="rnm">Fahad Al-Azmi</div><div class="rds">Support · customers</div></div></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mobile-warn">The CRM is optimised for desktop. View on a larger screen for the full operations workspace.</div>
+    <div class="content" id="content"></div>
+  </div>
+</div>
+<div class="toast" id="toast"><div class="tt">Access control</div><div id="toastMsg"></div></div>
+
+<!-- ADD VEHICLE MODAL -->
+<div class="modal-bg" id="carModal">
+  <div class="modal">
+    <div class="modal-h"><div><h3>Add a vehicle</h3><p>Register a new motorcar into the City Drive fleet.</p></div><button class="modal-x" data-close>×</button></div>
+    <div class="modal-b">
+      <form id="carForm" novalidate>
+        <div class="fld-row">
+          <div class="fld" id="cf-brand"><label>Brand</label><select name="brand"><option value="">Select…</option><option>Toyota</option><option>Nissan</option><option>Hyundai</option><option>Geely</option><option>Mercedes</option><option>BMW</option><option>Range Rover</option></select></div>
+          <div class="fld" id="cf-model"><label>Model</label><input name="model" placeholder="e.g. Land Cruiser"/></div>
+        </div>
+        <div class="fld-row">
+          <div class="fld"><label>Segment</label><select name="seg"><option>Luxury SUV</option><option>Full-size SUV</option><option>Compact SUV</option><option>Sedan</option><option>Luxury Sedan</option><option>Electric</option><option>Eco SUV</option></select></div>
+          <div class="fld" id="cf-plate"><label>Plate</label><input name="plate" placeholder="CD-000"/></div>
+        </div>
+        <div class="fld-row3">
+          <div class="fld" id="cf-rate"><label>Daily rate (KWD)</label><input name="rate" type="number" min="1" placeholder="25"/></div>
+          <div class="fld"><label>Status</label><select name="status"><option>available</option><option>rented</option><option>maintenance</option></select></div>
+          <div class="fld"><label>Location</label><select name="loc"><option>Kuwait City</option><option>Salmiya</option><option>Hawalli</option><option>Farwaniya</option><option>Ahmadi</option><option>Jahra</option></select></div>
+        </div>
+        <div class="fld"><label>Photo URL (optional)</label><input name="img" placeholder="https://…"/></div>
+        <button type="submit" class="btn-primary">Add vehicle to fleet</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ADD STAFF MODAL -->
+<div class="modal-bg" id="staffModal">
+  <div class="modal">
+    <div class="modal-h"><div><h3>Add a staff member</h3><p>Invite a teammate and assign their role &amp; access.</p></div><button class="modal-x" data-close>×</button></div>
+    <div class="modal-b">
+      <form id="staffForm" novalidate>
+        <div class="fld-row">
+          <div class="fld" id="sf-name"><label>Full name</label><input name="name" placeholder="e.g. Fatima Al-Sabah"/></div>
+          <div class="fld" id="sf-email"><label>Email</label><input name="email" type="email" placeholder="name@citydrive.kw"/></div>
+        </div>
+        <div class="fld-row">
+          <div class="fld"><label>Role</label><select name="role"><option value="manager">Manager · full access</option><option value="accountant">Accountant · finance</option><option value="support">Support · customers</option></select></div>
+          <div class="fld"><label>Cities</label><select name="cities"><option>All</option><option>Kuwait City</option><option>Salmiya</option><option>Hawalli</option><option>Ahmadi</option></select></div>
+        </div>
+        <button type="submit" class="btn-primary">Add staff member</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------- shared car svg (mini) ---------- */
+let __cid=0;
+function shade(hex,p){let c=hex.replace('#','');if(c.length===3)c=c.split('').map(x=>x+x).join('');let r=parseInt(c.slice(0,2),16),g=parseInt(c.slice(2,4),16),b=parseInt(c.slice(4,6),16);const t=p<0?0:255,a=Math.abs(p)/100;r=Math.round((t-r)*a+r);g=Math.round((t-g)*a+g);b=Math.round((t-b)*a+b);return '#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('');}
+const GEO={coupe:"M36,164 Q30,150 38,140 L72,132 Q150,74 232,76 Q286,80 312,112 Q344,122 374,128 Q392,132 388,150 L384,164 Z",suv:"M34,166 L34,118 Q36,106 60,102 L96,98 Q118,64 150,60 L298,60 Q332,62 346,102 L380,110 Q392,114 390,150 L388,166 Z",sedan:"M32,164 Q28,150 34,140 L70,134 Q120,94 172,90 L252,90 Q302,94 322,120 Q350,126 382,130 Q396,134 390,150 L386,164 Z",ev:"M32,164 Q28,150 36,140 L74,132 Q160,76 252,80 Q318,84 346,124 Q374,128 388,134 Q400,140 392,152 L388,164 Z",convertible:"M40,164 Q34,150 42,142 L90,138 Q120,118 160,116 L250,116 Q300,118 318,136 Q352,126 378,132 Q394,136 388,152 L384,164 Z",supercar:"M34,166 Q30,156 40,150 L96,148 Q140,126 196,126 Q252,126 296,138 Q340,118 382,128 Q398,132 388,154 L384,166 Z"};
+function miniCar(style,paint){const id='m'+(__cid++);return `<svg class="mini-car" viewBox="0 0 420 200"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${shade(paint,24)}"/><stop offset="1" stop-color="${shade(paint,-30)}"/></linearGradient></defs><path d="${GEO[style]||GEO.coupe}" fill="url(#${id})"/><circle cx="112" cy="166" r="30" fill="#0a0a0c" stroke="#26262b" stroke-width="3"/><circle cx="112" cy="166" r="14" fill="#15151a" stroke="${paint}" stroke-width="2"/><circle cx="304" cy="166" r="30" fill="#0a0a0c" stroke="#26262b" stroke-width="3"/><circle cx="304" cy="166" r="14" fill="#15151a" stroke="${paint}" stroke-width="2"/></svg>`;}
+
+/* ---------- roles ---------- */
+const ROLES={
+ manager:{name:'Mishari Al-Rashid',initials:'MR',label:'Manager',modules:['dashboard','fleet','bookings','customers','automations','finance','settings']},
+ accountant:{name:'Latifa Al-Najjar',initials:'LN',label:'Accountant',modules:['dashboard','bookings','finance']},
+ support:{name:'Fahad Al-Azmi',initials:'FA',label:'Support',modules:['dashboard','bookings','customers','automations']}
+};
+const NAV=[
+ {id:'dashboard',ic:'◧',label:'Dashboard',sec:'Overview'},
+ {id:'fleet',ic:'⛢',label:'Fleet',sec:'Operations'},
+ {id:'bookings',ic:'▤',label:'Bookings',sec:'Operations'},
+ {id:'customers',ic:'☻',label:'Customers',sec:'Operations'},
+ {id:'automations',ic:'✦',label:'Automations',sec:'Engagement'},
+ {id:'finance',ic:'$',label:'Finance',sec:'Engagement'},
+ {id:'settings',ic:'⚙',label:'Roles & access',sec:'Admin'}
+];
+let role='manager', view='dashboard';
+
+function buildNav(){
+  const allowed=ROLES[role].modules;
+  let html='', lastSec='';
+  NAV.forEach(n=>{
+    if(!allowed.includes(n.id))return;
+    if(n.sec!==lastSec){html+=`<div class="nav-sec">${n.sec}</div>`;lastSec=n.sec;}
+    html+=`<button class="nav-item ${view===n.id?'active':''}" data-view="${n.id}"><span class="ic">${n.ic}</span>${n.label}</button>`;
+  });
+  document.getElementById('nav').innerHTML=html;
+  document.querySelectorAll('.nav-item').forEach(b=>b.onclick=()=>{view=b.dataset.view;buildNav();render();});
+}
+
+function setRole(r){
+  role=r;const R=ROLES[r];
+  document.getElementById('avatar').textContent=R.initials;
+  document.getElementById('userName').textContent=R.name;
+  document.getElementById('userRole').textContent=R.label;
+  document.getElementById('roleFoot').textContent='Signed in as '+R.label;
+  document.querySelectorAll('.role-opt').forEach(o=>o.classList.toggle('sel',o.dataset.role===r));
+  if(!R.modules.includes(view))view=R.modules[0];
+  buildNav();render();
+  toast(`Now viewing as ${R.label}. Navigation and modules updated to match permissions.`);
+}
+function toast(msg){const t=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),3400);}
+
+/* role switch menu */
+document.getElementById('roleSwitch').onclick=e=>{e.stopPropagation();document.getElementById('roleMenu').classList.toggle('open');};
+document.addEventListener('click',()=>document.getElementById('roleMenu').classList.remove('open'));
+document.querySelectorAll('.role-opt').forEach(o=>o.onclick=e=>{e.stopPropagation();document.getElementById('roleMenu').classList.remove('open');setRole(o.dataset.role);});
+
+/* ---------- data ---------- */
+const IMG='https://upload.wikimedia.org/wikipedia/commons/thumb/';
+const P=(p,f)=>IMG+p+'/330px-'+f;
+function imgFb(i){i.onerror=null;i.src='data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="120" height="68"><rect width="120" height="68" fill="#16261F"/></svg>');}
+const FLEET=[
+ {name:'Toyota Land Cruiser',seg:'Luxury SUV',plate:'CD-118',status:'rented',rate:55,util:84,loc:'Kuwait City',img:P('6/6d/2021_Toyota_Land_Cruiser_300_3.4_ZX_%28Colombia%29_front_view_04.png','2021_Toyota_Land_Cruiser_300_3.4_ZX_%28Colombia%29_front_view_04.png')},
+ {name:'Mercedes GLE',seg:'Luxury SUV',plate:'CD-204',status:'available',rate:70,util:72,loc:'Salmiya',img:P('8/8b/Mercedes-Benz_GLE_350_d_4MATIC_AMG_Line_%28V_167%29_%E2%80%93_f_18042021.jpg','Mercedes-Benz_GLE_350_d_4MATIC_AMG_Line_%28V_167%29_%E2%80%93_f_18042021.jpg')},
+ {name:'Range Rover Vogue',seg:'Luxury SUV',plate:'CD-330',status:'rented',rate:90,util:91,loc:'Hawalli',img:P('1/17/2022_Land_Rover_Range_Rover_SE_P440e_AWD_Automatic_3.0_Front.jpg','2022_Land_Rover_Range_Rover_SE_P440e_AWD_Automatic_3.0_Front.jpg')},
+ {name:'Hyundai Ioniq 5',seg:'Electric',plate:'CD-009',status:'maintenance',rate:28,util:63,loc:'Ahmadi',img:P('8/85/Hyundai_Ioniq_5_AWD_Techniq-Paket_%E2%80%93_f_31122024.jpg','Hyundai_Ioniq_5_AWD_Techniq-Paket_%E2%80%93_f_31122024.jpg')},
+ {name:'Nissan Patrol',seg:'Full-size SUV',plate:'CD-441',status:'available',rate:48,util:77,loc:'Jahra',img:P('9/9d/2016_Nissan_Patrol_%28Y62%29_Ti-L_wagon_%282018-09-17%29_01.jpg','2016_Nissan_Patrol_%28Y62%29_Ti-L_wagon_%282018-09-17%29_01.jpg')},
+ {name:'Toyota Camry',seg:'Sedan',plate:'CD-512',status:'rented',rate:16,util:69,loc:'Farwaniya',img:P('a/ac/2018_Toyota_Camry_%28ASV70R%29_Ascent_sedan_%282018-08-27%29_01.jpg','2018_Toyota_Camry_%28ASV70R%29_Ascent_sedan_%282018-08-27%29_01.jpg')},
+ {name:'Geely Coolray',seg:'Compact SUV',plate:'CD-260',status:'available',rate:18,util:58,loc:'Kuwait City',img:P('c/c1/2018_Geely_Binyue.jpg','2018_Geely_Binyue.jpg')},
+ {name:'Hyundai Tucson',seg:'Compact SUV',plate:'CD-338',status:'rented',rate:22,util:88,loc:'Salmiya',img:P('c/c6/2022_Hyundai_Tucson_Preferred%2C_Front_Right%2C_05-24-2021.jpg','2022_Hyundai_Tucson_Preferred%2C_Front_Right%2C_05-24-2021.jpg')}
+];
+const BOOKINGS=[
+ {ref:'BK-20418',cust:'Abdullah Al-Ahmad',car:'Toyota Land Cruiser',d:'May 18–21',status:'active',amt:1260,ch:'App'},
+ {ref:'BK-20419',cust:'Yousef Al-Mutairi',car:'Hyundai Ioniq 5',d:'May 19–20',status:'active',amt:920,ch:'Web'},
+ {ref:'BK-20421',cust:'Maryam Al-Failakawi',car:'Hyundai Tucson',d:'May 20–24',status:'active',amt:1640,ch:'WhatsApp'},
+ {ref:'BK-20424',cust:'Noura Al-Sabah',car:'Nissan Patrol',d:'May 24–27',status:'confirmed',amt:1530,ch:'App'},
+ {ref:'BK-20426',cust:'Dawood Al-Kandari',car:'Mercedes GLE',d:'May 26–28',status:'confirmed',amt:770,ch:'Web'},
+ {ref:'BK-20410',cust:'Khaled Al-Otaibi',car:'Toyota Camry',d:'May 12–14',status:'completed',amt:590,ch:'App'},
+ {ref:'BK-20408',cust:'Fahad Al-Azmi',car:'Range Rover Vogue',d:'May 09–10',status:'completed',amt:1780,ch:'AI Assistant'}
+];
+const CUSTOMERS=[
+ {name:'Abdullah Al-Ahmad',tier:'Platinum',ltv:48200,rentals:34,phone:'+965 9912 0142',last:'Active now',init:'AA'},
+ {name:'Yousef Al-Mutairi',tier:'Gold',ltv:31700,rentals:21,phone:'+965 6612 3456',last:'2 days ago',init:'YM'},
+ {name:'Maryam Al-Failakawi',tier:'Gold',ltv:27450,rentals:18,phone:'+965 5070 0123',last:'Today',init:'MF'},
+ {name:'Noura Al-Sabah',tier:'Silver',ltv:9800,rentals:6,phone:'+965 9933 4567',last:'5 days ago',init:'NS'},
+ {name:'Dawood Al-Kandari',tier:'Noir',ltv:96300,rentals:61,phone:'+965 9955 0199',last:'1 day ago',init:'DK'},
+ {name:'Khaled Al-Otaibi',tier:'Silver',ltv:7300,rentals:4,phone:'+965 6612 5678',last:'1 week ago',init:'KO'}
+];
+const tierBadge=t=>({Noir:'b-grey',Platinum:'b-sky',Gold:'b-gold',Silver:'b-green'}[t]||'b-grey');
+const statBadge=s=>({available:'b-green',rented:'b-sky',maintenance:'b-rust',active:'b-sky',confirmed:'b-gold',completed:'b-green',Paid:'b-green',Overdue:'b-rust',Sent:'b-gold',Draft:'b-grey'}[s]||'b-grey');
+
+/* ---------- views ---------- */
+function head(eb,h1,p){return `<div class="page-head"><div class="eyebrow">${eb}</div><h1>${h1}</h1><p>${p}</p></div>`;}
+
+function vDashboard(){
+  let kpis;
+  if(role==='accountant'){
+    kpis=[['Revenue · MTD','KWD 284,500','▲ 12.4% vs last month','up'],['Outstanding invoices','KWD 42,300','3 overdue','down'],['Expenses · MTD','KWD 112,400','▲ 4.1%','flat'],['Net profit · MTD','KWD 172,100','60.5% margin','up']];
+  }else if(role==='support'){
+    kpis=[['Active rentals','23','5 returning today','flat'],['Open tickets','7','2 high priority','down'],['Messages today','154','98% delivered','up'],['Avg. response','4m','▼ under target','up']];
+  }else{
+    kpis=[['Revenue · MTD','KWD 284,500','▲ 12.4%','up'],['Active rentals','23','of 86 vehicles','flat'],['Fleet utilisation','78%','▲ 6 pts','up'],['Overdue returns','2','needs attention','down']];
+  }
+  const bars=[182,210,176,243,268,284],months=['Jan','Feb','Mar','Apr','May','Jun'],mx=Math.max(...bars);
+  const fleetStat=[['Rented',12,'var(--sky)'],['Available',9,'var(--sage)'],['Maintenance',2,'var(--rust)']];
+  const feed=[
+   ['var(--sage)','New booking · Toyota Land Cruiser','Abdullah Al-Ahmad · 4 min ago'],
+   ['var(--sky)','Payment received · KWD 1,640','Maryam Al-Failakawi · 22 min ago'],
+   ['var(--champagne)','AI notification · pickup reminder','Yousef Al-Mutairi · 38 min ago'],
+   ['var(--rust)','Return overdue · Toyota Camry','Khaled Al-Otaibi · 1 hr ago'],
+   ['var(--sage)','New member · Platinum tier','Dawood Al-Kandari · 2 hr ago']
+  ];
+  return head('Overview',`Good morning, ${ROLES[role].name.split(' ')[0]}`,`Here's what's happening across City Drive today · ${role==='accountant'?'finance view':role==='support'?'operations view':'manager view'}.`)
+  +`<div class="kpis">${kpis.map(k=>`<div class="kpi"><div class="kl">${k[0]}</div><div class="kv">${k[1]}</div><div class="kd ${k[3]}">${k[2]}</div></div>`).join('')}</div>
+  <div class="grid-2">
+    <div class="panel"><div class="panel-h"><h3>Revenue</h3><span class="eyebrow">Last 6 months · USD</span></div>
+      <div class="chart">${bars.map((b,i)=>`<div class="bar-col"><div class="bar ${i===5?'':'muted'}" style="height:${Math.round(b/mx*100)}%"></div><div class="bar-lbl">${months[i]}</div></div>`).join('')}</div>
+    </div>
+    <div class="panel"><div class="panel-h"><h3>Fleet status</h3><span class="eyebrow">23 in service</span></div>
+      ${fleetStat.map(s=>`<div class="stat-row"><div class="sl"><span class="swatch" style="background:${s[2]}"></span>${s[0]}</div><div class="sv">${s[1]}</div></div>`).join('')}
+      <div style="margin-top:16px;height:10px;border-radius:10px;overflow:hidden;display:flex">
+        <div style="background:var(--sky);width:52%"></div><div style="background:var(--sage);width:39%"></div><div style="background:var(--rust);width:9%"></div></div>
+    </div>
+  </div>
+  <div class="panel"><div class="panel-h"><h3>Recent activity</h3><span class="eyebrow">Live feed</span></div>
+    ${feed.map(f=>`<div class="feed-item"><div class="feed-dot" style="background:${f[0]}"></div><div><div class="ft">${f[1]}</div><div class="fm">${f[2]}</div></div></div>`).join('')}
+  </div>`;
+}
+
+function vFleet(){
+  return head('Operations','Fleet management','Every motorcar, its status, daily rate, and utilisation across all cities.')
+  +`<div class="panel"><div class="panel-h"><h3>All vehicles · ${FLEET.length}</h3><button class="act-btn" onclick="openCarModal()">+ Add vehicle</button></div>
+   <table class="dt"><thead><tr><th></th><th>Motorcar</th><th>Plate</th><th>Status</th><th>Daily rate</th><th>Utilisation</th><th>Location</th><th></th></tr></thead><tbody>
+   ${FLEET.map(c=>`<tr><td><img class="mini-car" style="border-radius:6px;object-fit:cover" src="${c.img}" onerror="imgFb(this)" alt=""/></td>
+     <td><div class="tname">${c.name}</div><div class="tsub">${c.seg}</div></td>
+     <td class="mono" style="font-size:12px;color:var(--smoke)">${c.plate}</td>
+     <td><span class="badge ${statBadge(c.status)}"><span class="dot-s"></span>${c.status}</span></td>
+     <td class="mono">KWD ${c.rate}</td>
+     <td><div style="display:flex;align-items:center;gap:8px"><div style="flex:1;max-width:80px;height:6px;border-radius:6px;background:rgba(0,0,0,.4);overflow:hidden"><i style="display:block;height:100%;width:${c.util}%;background:var(--champagne)"></i></div><span class="mono" style="font-size:11px;color:var(--smoke)">${c.util}%</span></div></td>
+     <td>${c.loc}</td>
+     <td><button class="act-btn" onclick="toast('Edit ${c.name} · manager only.')">Edit</button></td></tr>`).join('')}
+   </tbody></table></div>`;
+}
+
+function vBookings(){
+  const ro=role==='accountant';
+  return head('Operations','Bookings',ro?'Reservation ledger · read-only for finance roles.':'Live reservations across every city and channel.')
+  +`<div class="panel"><div class="panel-h"><h3>Reservations</h3><span class="eyebrow">${BOOKINGS.length} records</span></div>
+   <table class="dt"><thead><tr><th>Reference</th><th>Customer</th><th>Motorcar</th><th>Dates</th><th>Channel</th><th>Status</th><th>Amount</th><th></th></tr></thead><tbody>
+   ${BOOKINGS.map(b=>`<tr><td class="mono" style="font-size:12px;color:var(--champagne)">${b.ref}</td>
+     <td class="tname">${b.cust}</td><td>${b.car}</td>
+     <td class="mono" style="font-size:12px;color:var(--smoke)">${b.d}</td>
+     <td><span class="badge b-grey">${b.ch}</span></td>
+     <td><span class="badge ${statBadge(b.status)}"><span class="dot-s"></span>${b.status}</span></td>
+     <td class="mono">KWD ${b.amt.toLocaleString()}</td>
+     <td>${ro?'<span class="tsub">view</span>':`<button class="act-btn" onclick="toast('Booking ${b.ref} details.')">Manage</button>`}</td></tr>`).join('')}
+   </tbody></table></div>`;
+}
+
+function vCustomers(){
+  return head('Operations','Customers','Member profiles, lifetime value, and direct messaging. Reach members instantly over WhatsApp or SMS.')
+  +`<div class="panel"><div class="panel-h"><h3>Members · ${CUSTOMERS.length}</h3><span class="eyebrow">Sorted by lifetime value</span></div>
+   <table class="dt"><thead><tr><th>Member</th><th>Tier</th><th>Lifetime value</th><th>Rentals</th><th>Phone</th><th>Last seen</th><th>Reach out</th></tr></thead><tbody>
+   ${CUSTOMERS.slice().sort((a,b)=>b.ltv-a.ltv).map(c=>`<tr>
+     <td><div style="display:flex;align-items:center;gap:11px"><div class="avatar" style="border-radius:8px">${c.init}</div><div class="tname">${c.name}</div></div></td>
+     <td><span class="badge ${tierBadge(c.tier)}">${c.tier}</span></td>
+     <td class="mono">KWD ${c.ltv.toLocaleString()}</td>
+     <td class="mono" style="color:var(--smoke)">${c.rentals}</td>
+     <td class="mono" style="font-size:12px;color:var(--smoke)">${c.phone}</td>
+     <td class="tsub" style="margin:0">${c.last}</td>
+     <td><div style="display:flex;gap:6px"><button class="act-btn wa" onclick="toast('WhatsApp thread with ${c.name} would open.')">WhatsApp</button><button class="act-btn" onclick="toast('SMS to ${c.name}.')">SMS</button></div></td></tr>`).join('')}
+   </tbody></table></div>`;
+}
+
+const AUTO_RULES=[
+ {trig:'Booking confirmed',ch:'wa',desc:'Send confirmation, driver details & live delivery tracking link.',stat:'Last run 4 min ago · 1,204 sent this month',on:true},
+ {trig:'2 hours before pickup',ch:'sms',desc:'Reminder with vehicle, location and concierge number.',stat:'Last run 38 min ago · 980 sent',on:true},
+ {trig:'Vehicle returned',ch:'wa',desc:'Thank-you, points earned summary and invoice PDF.',stat:'Last run 1 hr ago · 870 sent',on:true},
+ {trig:'Return overdue · 30 min',ch:'sms',desc:'Polite overdue notice with extension options.',stat:'Last run yesterday · 24 sent',on:true},
+ {trig:'Payment failed',ch:'sms',desc:'Secure link to update card on file.',stat:'12 sent this month',on:true},
+ {trig:'Member birthday',ch:'wa',desc:'Personal greeting with a complimentary upgrade voucher.',stat:'Scheduled · currently paused',on:false},
+ {trig:'No booking · 30 days',ch:'wa',desc:'Win-back offer tailored to favourite segment.',stat:'Last run 3 days ago · 142 sent',on:true}
+];
+const LOG=[
+ ['wa','Abdullah Al-Ahmad','Booking confirmed · Toyota Land Cruiser','read','2 min ago'],
+ ['sms','Yousef Al-Mutairi','Pickup reminder','delivered','38 min ago'],
+ ['wa','Maryam Al-Failakawi','Confirmation + tracking','read','1 hr ago'],
+ ['wa','Dawood Al-Kandari','Return thank-you + invoice','delivered','2 hr ago'],
+ ['sms','Khaled Al-Otaibi','Overdue notice','sent','3 hr ago']
+];
+function vAutomations(){
+  setTimeout(bindAuto,0);
+  return head('Engagement','WhatsApp & SMS automations','Trigger-based messaging that keeps members informed end-to-end — no manual sending required.')
+  +`<div class="kpis"><div class="kpi"><div class="kl">Messages · 30 days</div><div class="kv">4,318</div><div class="kd up">98.2% delivered</div></div>
+    <div class="kpi"><div class="kl">WhatsApp read rate</div><div class="kv">87%</div><div class="kd up">▲ 4 pts</div></div>
+    <div class="kpi"><div class="kl">Active rules</div><div class="kv">6 / 7</div><div class="kd flat">1 paused</div></div>
+    <div class="kpi"><div class="kl">Avg. reply time</div><div class="kv">3.8m</div><div class="kd up">member-initiated</div></div></div>
+  <div class="grid-2">
+    <div class="panel"><div class="panel-h"><h3>Automation rules</h3><button class="act-btn" onclick="toast('New automation builder would open.')">+ New rule</button></div>
+      <div id="rules">${AUTO_RULES.map((r,i)=>`<div class="auto-rule"><div class="chan ${r.ch}">${r.ch==='wa'?'WA':'SMS'}</div>
+        <div class="ar-body"><div class="ar-trig">${r.trig}</div><div class="ar-desc">${r.desc}</div><div class="ar-stat">${r.stat}</div></div>
+        <div class="switch ${r.on?'on':''}" data-i="${i}"></div></div>`).join('')}</div>
+    </div>
+    <div>
+      <div class="panel"><div class="panel-h"><h3>Template editor</h3><span class="eyebrow">WhatsApp · confirmation</span></div>
+        <textarea class="tmpl-editor" id="tmpl">Hi {first_name} 👋 your {car} is confirmed for {dates}.
+
+Your chauffeur will deliver it to {location}. Track arrival live here: {tracking_link}
+
+Reply here anytime — your City Drive AI assistant is on hand.</textarea>
+        <div class="merge-tags" id="tags"></div>
+      </div>
+      <div class="panel"><div class="panel-h"><h3>Live preview</h3><span class="eyebrow">As member sees it</span></div>
+        <div class="phone-preview"><div class="wa-head"><div class="wa-av">C</div><div><div class="wa-name">City Drive AI</div><div class="wa-status">● online · WhatsApp Business</div></div></div>
+          <div class="bubble" id="bubble"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="panel"><div class="panel-h"><h3>Message log</h3><span class="eyebrow">Most recent</span></div>
+    ${LOG.map(l=>`<div class="log-item"><div class="log-chan ${l[0]}" style="background:${l[0]==='wa'?'rgba(37,211,102,.14)':'rgba(121,183,214,.14)'};color:${l[0]==='wa'?'var(--wa)':'var(--sky)'}">${l[0]==='wa'?'WA':'SMS'}</div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:600">${l[1]}</div><div class="tsub" style="margin:0">${l[2]}</div></div>
+      <span class="badge ${l[3]==='read'?'b-green':l[3]==='delivered'?'b-sky':'b-grey'}">${l[3]}</span>
+      <span class="mono" style="font-size:11px;color:var(--smoke-dim);margin-left:12px">${l[4]}</span></div>`).join('')}
+  </div>`;
+}
+function renderBubble(){
+  const sample={first_name:'Abdullah',car:'Toyota Land Cruiser',dates:'May 18–21',location:'Salmiya, Block 10',tracking_link:'citydrive.kw/t/8821'};
+  let txt=document.getElementById('tmpl').value;
+  Object.entries(sample).forEach(([k,v])=>txt=txt.replaceAll('{'+k+'}',v));
+  document.getElementById('bubble').innerHTML=txt.replace(/\n/g,'<br>')+'<div class="bt">10:24 ✓✓</div>';
+}
+function bindAuto(){
+  const tags=['first_name','car','dates','location','tracking_link'];
+  document.getElementById('tags').innerHTML=tags.map(t=>`<span class="mtag" data-t="${t}">{${t}}</span>`).join('');
+  document.querySelectorAll('.mtag').forEach(m=>m.onclick=()=>{const ta=document.getElementById('tmpl');ta.value+=' {'+m.dataset.t+'}';renderBubble();});
+  document.getElementById('tmpl').addEventListener('input',renderBubble);
+  document.querySelectorAll('#rules .switch').forEach(s=>s.onclick=()=>{s.classList.toggle('on');toast('Automation '+(s.classList.contains('on')?'enabled':'paused')+'.');});
+  renderBubble();
+}
+
+function vFinance(){
+  const inv=[
+   ['INV-3318','Abdullah Al-Ahmad','May 18','May 25','KWD 1,260','Paid'],
+   ['INV-3319','Yousef Al-Mutairi','May 20','May 27','KWD 1,640','Sent'],
+   ['INV-3312','Khaled Al-Otaibi','May 09','May 16','KWD 1,780','Overdue'],
+   ['INV-3320','Noura Al-Sabah','May 24','May 31','KWD 1,530','Draft'],
+   ['INV-3309','Maryam Al-Failakawi','May 12','May 19','KWD 590','Paid'],
+   ['INV-3305','Dawood Al-Kandari','May 05','May 12','KWD 3,200','Paid']
+  ];
+  const exp=[['Fleet lease & finance',46,'var(--champagne)'],['Insurance',18,'var(--sky)'],['Maintenance & detailing',14,'var(--sage)'],['Delivery logistics',11,'var(--gold-deep)'],['Staff',7,'var(--smoke)'],['Marketing',4,'var(--rust)']];
+  return head('Finance','Finance module','Revenue, invoicing, expenses and profit & loss — the financial pulse of City Drive.')
+  +`<div class="kpis">
+    <div class="kpi"><div class="kl">Revenue · MTD</div><div class="kv">KWD 284,500</div><div class="kd up">▲ 12.4%</div></div>
+    <div class="kpi"><div class="kl">Expenses · MTD</div><div class="kv">KWD 112,400</div><div class="kd flat">▲ 4.1%</div></div>
+    <div class="kpi"><div class="kl">Net profit</div><div class="kv">KWD 172,100</div><div class="kd up">60.5% margin</div></div>
+    <div class="kpi"><div class="kl">Outstanding</div><div class="kv">KWD 42,300</div><div class="kd down">3 overdue</div></div></div>
+  <div class="grid-2b">
+    <div class="panel"><div class="panel-h"><h3>Expense breakdown</h3><span class="eyebrow">MTD · USD</span></div>
+      ${exp.map(e=>`<div class="exp-row"><div class="exp-top"><span>${e[0]}</span><span class="ev">${e[1]}%</span></div><div class="exp-bar"><i style="width:${e[1]}%;background:${e[2]}"></i></div></div>`).join('')}
+    </div>
+    <div class="panel"><div class="panel-h"><h3>Profit & loss</h3><span class="eyebrow">May 2026</span></div>
+      <div class="pnl-row"><span>Rental revenue</span><span class="pv">KWD 284,500</span></div>
+      <div class="pnl-row"><span>Fleet cost of service</span><span class="pv">(KWD 78,200)</span></div>
+      <div class="pnl-row"><span>Gross profit</span><span class="pv">KWD 206,300</span></div>
+      <div class="pnl-row"><span>Operating expenses</span><span class="pv">(KWD 34,200)</span></div>
+      <div class="pnl-row total"><span>Net profit</span><span class="pv">KWD 172,100</span></div>
+    </div>
+  </div>
+  <div class="panel"><div class="panel-h"><h3>Invoices</h3><div style="display:flex;gap:8px"><button class="act-btn" onclick="toast('Export to CSV.')">Export</button><button class="act-btn" onclick="toast('New invoice form.')">+ Invoice</button></div></div>
+   <table class="dt"><thead><tr><th>Invoice</th><th>Customer</th><th>Issued</th><th>Due</th><th>Amount</th><th>Status</th><th></th></tr></thead><tbody>
+   ${inv.map(r=>`<tr><td class="mono" style="font-size:12px;color:var(--champagne)">${r[0]}</td><td class="tname">${r[1]}</td>
+     <td class="mono" style="font-size:12px;color:var(--smoke)">${r[2]}</td><td class="mono" style="font-size:12px;color:var(--smoke)">${r[3]}</td>
+     <td class="mono">${r[4]}</td><td><span class="badge ${statBadge(r[5])}"><span class="dot-s"></span>${r[5]}</span></td>
+     <td><button class="act-btn" onclick="toast('Open ${r[0]}.')">View</button></td></tr>`).join('')}
+   </tbody></table></div>`;
+}
+
+function vSettings(){
+  const mods=['Dashboard','Fleet','Bookings','Customers','Automations','Finance'];
+  const perm={
+   manager:['Full','Edit','Edit','Edit','Edit','Edit'],
+   accountant:['View','—','View','—','—','Edit'],
+   support:['View','—','Edit','Edit','Edit','—']
+  };
+  const cell=v=>v==='Edit'?'<span class="yes">●</span>':v==='Full'?'<span class="yes">●</span>':v==='View'?'<span class="read">read</span>':'<span class="no">—</span>';
+  return head('Admin','Roles & access','Role-based access control. Each role sees only the modules and actions it needs.')
+  +`<div class="panel"><div class="panel-h"><h3>Permission matrix</h3><span class="eyebrow">3 roles · 6 modules</span></div>
+   <table class="matrix"><thead><tr><th>Module</th><th>Manager</th><th>Accountant</th><th>Support</th></tr></thead><tbody>
+   ${mods.map((m,i)=>`<tr><td>${m}</td><td>${cell(perm.manager[i])}</td><td>${cell(perm.accountant[i])}</td><td>${cell(perm.support[i])}</td></tr>`).join('')}
+   </tbody></table>
+   <p style="color:var(--smoke);font-size:12.5px;margin-top:16px"><span class="yes">●</span> full / edit access &nbsp;·&nbsp; <span class="read">read</span> view-only &nbsp;·&nbsp; <span class="no">—</span> no access. Switch roles from the top-right avatar to preview each experience.</p>
+   </div>
+   <div class="panel"><div class="panel-h"><h3>Team</h3><button class="act-btn" onclick="openStaffModal()">+ Add staff member</button></div>
+   <table class="dt"><thead><tr><th>Member</th><th>Role</th><th>Cities</th><th>Status</th></tr></thead><tbody>
+   ${Object.entries(ROLES).map(([k,r])=>`<tr><td><div style="display:flex;align-items:center;gap:11px"><div class="avatar" style="border-radius:8px">${r.initials}</div><div class="tname">${r.name}</div></div></td>
+     <td><span class="badge b-gold">${r.label}</span></td><td class="mono" style="color:var(--smoke);font-size:12px">All</td><td><span class="badge b-green"><span class="dot-s"></span>active</span></td></tr>`).join('')}
+   </tbody></table></div>`;
+}
+
+function render(){
+  if(!ROLES[role].modules.includes(view)){
+    document.getElementById('content').innerHTML=`<div class="no-access"><div class="lock">🔒</div><h2>Access restricted</h2><p>Your role doesn't have permission to view this module.</p></div>`;return;
+  }
+  const map={dashboard:vDashboard,fleet:vFleet,bookings:vBookings,customers:vCustomers,automations:vAutomations,finance:vFinance,settings:vSettings};
+  document.getElementById('content').innerHTML=map[view]();
+}
+
+/* ---------- modals: add vehicle + add staff ---------- */
+function openCarModal(){document.getElementById('carModal').classList.add('open');}
+function openStaffModal(){document.getElementById('staffModal').classList.add('open');}
+document.querySelectorAll('.modal-bg').forEach(m=>m.addEventListener('click',e=>{if(e.target===m||e.target.closest('[data-close]'))m.classList.remove('open');}));
+
+document.getElementById('carForm').addEventListener('submit',e=>{
+  e.preventDefault();const f=e.target;let ok=true;
+  [['cf-brand',f.brand.value],['cf-model',f.model.value.trim()],['cf-plate',f.plate.value.trim()],['cf-rate',f.rate.value&&+f.rate.value>0]].forEach(([id,v])=>{document.getElementById(id).classList.toggle('bad',!v);if(!v)ok=false;});
+  if(!ok)return;
+  const ph='data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="120" height="68"><rect width="120" height="68" fill="#16261F"/><text x="50%" y="54%" fill="#6E8076" font-family="sans-serif" font-size="11" text-anchor="middle">'+f.brand.value+'</text></svg>');
+  FLEET.unshift({name:f.brand.value+' '+f.model.value.trim(),seg:f.seg.value,plate:f.plate.value.trim(),status:f.status.value,rate:+f.rate.value,util:0,loc:f.loc.value,img:f.img.value.trim()||ph});
+  document.getElementById('carModal').classList.remove('open');f.reset();
+  if(view==='fleet')render();
+  toast(`Vehicle "${FLEET[0].name}" added to the fleet.`);
+});
+
+document.getElementById('staffForm').addEventListener('submit',e=>{
+  e.preventDefault();const f=e.target;let ok=true;
+  [['sf-name',f.name.value.trim()],['sf-email',/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.value)]].forEach(([id,v])=>{document.getElementById(id).classList.toggle('bad',!v);if(!v)ok=false;});
+  if(!ok)return;
+  const nm=f.name.value.trim();
+  const initials=nm.split(' ').map(s=>s[0]).slice(0,2).join('').toUpperCase();
+  const base=ROLES[f.role.value];
+  const key='staff_'+Date.now();
+  ROLES[key]={name:nm,initials,label:base.label,modules:base.modules.slice(),email:f.email.value.trim(),cities:f.cities.value};
+  document.getElementById('staffModal').classList.remove('open');f.reset();
+  if(view==='settings')render();
+  toast(`Staff member "${nm}" added as ${base.label}.`);
+});
+
+buildNav();render();
+</script>
+</body>
+</html>
