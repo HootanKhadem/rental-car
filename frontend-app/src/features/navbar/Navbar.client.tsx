@@ -31,7 +31,7 @@ export default function NavbarClient() {
         "fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 text-white " +
         (scrolled
           ? "bg-background-main/80 backdrop-blur-sm border-b border-[#233026] shadow-md"
-          : "bg-background-main border-b border-[#1f2c25]")
+          : "bg-background-main border-b border-divider-line")
       }
     >
       <div className="max-w-7xl mx-auto px-6">
@@ -40,34 +40,34 @@ export default function NavbarClient() {
             <p className="w-7 h-7 rounded-md bg-gradient-to-br from-emerald-600 to-yellow-600 flex items-center justify-center font-bold text-neutral-900">
               C
             </p>
-            <p className="text-2xl font-medium">
+            <p className="text-2xl font-semibold font-serif">
               City <span className="text-title-yellow">Drive</span>
             </p>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-8 font-light">
+          <nav className="hidden md:flex items-center gap-10 font-light font-[monospace] text-sm text-zinc-400">
             <Link href="#fleet" className="hover:text-gray-300">
-              Fleet
+              FLEET
             </Link>
             <Link href="#ai" className="hover:text-gray-300">
-              AI Assistant
+              AI ASSISTANT
             </Link>
             <Link href="#membership" className="hover:text-gray-300">
-              Membership
+              MEMBERSHIP
             </Link>
             <Link href="#support" className="hover:text-gray-300">
-              Support
+              SUPPORT
             </Link>
           </nav>
 
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-3 font-[monospace]">
             <Button
               variant="outline"
               size="md"
               rounded="md"
               className="hover:border hover:border-title-yellow hover:text-title-yellow hover:bg-transparent"
             >
-              Sign in
+              SIGN IN
             </Button>
             <Button
               variant="solid"
@@ -75,8 +75,9 @@ export default function NavbarClient() {
               rounded="md"
               bgClass="bg-button-primary-green"
               textClass="text-white"
+              className="hover:opacity-95"
             >
-              Register
+              REGISTER
             </Button>
           </div>
 
