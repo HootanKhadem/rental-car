@@ -1,6 +1,9 @@
 export default function AssistantServer() {
   return (
-    <section className="w-full text-white py-20 bg-background-green-section2">
+    <section
+      id="ai"
+      className="w-full text-white py-20 bg-background-green-section2"
+    >
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-8 flex flex-col gap-5">
           <p className="text-sm text-title-yellow font-mono tracking-[2px]">

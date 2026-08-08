@@ -46,16 +46,16 @@ export default function NavbarClient() {
           </Link>
 
           <nav className="hidden md:flex items-center gap-10 font-light font-[monospace] text-sm text-zinc-400">
-            <Link href="#fleet" className="hover:text-gray-300">
+            <Link href="/#fleet" className="hover:text-gray-300">
               FLEET
             </Link>
-            <Link href="#ai" className="hover:text-gray-300">
+            <Link href="/#ai" className="hover:text-gray-300">
               AI ASSISTANT
             </Link>
-            <Link href="#membership" className="hover:text-gray-300">
+            <Link href="/#membership" className="hover:text-gray-300">
               MEMBERSHIP
             </Link>
-            <Link href="#support" className="hover:text-gray-300">
+            <Link href="/#support" className="hover:text-gray-300">
               SUPPORT
             </Link>
           </nav>
@@ -144,18 +144,18 @@ export default function NavbarClient() {
             </div>
 
             <nav className="flex-1 flex flex-col items-center justify-center gap-6 text-2xl">
-              <a href="#fleet" className="block">
+              <Link href="/#fleet" className="block">
                 Fleet
-              </a>
-              <a href="#ai" className="block">
+              </Link>
+              <Link href="/#ai" className="block">
                 AI Assistant
-              </a>
-              <a href="#membership" className="block">
+              </Link>
+              <Link href="/#membership" className="block">
                 Membership
-              </a>
-              <a href="#support" className="block">
+              </Link>
+              <Link href="/#support" className="block">
                 Support
-              </a>
+              </Link>
             </nav>
 
             <div className="px-6 pb-10">

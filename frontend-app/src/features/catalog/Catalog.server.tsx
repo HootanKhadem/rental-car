@@ -3,7 +3,7 @@ import CatalogClient from "./Catalog.client";
 
 export default function CatalogServer() {
   return (
-    <section className="w-full text-white py-20">
+    <section id="fleet" className="w-full text-white py-20">
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-8">
           <p className="text-sm text-title-yellow font-mono tracking-[2px]">
