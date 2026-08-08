@@ -64,6 +64,7 @@ export default function CarCard({ car }: Props) {
               src={car.image}
               alt={car.title}
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent group-hover:from-black/70" />

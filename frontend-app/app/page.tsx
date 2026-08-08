@@ -2,6 +2,7 @@ import React from "react";
 import Hero from "@/src/features/hero/Hero.server";
 import Assistant from "@/src/features/assistant/Assistant.server";
 import Catalog from "@/src/features/catalog/Catalog.server";
+import Membership from "@/src/features/membership/Membership.server";
 
 const Home = () => {
   return (
@@ -9,6 +10,7 @@ const Home = () => {
       <Hero />
       <Assistant />
       <Catalog />
+      <Membership />
     </main>
   );
 };

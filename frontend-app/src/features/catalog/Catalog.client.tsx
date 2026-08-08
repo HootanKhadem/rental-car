@@ -93,7 +93,7 @@ export default function CatalogClient() {
   return (
     <div>
       <div className="mb-6">
-        <div className="rounded-xl border border-[var(--color-border-card)] bg-[var(--color-background-card)] p-4">
+        <div className="rounded-xl border border-border-card bg-background-card p-4">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
             <div className="lg:col-span-9">
               <SearchBar value={query} onChange={setQuery} />
