@@ -56,7 +56,7 @@ type Props = { car: Car };
 
 export default function CarCard({ car }: Props) {
   return (
-    <article className="rounded-xl overflow-hidden bg-background-car-card border border-border-card">
+    <article className="group rounded-xl overflow-hidden bg-background-car-card border border-border-card transform transition-all duration-300 will-change-transform hover:-translate-y-1 hover:shadow-xl hover:border-icon-card">
       <div className="relative h-48 w-full bg-zinc-900/20">
         {car.image ? (
           <>
@@ -66,7 +66,7 @@ export default function CarCard({ car }: Props) {
               fill
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent group-hover:from-black/70" />
 
             {/* Like / bookmark button */}
             <LikeButton />
