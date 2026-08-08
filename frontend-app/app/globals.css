@@ -49,28 +49,7 @@ body {
 }
 
 /* AI badge styles used in Hero */
-:root {
+/* :root {
   --emerald: #2fa37a;
   --emerald-deep: #1f7f5f;
-  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Courier New', monospace;
-  --ar-body: 'Noto Naskh Arabic', 'Segoe UI', Tahoma, sans-serif;
-}
-
-.ai-badge{
-  display:inline-flex;
-  align-items:center;
-  gap:9px;
-  background:rgba(47,163,122,.1);
-  border:1px solid var(--emerald-deep);
-  border-radius:30px;
-  padding:8px 15px;
-  font-family:var(--mono);
-  font-size:11px;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-  color:var(--emerald);
-  margin-bottom:18px;
-}
-
-body.lang-ar .ai-badge{font-family:var(--ar-body);letter-spacing:0;font-weight:700}
-
+} */

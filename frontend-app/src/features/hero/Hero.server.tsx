@@ -7,22 +7,20 @@ export default function HeroServer() {
       <div className="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-start">
         <div className="space-y-6">
           <span
-            className="ai-badge bg-red-700"
+            className="inline-flex items-center gap-2 bg-background-hero-badge border-2 border-border-hero-badge rounded-4xl px-3 py-2 text-[11px] mb-5 text-button-primary-green tracking-[1px] font-mono"
             role="status"
             aria-label="AI badge"
           >
             <span className="relative flex h-2 w-2">
               <span
-                className="absolute inline-flex h-full w-full rounded-full opacity-60 animate-ping"
-                style={{ background: "var(--emerald)" }}
+                className="absolute inline-flex h-full w-full rounded-full opacity-60 animate-ping bg-emerald-500"
                 aria-hidden="true"
               />
-              <span
-                className="relative inline-flex h-2 w-2 rounded-full"
-                style={{ background: "var(--emerald)" }}
-              />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-700" />
             </span>
-            <span className="text-xs">KUWAIT FIRST AI CAR-DELIVERY SYSTEM</span>
+            <span className="text-xs">
+              KUWAIT IS FIRST AI CAR-DELIVERY SYSTEM
+            </span>
           </span>
 
           <h1 className="text-6xl font-serif leading-tight">
