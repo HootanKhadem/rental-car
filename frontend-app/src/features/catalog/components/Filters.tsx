@@ -12,10 +12,10 @@ export default function Filters({ categories, active, onSelect }: Props) {
     <div className="flex items-center gap-3 flex-wrap">
       <button
         onClick={() => onSelect("All")}
-        className={`px-3 py-1 rounded-full text-sm tracking-widest ${
+        className={`px-3 py-1 rounded-full uppercase text-xs font-mono tracking-widest cursor-pointer ${
           active === "All"
-            ? "bg-[var(--color-background-icon-card)] text-white"
-            : "bg-transparent text-zinc-400 border border-transparent"
+            ? "bg-button-primary-yellow text-black"
+            : "bg-transparent text-white/60 border border-white/10"
         }`}
       >
         All
@@ -25,10 +25,10 @@ export default function Filters({ categories, active, onSelect }: Props) {
         <button
           key={c}
           onClick={() => onSelect(c)}
-          className={`px-3 py-1 rounded-full text-sm tracking-widest ${
+          className={`px-3 py-1 rounded-full uppercase text-xs font-mono tracking-widest cursor-pointer ${
             active === c
-              ? "bg-[var(--color-background-icon-card)] text-white"
-              : "bg-transparent text-zinc-400"
+              ? "bg-button-primary-yellow text-black"
+              : "bg-transparent text-white/60 border border-white/10"
           }`}
         >
           {c}
