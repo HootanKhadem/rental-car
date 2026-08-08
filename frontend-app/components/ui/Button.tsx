@@ -8,8 +8,13 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   rounded?: "none" | "sm" | "md" | "lg" | "full";
   customBg?: string; // CSS color string to override background
   customColor?: string; // CSS color string to override text color
+  customBorder?: string; // CSS color string to override border color
+  hoverBg?: string; // CSS color string to apply on hover for background
+  hoverColor?: string; // CSS color string to apply on hover for text
+  hoverBorder?: string; // CSS color string to apply on hover for border
   bgClass?: string; // Tailwind class to apply for background, e.g. 'bg-cd-yellow'
   textClass?: string; // Tailwind class to apply for text color, e.g. 'text-cd-bg'
+  borderClass?: string; // Tailwind border class e.g. 'border-divider-line' or 'border-2'
   fullWidth?: boolean;
   className?: string;
 };
@@ -35,8 +40,13 @@ export function Button({
   rounded = "md",
   customBg,
   customColor,
+  customBorder,
   bgClass,
   textClass,
+  borderClass,
+  hoverBg,
+  hoverColor,
+  hoverBorder,
   fullWidth = false,
   className = "",
   type = "button",
@@ -62,6 +72,7 @@ export function Button({
 
   if (bgClass) classesArr.push(bgClass);
   if (textClass) classesArr.push(textClass);
+  if (borderClass) classesArr.push(borderClass);
   if (className) classesArr.push(className);
 
   const mergedStyle: React.CSSProperties = { ...style };
@@ -84,6 +95,26 @@ export function Button({
     else {
       const varName = `--color-${textClass.replace(/^text-/, "")}`;
       mergedStyle.color = `var(${varName})`;
+    }
+  }
+
+  // Resolve border color from `customBorder` or `borderClass` when possible
+  if (customBorder) {
+    mergedStyle.borderColor = customBorder;
+    mergedStyle.borderStyle = mergedStyle.borderStyle ?? "solid";
+  } else if (borderClass && borderClass.startsWith("border-")) {
+    const name = borderClass.replace(/^border-/, "");
+    // If it's a named token like 'border-divider-line', map to CSS variable
+    if (typeof document !== "undefined") {
+      const varName = `--color-${name}`;
+      try {
+        const val = getComputedStyle(document.documentElement)
+          .getPropertyValue(varName)
+          .trim();
+        if (val) mergedStyle.borderColor = `var(${varName})`;
+      } catch (e) {
+        // ignore
+      }
     }
   }
 
@@ -160,19 +191,22 @@ export function Button({
       onMouseEnter={(e) => {
         setIsHover(true);
         if (typeof rest.onMouseEnter === "function")
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           rest.onMouseEnter(e as any);
       }}
       onMouseLeave={(e) => {
         setIsHover(false);
         if (typeof rest.onMouseLeave === "function")
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           rest.onMouseLeave(e as any);
       }}
       style={{
         ...mergedStyle,
         ...(resolvedBg ? { backgroundColor: resolvedBg } : {}),
         ...(isHover && hoverBgColor ? { backgroundColor: hoverBgColor } : {}),
+        ...(isHover && hoverBg ? { backgroundColor: hoverBg } : {}),
+        ...(isHover && hoverColor ? { color: hoverColor } : {}),
+        ...(isHover && hoverBorder ? { borderColor: hoverBorder } : {}),
       }}
       {...rest}
     >
