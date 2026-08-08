@@ -1,13 +1,39 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 
 export default function NavbarClient() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const y = window.scrollY || window.pageYOffset || 0;
+          setScrolled(y > 16);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <header className="w-full bg-transparent text-white border-b border-[#1f2c25]">
+    <header
+      className={
+        "fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 text-white " +
+        (scrolled
+          ? "bg-background-main/80 backdrop-blur-sm border-b border-[#233026] shadow-md"
+          : "bg-background-main border-b border-[#1f2c25]")
+      }
+    >
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex items-center justify-between h-20">
           <Link href="/" className="flex items-center gap-3">

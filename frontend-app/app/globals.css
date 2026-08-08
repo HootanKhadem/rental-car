@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background-main: #e2bb7f;
+  --color-background-main: #0b1612;
   --color-button-primary-yellow: #e2bb7f;
   --color-button-primary-green: #21966f;
 
@@ -47,3 +47,30 @@ body {
 body {
   background-color: #0b1612;
 }
+
+/* AI badge styles used in Hero */
+:root {
+  --emerald: #2fa37a;
+  --emerald-deep: #1f7f5f;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Courier New', monospace;
+  --ar-body: 'Noto Naskh Arabic', 'Segoe UI', Tahoma, sans-serif;
+}
+
+.ai-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  background:rgba(47,163,122,.1);
+  border:1px solid var(--emerald-deep);
+  border-radius:30px;
+  padding:8px 15px;
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--emerald);
+  margin-bottom:18px;
+}
+
+body.lang-ar .ai-badge{font-family:var(--ar-body);letter-spacing:0;font-weight:700}
+
