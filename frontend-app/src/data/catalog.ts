@@ -36,9 +36,9 @@ export const sampleCars: Array<{
     title: "Mercedes Benz G-Class",
     category: "Luxury SUV",
     seats: 5,
-    fuel: "Petrol",
+    fuel: "Diesel",
     transmission: "Auto",
-    pricePerDay: 120,
+    pricePerDay: 55,
     image: "/pictures/benz-g-class.jpg",
   },
   {
@@ -48,7 +48,7 @@ export const sampleCars: Array<{
     seats: 5,
     fuel: "Petrol",
     transmission: "Auto",
-    pricePerDay: 120,
+    pricePerDay: 70,
     image: "/pictures/bmw-e462.jpg",
   },
   {
@@ -56,9 +56,9 @@ export const sampleCars: Array<{
     title: "Chevrolet Tahoe",
     category: "Luxury SUV",
     seats: 5,
-    fuel: "Petrol",
+    fuel: "Diesel",
     transmission: "Auto",
-    pricePerDay: 120,
+    pricePerDay: 90,
     image: "/pictures/chevrolet-tahoe.avif",
   },
   {
@@ -68,7 +68,7 @@ export const sampleCars: Array<{
     seats: 5,
     fuel: "Petrol",
     transmission: "Auto",
-    pricePerDay: 120,
+    pricePerDay: 48,
     image: "/pictures/ford-mustang.jpg",
   },
   {
@@ -78,7 +78,7 @@ export const sampleCars: Array<{
     seats: 5,
     fuel: "Petrol",
     transmission: "Auto",
-    pricePerDay: 120,
+    pricePerDay: 28,
     image: "/pictures/ford-raptor.jpg",
   },
   {
@@ -88,7 +88,7 @@ export const sampleCars: Array<{
     seats: 5,
     fuel: "Electric",
     transmission: "Auto",
-    pricePerDay: 120,
+    pricePerDay: 70,
     image: "/pictures/hyundai-ioniq5.jpg",
   },
   {
@@ -96,9 +96,9 @@ export const sampleCars: Array<{
     title: "Mazda EZ60",
     category: "crossover",
     seats: 5,
-    fuel: "Petrol",
+    fuel: "Hybrid",
     transmission: "Auto",
-    pricePerDay: 120,
+    pricePerDay: 90,
     image: "/pictures/mazda-ez60.jpg",
   },
   {
@@ -108,7 +108,7 @@ export const sampleCars: Array<{
     seats: 5,
     fuel: "Petrol",
     transmission: "Auto",
-    pricePerDay: 120,
+    pricePerDay: 75,
     image: "/pictures/mazda-rx7.avif",
   },
   {
@@ -118,7 +118,7 @@ export const sampleCars: Array<{
     seats: 5,
     fuel: "Petrol",
     transmission: "Auto",
-    pricePerDay: 120,
+    pricePerDay: 55,
     image: "/pictures/mazda-rx8.jpg",
   },
   {
@@ -126,9 +126,9 @@ export const sampleCars: Array<{
     title: "Mazda 3",
     category: "Sedan",
     seats: 5,
-    fuel: "Petrol",
+    fuel: "Hybrid",
     transmission: "Auto",
-    pricePerDay: 120,
+    pricePerDay: 65,
     image: "/pictures/mazda3.jpg",
   },
   {
@@ -138,7 +138,7 @@ export const sampleCars: Array<{
     seats: 5,
     fuel: "Petrol",
     transmission: "Auto",
-    pricePerDay: 120,
+    pricePerDay: 60,
     image: "/pictures/nissan-patrol.jpg",
   },
   {
@@ -148,7 +148,7 @@ export const sampleCars: Array<{
     seats: 5,
     fuel: "Petrol",
     transmission: "Auto",
-    pricePerDay: 120,
+    pricePerDay: 16,
     image: "/pictures/porsche-911.jpg",
   },
   {
@@ -158,7 +158,7 @@ export const sampleCars: Array<{
     seats: 5,
     fuel: "Petrol",
     transmission: "Auto",
-    pricePerDay: 120,
+    pricePerDay: 20,
     image: "/pictures/range-rover.jpeg",
   },
   {
@@ -166,9 +166,9 @@ export const sampleCars: Array<{
     title: "Toyota Avalon",
     category: "Sedan",
     seats: 5,
-    fuel: "Petrol",
+    fuel: "Hybrid",
     transmission: "Auto",
-    pricePerDay: 120,
+    pricePerDay: 22,
     image: "/pictures/toyota-avalon2.jpg",
   },
   {
@@ -178,7 +178,7 @@ export const sampleCars: Array<{
     seats: 2,
     fuel: "Petrol",
     transmission: "Auto",
-    pricePerDay: 120,
+    pricePerDay: 15,
     image: "/pictures/volkswagen-beetle.jpg",
   },
 ];

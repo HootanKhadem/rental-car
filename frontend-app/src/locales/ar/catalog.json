@@ -1,5 +1,7 @@
 {
   "catalog": {
+    "badge": "المجموعة",
+    "title": "متاح الآن",
     "showing": "عرض {{count}} من أصل {{total}} سيارة",
     "features": {
       "insurance": { "title": "تأمين كامل", "subtitle": "مشمول مع كل حجز" },
@@ -38,5 +40,37 @@
     "electric": "كهربائية",
     "crossover": "كروس أوفر",
     "Sedan": "سيدان"
+  },
+  "cars": {
+    "toyota-land-cruiser-300": "تويوتا لاند كروزر 300",
+    "mercedes-benz-s-class": "مرسيدس بنز GLE",
+    "mercedes-benz-g-class": "مرسيدس بنز فئة G",
+    "bmw-e46-m3": "بي إم دبليو M3 E46",
+    "chevrolet-tahoe": "شيفروليه تاهو",
+    "ford-mustang-gt": "فورد موستانج GT",
+    "ford-raptor-pickup": "فورد رابتور",
+    "hyundai-ioniq5": "هيونداي أيونيك 5",
+    "mazda-ez60": "مازدا EZ60",
+    "mazda-rx7": "مازدا RX-7",
+    "mazda-rx8": "مازدا RX-8",
+    "mazda-3-new": "مازدا 3",
+    "nissan-patrol": "نيسان باترول",
+    "porsche-911-gt3": "بورشه 911 GT3",
+    "range-rover": "رينج روفر",
+    "toyota-avalon": "تويوتا أفالون",
+    "volkswagen-beetle": "فولكس واجن بيتل"
+  },
+  "carsData": {
+    "auto": "أوتوماتيكي",
+    "manual": "يدوي",
+    "petrol": "بنزين",
+    "diesel": "ديزل",
+    "hybrid": "هجين",
+    "v6": "V6",
+    "v8": "V8",
+    "electric": "كهربائي"
+  },
+  "other": {
+    "KWD": "د.ک"
   }
 }

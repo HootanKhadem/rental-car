@@ -81,7 +81,11 @@ export default function CarCard({ car }: Props) {
           <>
             <Image
               src={car.image}
-              alt={car.title}
+              alt={
+                mounted
+                  ? t(`cars.${car.id}`, { defaultValue: car.title })
+                  : car.title
+              }
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="object-cover"
@@ -105,7 +109,11 @@ export default function CarCard({ car }: Props) {
             : car.category
           ).toUpperCase()}
         </div>
-        <h3 className="text-2xl font-medium mt-2 font-serif">{car.title}</h3>
+        <h3 className="text-2xl font-medium mt-2 font-serif">
+          {mounted
+            ? t(`cars.${car.id}`, { defaultValue: car.title })
+            : car.title}
+        </h3>
 
         <div className="mt-3">
           <div className="w-full rounded-xl border border-border-card overflow-hidden bg-[rgba(0,0,0,.22)]">
@@ -121,7 +129,11 @@ export default function CarCard({ car }: Props) {
 
               <div className="px-4 py-2 text-center">
                 <div className="text-sm font-semibold text-zinc-100">
-                  {car.fuel ?? "-"}
+                  {mounted
+                    ? t(`carsData.${String(car.fuel ?? "").toLowerCase()}`, {
+                        defaultValue: car.fuel ?? "-",
+                      })
+                    : (car.fuel ?? "-")}
                 </div>
                 <div className="text-[9px] text-zinc-400 tracking-widest mt-1 uppercase">
                   {mounted ? t("catalog.card.engine").toUpperCase() : ""}
@@ -130,7 +142,12 @@ export default function CarCard({ car }: Props) {
 
               <div className="px-4 py-2 text-center">
                 <div className="text-sm font-semibold text-zinc-100">
-                  {car.transmission ?? "-"}
+                  {mounted
+                    ? t(
+                        `carsData.${String(car.transmission ?? "").toLowerCase()}`,
+                        { defaultValue: car.transmission ?? "-" },
+                      )
+                    : (car.transmission ?? "-")}
                 </div>
                 <div className="text-[9px] text-zinc-400 tracking-widest mt-1 uppercase">
                   {mounted ? t("catalog.card.transmission").toUpperCase() : ""}
@@ -143,7 +160,7 @@ export default function CarCard({ car }: Props) {
         <div className="mt-4 flex items-center justify-between">
           <div>
             <div className="text-2xl text-zinc-100 font-serif">
-              KWD {car.pricePerDay}{" "}
+              {mounted ? t("other.KWD").toUpperCase() : ""} {car.pricePerDay}{" "}
               <span className="text-zinc-400 text-xs">
                 {mounted ? t("catalog.card.perDay") : ""}
               </span>

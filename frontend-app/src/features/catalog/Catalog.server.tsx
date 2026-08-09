@@ -2,18 +2,7 @@ import React from "react";
 import CatalogClient from "./Catalog.client";
 
 export default function CatalogServer() {
-  return (
-    <section id="fleet" className="w-full text-white py-20">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="mb-8">
-          <p className="text-sm text-title-yellow font-mono tracking-[2px]">
-            THE COLLECTION
-          </p>
-          <h1 className="text-5xl font-serif mt-5">Available now</h1>
-        </div>
-
-        <CatalogClient />
-      </div>
-    </section>
-  );
+  // Keep server component minimal and render the client boundary so
+  // catalog header and translations are handled on the client like other sections.
+  return <CatalogClient />;
 }

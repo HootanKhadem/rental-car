@@ -1,5 +1,7 @@
 {
   "catalog": {
+    "badge": "THE COLLECTION",
+    "title": "Available now",
     "showing": "Showing {{count}} of {{total}} cars",
     "features": {
       "insurance": {
@@ -50,5 +52,37 @@
     "electric": "Electric",
     "crossover": "Crossover",
     "Sedan": "Sedan"
+  },
+  "cars": {
+    "toyota-land-cruiser-300": "Toyota Land Cruiser 300",
+    "mercedes-benz-s-class": "Mercedes Benz GLE",
+    "mercedes-benz-g-class": "Mercedes Benz G-Class",
+    "bmw-e46-m3": "BMW E46 M3",
+    "chevrolet-tahoe": "Chevrolet Tahoe",
+    "ford-mustang-gt": "Ford Mustang GT",
+    "ford-raptor-pickup": "Ford Raptor",
+    "hyundai-ioniq5": "Hyundai Ioniq5",
+    "mazda-ez60": "Mazda EZ60",
+    "mazda-rx7": "Mazda RX-7",
+    "mazda-rx8": "Mazda RX-8",
+    "mazda-3-new": "Mazda 3",
+    "nissan-patrol": "Nissan Patrol",
+    "porsche-911-gt3": "Porsche 911 GT3",
+    "range-rover": "Range Rover",
+    "toyota-avalon": "Toyota Avalon",
+    "volkswagen-beetle": "Volkswagen Beetle"
+  },
+  "carsData": {
+    "auto": "Auto",
+    "manual": "Manual",
+    "petrol": "Petrol",
+    "diesel": "Diesel",
+    "hybrid": "Hybrid",
+    "v6": "V6",
+    "v8": "V8",
+    "electric": "Electric"
+  },
+  "other": {
+    "KWD": "KWD"
   }
 }
