@@ -1,0 +1,24 @@
+{
+  "assistant": {
+    "badge": "POWERED BY AI",
+    "title": "A smart assistant working for you",
+    "features": [
+      {
+        "title": "Instant chat assistant",
+        "description": "Chat with our AI 24/7 — it recommends the right car, books it, and tracks delivery, in Arabic and English."
+      },
+      {
+        "title": "Interest-based notifications",
+        "description": "We learn from your activity and preferences to send timely offers and reminders — the car you love, when you need it."
+      },
+      {
+        "title": "Smart door delivery",
+        "description": "AI plans the fastest delivery route and gives you a live arrival time — the car comes to you anywhere in Kuwait."
+      }
+    ],
+    "cta": {
+      "start": "Start with AI",
+      "learn": "Learn more"
+    }
+  }
+}

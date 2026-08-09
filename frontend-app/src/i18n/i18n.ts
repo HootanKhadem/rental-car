@@ -4,10 +4,12 @@ import enNav from "../locales/en/navbar.json";
 import arNav from "../locales/ar/navbar.json";
 import enHero from "../locales/en/hero.json";
 import arHero from "../locales/ar/hero.json";
+import enAssistant from "../locales/en/assistant.json";
+import arAssistant from "../locales/ar/assistant.json";
 
 const resources = {
-  en: { translation: { ...enNav, ...enHero } },
-  ar: { translation: { ...arNav, ...arHero } },
+  en: { translation: { ...enNav, ...enHero, ...enAssistant } },
+  ar: { translation: { ...arNav, ...arHero, ...arAssistant } },
 };
 
 let initialized = false;
