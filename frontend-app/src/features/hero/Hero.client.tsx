@@ -5,9 +5,10 @@ import { useTranslation } from "react-i18next";
 import HeroImage from "./components/HeroImage";
 import StatItem from "./components/StatItem";
 import { heroImage, heroStats } from "@/src/data/hero";
-import i18n from "@/src/i18n/i18n";
+import useClientI18n from "@/src/i18n/useI18n";
 
 export default function HeroClient() {
+  const mounted = useClientI18n();
   const { t } = useTranslation();
 
   //eslint-disable-next-line
@@ -17,7 +18,9 @@ export default function HeroClient() {
       return (
         <>
           <span>{number}</span>
-          <span className="text-sm text-zinc-400">{t("hero.min")}</span>
+          <span className="text-sm text-zinc-400">
+            {mounted ? t("hero.min") : ""}
+          </span>
         </>
       );
     }
@@ -30,7 +33,7 @@ export default function HeroClient() {
         <span
           className="inline-flex items-center gap-2 bg-background-hero-badge border-2 border-border-hero-badge rounded-4xl px-3 py-2 text-[11px] mb-5 text-button-primary-green tracking-[1px] font-mono"
           role="status"
-          aria-label={t("hero.badge")}
+          aria-label={mounted ? t("hero.badge") : ""}
         >
           <span className="relative flex h-2 w-2">
             <span
@@ -39,15 +42,17 @@ export default function HeroClient() {
             />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-700" />
           </span>
-          <span className="text-[11px] sm:text-xs">{t("hero.badge")}</span>
+          <span className="text-[11px] sm:text-xs">
+            {mounted ? t("hero.badge") : ""}
+          </span>
         </span>
 
         <h1 className="text-5xl sm:text-7xl font-serif leading-tight text-zinc-100">
-          {t("hero.title")}
+          {mounted ? t("hero.title") : ""}
         </h1>
 
         <p className="text-zinc-400 max-w-7xl text-sm sm:text-md text-start">
-          {t("hero.description")}
+          {mounted ? t("hero.description") : ""}
         </p>
 
         <div className="w-full flex justify-center lg:justify-start">
@@ -60,7 +65,7 @@ export default function HeroClient() {
               textClass="text-black"
               className="hover:opacity-95 text-xs sm:text-sm"
             >
-              {t("hero.cta.browse")}
+              {mounted ? t("hero.cta.browse") : ""}
             </Button>
 
             <Button
@@ -69,41 +74,53 @@ export default function HeroClient() {
               rounded="lg"
               className="hover:border hover:border-title-yellow hover:text-title-yellow hover:bg-transparent text-xs sm:text-sm"
             >
-              {t("hero.cta.assistant")}
+              {mounted ? t("hero.cta.assistant") : ""}
             </Button>
           </div>
         </div>
       </div>
 
       <HeroImage
-          src={heroImage.src}
-          alt={t("hero.image.alt", { defaultValue: heroImage.alt })}
-          title={t("hero.image.title", { defaultValue: heroImage.title })}
-          priceLabel={
-            <>
-              <span className="font-medium">{heroImage.price}</span>{" "}
-              {t("hero.perDay")}
-            </>
-          }
+        src={heroImage.src}
+        alt={
+          mounted
+            ? t("hero.image.alt", { defaultValue: heroImage.alt })
+            : heroImage.alt
+        }
+        title={
+          mounted
+            ? t("hero.image.title", { defaultValue: heroImage.title })
+            : heroImage.title
+        }
+        priceLabel={
+          <>
+            <span className="font-medium">{heroImage.price}</span>{" "}
+            {mounted ? t("hero.perDay") : ""}
+          </>
+        }
       />
-      
-      <div className="grid grid-cols-3 col-span-2 border-t border-b border-divider-line mt-6">
-          {heroStats.map((s, idx) => {
-            const isBorder = idx < heroStats.length - 1;
-            const className = isBorder
-              ? i18n.language === "ar" ? "border-l border-divider-line last:border-r-0" :"border-r border-divider-line last:border-r-0"
-              : undefined;
 
-            return (
-              <StatItem
-                key={s.label}
-                value={renderValue(s)}
-                label={t(s.label)}
-                className={className}
-              />
-            );
-          })}
-        </div>
+      <div className="grid grid-cols-3 col-span-2 border-t border-b border-divider-line mt-6">
+        {heroStats.map((s, idx) => {
+          const isBorder = idx < heroStats.length - 1;
+          const className = isBorder
+            ? mounted && typeof window !== "undefined"
+              ? window.document.documentElement.lang === "ar"
+                ? "border-l border-divider-line last:border-r-0"
+                : "border-r border-divider-line last:border-r-0"
+              : "border-r border-divider-line last:border-r-0"
+            : undefined;
+
+          return (
+            <StatItem
+              key={s.label}
+              value={renderValue(s)}
+              label={mounted ? t(s.label) : s.label}
+              className={className}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 }

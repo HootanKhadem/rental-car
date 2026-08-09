@@ -2,8 +2,10 @@
 import React from "react";
 import { Button } from "@/components/ui/Button";
 import { useTranslation } from "react-i18next";
+import useClientI18n from "@/src/i18n/useI18n";
 
 export default function AuthButtons() {
+  const mounted = useClientI18n();
   const { t } = useTranslation();
 
   return (
@@ -14,7 +16,7 @@ export default function AuthButtons() {
         rounded="md"
         className="hover:border hover:border-title-yellow hover:text-title-yellow hover:bg-transparent"
       >
-        {t("auth.signIn")}
+        {mounted ? t("auth.signIn") : ""}
       </Button>
       <Button
         variant="solid"
@@ -24,7 +26,7 @@ export default function AuthButtons() {
         textClass="text-white"
         className="hover:opacity-95"
       >
-        {t("auth.register")}
+        {mounted ? t("auth.register") : ""}
       </Button>
     </div>
   );

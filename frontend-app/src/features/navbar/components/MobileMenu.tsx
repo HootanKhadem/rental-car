@@ -4,12 +4,14 @@ import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import type { MenuItem } from "./DesktopNav";
 import { useTranslation } from "react-i18next";
+import useClientI18n from "@/src/i18n/useI18n";
 
 // Mobile menu translations: menu items are passed translated by parent; auth buttons use i18n here
 
 type Props = { items: MenuItem[]; onClose: () => void };
 
 export default function MobileMenu({ items, onClose }: Props) {
+  const mounted = useClientI18n();
   const { t } = useTranslation();
   React.useEffect(() => {
     const prevOverflow = document.body.style.overflow;
@@ -87,7 +89,7 @@ export default function MobileMenu({ items, onClose }: Props) {
         <div className="px-6 pb-10">
           <div className="flex flex-col gap-3">
             <Button variant="outline" size="md" rounded="md">
-              {t("auth.signIn")}
+              {mounted ? t("auth.signIn") : ""}
             </Button>
             <Button
               variant="solid"
@@ -96,7 +98,7 @@ export default function MobileMenu({ items, onClose }: Props) {
               bgClass="bg-button-primary-green"
               textClass="text-white"
             >
-              {t("auth.register")}
+              {mounted ? t("auth.register") : ""}
             </Button>
           </div>
         </div>

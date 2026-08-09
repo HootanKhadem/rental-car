@@ -3,6 +3,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import FeatureCard from "./components/FeatureCard";
 import assistantFeatures from "@/src/data/assistant";
+import useClientI18n from "@/src/i18n/useI18n";
 
 function renderIcon(key?: string) {
   switch (key) {
@@ -93,6 +94,7 @@ function renderIcon(key?: string) {
 }
 
 export default function AssistantClient() {
+  const mounted = useClientI18n();
   const { t } = useTranslation();
 
   return (
@@ -103,23 +105,31 @@ export default function AssistantClient() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-8 flex flex-col gap-5">
           <p className="text-sm text-title-yellow font-mono tracking-[2px]">
-            {t("assistant.badge")}
+            {mounted ? t("assistant.badge") : ""}
           </p>
-          <h1 className="text-5xl font-serif">{t("assistant.title")}</h1>
+          <h1 className="text-5xl font-serif">
+            {mounted ? t("assistant.title") : ""}
+          </h1>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
           {assistantFeatures.map((f, idx) => (
             <FeatureCard
               key={idx}
-              title={t(`assistant.features.${idx}.title`, {
-                defaultValue: f.title,
-              })}
+              title={
+                mounted
+                  ? t(`assistant.features.${idx}.title`, {
+                      defaultValue: f.title,
+                    })
+                  : f.title
+              }
               icon={renderIcon(f.icon)}
             >
-              {t(`assistant.features.${idx}.description`, {
-                defaultValue: f.description,
-              })}
+              {mounted
+                ? t(`assistant.features.${idx}.description`, {
+                    defaultValue: f.description,
+                  })
+                : f.description}
             </FeatureCard>
           ))}
         </div>

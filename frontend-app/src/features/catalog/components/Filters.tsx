@@ -3,7 +3,7 @@
 type Category = { name: string; count: number };
 
 import { useTranslation } from "react-i18next";
-import { initI18n } from "@/src/i18n/i18n";
+import useClientI18n from "@/src/i18n/useI18n";
 
 type Props = {
   categories: Category[];
@@ -12,7 +12,7 @@ type Props = {
 };
 
 export default function Filters({ categories, active, onSelect }: Props) {
-  initI18n();
+  const mounted = useClientI18n();
   const { t } = useTranslation();
   const total = categories.reduce((s, c) => s + c.count, 0);
 
@@ -26,7 +26,7 @@ export default function Filters({ categories, active, onSelect }: Props) {
             : "bg-transparent text-white/60 border border-white/10"
         }`}
       >
-        {t("catalog.filters.all")}{" "}
+        {mounted ? t("catalog.filters.all") : "All"}{" "}
         <span className="ml-2 text-[11px] text-zinc-600">{total}</span>
       </button>
 
@@ -40,7 +40,11 @@ export default function Filters({ categories, active, onSelect }: Props) {
               : "bg-transparent text-white/60 border border-white/10"
           }`}
         >
-          <span>{t(`categories.${c.name}`, { defaultValue: c.name })}</span>
+          <span>
+            {mounted
+              ? t(`categories.${c.name}`, { defaultValue: c.name })
+              : c.name}
+          </span>
           <span className="text-[11px] text-zinc-600">{c.count}</span>
         </button>
       ))}

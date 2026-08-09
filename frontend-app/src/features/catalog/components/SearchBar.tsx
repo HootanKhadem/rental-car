@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { initI18n } from "@/src/i18n/i18n";
+import useClientI18n from "@/src/i18n/useI18n";
 
 type Props = {
   value: string;
@@ -9,12 +9,12 @@ type Props = {
 };
 
 export default function SearchBar({ value, onChange }: Props) {
-  initI18n();
+  const mounted = useClientI18n();
   const { t } = useTranslation();
   return (
     <div className="w-full">
       <label className="relative block">
-        <span className="sr-only">{t("catalog.search.sr")}</span>
+        <span className="sr-only">{mounted ? t("catalog.search.sr") : ""}</span>
 
         <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
           <svg
@@ -39,7 +39,7 @@ export default function SearchBar({ value, onChange }: Props) {
 
         <input
           className="w-full rounded-lg bg-background-main border border-border-card pl-10 pr-4 py-2 placeholder:text-zinc-500 focus:outline-none"
-          placeholder={t("catalog.search.placeholder")}
+          placeholder={mounted ? t("catalog.search.placeholder") : ""}
           value={value}
           onChange={(e) => onChange(e.target.value)}
         />

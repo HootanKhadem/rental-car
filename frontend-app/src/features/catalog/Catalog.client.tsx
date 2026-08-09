@@ -1,7 +1,7 @@
 "use client";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { initI18n } from "@/src/i18n/i18n";
+import useClientI18n from "@/src/i18n/useI18n";
 import { Car } from "./types";
 import sampleCars from "@/src/data/catalog";
 import SearchBar from "./components/SearchBar";
@@ -12,7 +12,7 @@ import SortDropdown from "./components/SortDropdown";
 const MOCK_CARS: Car[] = sampleCars as unknown as Car[];
 
 export default function CatalogClient() {
-  initI18n();
+  const mounted = useClientI18n();
   const { t } = useTranslation();
 
   const [query, setQuery] = useState("");
@@ -72,10 +72,12 @@ export default function CatalogClient() {
         </div>
 
         <div className="mt-4 text-sm text-zinc-400">
-          {t("catalog.showing", {
-            count: filtered.length,
-            total: MOCK_CARS.length,
-          })}
+          {mounted
+            ? t("catalog.showing", {
+                count: filtered.length,
+                total: MOCK_CARS.length,
+              })
+            : ""}
         </div>
       </div>
 
@@ -86,8 +88,12 @@ export default function CatalogClient() {
           {[
             {
               key: "insurance",
-              title: t("catalog.features.insurance.title"),
-              subtitle: t("catalog.features.insurance.subtitle"),
+              title: mounted
+                ? t("catalog.features.insurance.title")
+                : "Full insurance",
+              subtitle: mounted
+                ? t("catalog.features.insurance.subtitle")
+                : "Included with every booking",
               icon: (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -113,8 +119,12 @@ export default function CatalogClient() {
             },
             {
               key: "delivery",
-              title: t("catalog.features.delivery.title"),
-              subtitle: t("catalog.features.delivery.subtitle"),
+              title: mounted
+                ? t("catalog.features.delivery.title")
+                : "Free delivery",
+              subtitle: mounted
+                ? t("catalog.features.delivery.subtitle")
+                : "To any location in Kuwait",
               icon: (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -140,8 +150,12 @@ export default function CatalogClient() {
             },
             {
               key: "payment",
-              title: t("catalog.features.payment.title"),
-              subtitle: t("catalog.features.payment.subtitle"),
+              title: mounted
+                ? t("catalog.features.payment.title")
+                : "Secure payment",
+              subtitle: mounted
+                ? t("catalog.features.payment.subtitle")
+                : "KNET · Visa · Mastercard",
               icon: (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -182,8 +196,12 @@ export default function CatalogClient() {
             },
             {
               key: "support",
-              title: t("catalog.features.support.title"),
-              subtitle: t("catalog.features.support.subtitle"),
+              title: mounted
+                ? t("catalog.features.support.title")
+                : "24/7 support",
+              subtitle: mounted
+                ? t("catalog.features.support.subtitle")
+                : "AI assistant + human team",
               icon: (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

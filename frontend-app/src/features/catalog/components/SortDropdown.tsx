@@ -2,7 +2,7 @@
 import React from "react";
 
 import { useTranslation } from "react-i18next";
-import { initI18n } from "@/src/i18n/i18n";
+import useClientI18n from "@/src/i18n/useI18n";
 
 type Props = {
   value: string;
@@ -10,13 +10,13 @@ type Props = {
 };
 
 export default function SortDropdown({ value, onChange }: Props) {
-  initI18n();
+  const mounted = useClientI18n();
   const { t } = useTranslation();
 
   const OPTIONS: { value: string; label: string }[] = [
-    { value: "featured", label: t("catalog.sort.featured") },
-    { value: "price-asc", label: t("catalog.sort.priceAsc") },
-    { value: "price-desc", label: t("catalog.sort.priceDesc") },
+    { value: "featured", label: mounted ? t("catalog.sort.featured") : "" },
+    { value: "price-asc", label: mounted ? t("catalog.sort.priceAsc") : "" },
+    { value: "price-desc", label: mounted ? t("catalog.sort.priceDesc") : "" },
   ];
   const [open, setOpen] = React.useState(false);
   const ref = React.useRef<HTMLDivElement | null>(null);

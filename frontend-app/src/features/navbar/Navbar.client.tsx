@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { initI18n } from "@/src/i18n/i18n";
+import useClientI18n from "@/src/i18n/useI18n";
 import { Logo, DesktopNav, AuthButtons, MobileMenu } from "./components";
 import LanguageSwitcher from "./components/LanguageSwitcher";
 import type { MenuItem } from "./components";
@@ -10,8 +10,8 @@ import { defaultMenu } from "@/src/data";
 export type NavbarProps = { menuItems?: MenuItem[] };
 
 export default function NavbarClient({ menuItems }: NavbarProps) {
-  initI18n();
-  const { t, i18n } = useTranslation();
+  const mounted = useClientI18n();
+  const { t } = useTranslation();
 
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -45,7 +45,7 @@ export default function NavbarClient({ menuItems }: NavbarProps) {
     menuItems ??
     defaultMenu.map((it) => ({
       ...it,
-      label: t(hrefToKey[it.href] ?? it.label),
+      label: mounted ? t(hrefToKey[it.href] ?? it.label) : it.label,
     }));
 
   return (
@@ -61,7 +61,9 @@ export default function NavbarClient({ menuItems }: NavbarProps) {
         <div className="flex items-center justify-between h-20">
           <Logo />
 
-          <DesktopNav items={items} />
+          <div suppressHydrationWarning>
+            {mounted && <DesktopNav items={items} />}
+          </div>
 
           <div className="flex items-center gap-4">
             <LanguageSwitcher />

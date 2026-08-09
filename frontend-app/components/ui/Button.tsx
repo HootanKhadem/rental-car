@@ -104,51 +104,16 @@ export function Button({
     mergedStyle.borderStyle = mergedStyle.borderStyle ?? "solid";
   } else if (borderClass && borderClass.startsWith("border-")) {
     const name = borderClass.replace(/^border-/, "");
-    // If it's a named token like 'border-divider-line', map to CSS variable
-    if (typeof document !== "undefined") {
-      const varName = `--color-${name}`;
-      try {
-        const val = getComputedStyle(document.documentElement)
-          .getPropertyValue(varName)
-          .trim();
-        if (val) mergedStyle.borderColor = `var(${varName})`;
-      } catch (e) {
-        // ignore
-      }
-    }
+    const varName = `--color-${name}`;
+    // Use CSS variable reference deterministically so server and client match
+    mergedStyle.borderColor = `var(${varName})`;
+    mergedStyle.borderStyle = mergedStyle.borderStyle ?? "solid";
   }
 
-  // Resolve CSS variable for bgClass synchronously and provide a sensible fallback.
-  let resolvedBg: string | undefined = mergedStyle.backgroundColor as
+  // Prefer the already-resolved background in mergedStyle (often a CSS var)
+  const resolvedBg: string | undefined = mergedStyle.backgroundColor as
     | string
     | undefined;
-  if (typeof document !== "undefined") {
-    if (customBg) {
-      resolvedBg = customBg;
-    } else if (bgClass && bgClass.startsWith("bg-")) {
-      const name = bgClass.replace(/^bg-/, "");
-      const varName = `--color-${name}`;
-      try {
-        const val = getComputedStyle(document.documentElement)
-          .getPropertyValue(varName)
-          .trim();
-        if (val) resolvedBg = `var(${varName})`;
-        else {
-          const fallbackMap: Record<string, string> = {
-            "title-yellow": "#E2BB7F",
-            "button-primary-green": "#0b7a4a",
-          };
-          resolvedBg = fallbackMap[name] ?? "#E2BB7F";
-        }
-      } catch (e) {
-        const fallbackMap: Record<string, string> = {
-          "title-yellow": "#E2BB7F",
-          "button-primary-green": "#0b7a4a",
-        };
-        resolvedBg = fallbackMap[name] ?? "#E2BB7F";
-      }
-    }
-  }
 
   // Hover fallback: detect `hover:bg-...` in className and compute its color
   // synchronously using a temporary element (memoized) so we don't call setState
@@ -170,6 +135,7 @@ export function Button({
       const val = getComputedStyle(el).backgroundColor;
       document.body.removeChild(el);
       return val || undefined;
+      //eslint-disable-next-line
     } catch (e) {
       return undefined;
     }
@@ -180,14 +146,79 @@ export function Button({
   const hoverBgColor = React.useMemo(() => {
     if (!hoverBgToken || typeof document === "undefined") return undefined;
     return computeBgFromClass(hoverBgToken);
+    //eslint-disable-next-line
   }, [hoverBgToken, className]);
 
+  //eslint-disable-next-line
   const [isHover, setIsHover] = React.useState(false);
+  const ref = React.useRef<HTMLButtonElement | null>(null);
+
+  // Apply DOM-only computed styles after mount to avoid server/client
+  // differences that cause hydration mismatches.
+  React.useEffect(() => {
+    if (typeof document === "undefined" || !ref.current) return;
+
+    // apply resolved background color if computed
+    if (resolvedBg) {
+      try {
+        ref.current.style.backgroundColor = resolvedBg;
+        //eslint-disable-next-line
+      } catch (e) {
+        // ignore
+      }
+    }
+
+    // apply resolved border color if present in mergedStyle
+    if (mergedStyle.borderColor) {
+      try {
+        ref.current.style.borderColor = mergedStyle.borderColor as string;
+        //eslint-disable-next-line
+      } catch (e) {
+        // ignore
+      }
+    }
+
+    // hover handling: set inline hover styles via events to avoid initial mismatch
+    const el = ref.current;
+    function onEnter() {
+      if (hoverBgColor) el.style.backgroundColor = hoverBgColor;
+      if (hoverBg) el.style.backgroundColor = hoverBg as string;
+      if (hoverColor) el.style.color = hoverColor as string;
+      if (hoverBorder) el.style.borderColor = hoverBorder as string;
+    }
+    function onLeave() {
+      if (resolvedBg) el.style.backgroundColor = resolvedBg;
+      else
+        el.style.backgroundColor =
+          (mergedStyle.backgroundColor as string) || "";
+      if (mergedStyle.color)
+        el.style.color = (mergedStyle.color as string) || "";
+      if (mergedStyle.borderColor)
+        el.style.borderColor = (mergedStyle.borderColor as string) || "";
+    }
+
+    el.addEventListener("mouseenter", onEnter);
+    el.addEventListener("mouseleave", onLeave);
+    return () => {
+      el.removeEventListener("mouseenter", onEnter);
+      el.removeEventListener("mouseleave", onLeave);
+    };
+  }, [
+    resolvedBg,
+    mergedStyle.borderColor,
+    hoverBgColor,
+    hoverBg,
+    hoverColor,
+    hoverBorder,
+    mergedStyle.backgroundColor,
+    mergedStyle.color,
+  ]);
 
   return (
     <button
       type={type}
       className={classesArr.join(" ")}
+      ref={ref}
       onMouseEnter={(e) => {
         setIsHover(true);
         if (typeof rest.onMouseEnter === "function")
@@ -200,14 +231,8 @@ export function Button({
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           rest.onMouseLeave(e as any);
       }}
-      style={{
-        ...mergedStyle,
-        ...(resolvedBg ? { backgroundColor: resolvedBg } : {}),
-        ...(isHover && hoverBgColor ? { backgroundColor: hoverBgColor } : {}),
-        ...(isHover && hoverBg ? { backgroundColor: hoverBg } : {}),
-        ...(isHover && hoverColor ? { color: hoverColor } : {}),
-        ...(isHover && hoverBorder ? { borderColor: hoverBorder } : {}),
-      }}
+      // only include mergedStyle props that are safe and deterministic on server
+      style={{ ...mergedStyle }}
       {...rest}
     >
       {children}
