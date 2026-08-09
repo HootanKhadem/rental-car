@@ -1,6 +1,6 @@
 import React from "react";
 import HeroClient from "./Hero.client";
-import Image from "next/image";
+import { StatItem, HeroImage } from "./components";
 
 export default function HeroServer() {
   return (
@@ -39,49 +39,34 @@ export default function HeroServer() {
           </div>
         </div>
 
-        <div className="flex items-center justify-end lg:col-span-1 col-span-2">
-          <div className="w-full h-full max-w-none rounded-xl overflow-hidden shadow-lg relative">
-            <Image
-              src="/porsche-pic.jpg"
-              alt="Toyota Land Cruiser 300"
-              className="w-full h-full object-cover"
-              width={1200}
-              height={800}
-              priority
-            />
-
-            <div className="absolute inset-x-0 bottom-0 p-4 text-white">
-              <div className="bg-black/30 backdrop-blur-sm rounded-md px-3 py-2">
-                <div className="text-xl font-serif">Porsche 911 GT3</div>
-                <div className="text-sm text-zinc-200 mt-1">
-                  KWD <span className="font-medium">55</span> / day
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <HeroImage
+          src="/porsche-pic.jpg"
+          alt="Toyota Land Cruiser 300"
+          title="Porsche 911 GT3"
+          priceLabel={
+            <>
+              <span className="font-medium">55</span> / day
+            </>
+          }
+        />
 
         <div className="grid grid-cols-3 col-span-2 border-t border-b border-divider-line">
-          <div className="col-span-1 py-6 px-6 border-r border-divider-line last:border-r-0 flex flex-col justify-center">
-            <div className="text-3xl font-serif">120+</div>
-            <div className="text-xs text-zinc-400 tracking-widest mt-1 font-mono">
-              CARS IN FLEET
-            </div>
-          </div>
-          <div className="col-span-1 py-6 px-6 border-r border-divider-line last:border-r-0 flex flex-col justify-center">
-            <div className="text-3xl font-serif">
-              60<span className="text-sm text-zinc-400">min</span>
-            </div>
-            <div className="text-xs text-zinc-400 tracking-widest mt-1 font-mono">
-              AVG. DELIVERY TIME
-            </div>
-          </div>
-          <div className="col-span-1 py-6 px-6 flex flex-col justify-center">
-            <div className="text-3xl font-serif">4.96</div>
-            <div className="text-xs text-zinc-400 tracking-widest mt-1 font-mono">
-              MEMBER SATISFACTION
-            </div>
-          </div>
+          <StatItem
+            value="120+"
+            label="CARS IN FLEET"
+            className="border-r border-divider-line last:border-r-0"
+          />
+          <StatItem
+            value={
+              <>
+                <span>60</span>
+                <span className="text-sm text-zinc-400">min</span>
+              </>
+            }
+            label="AVG. DELIVERY TIME"
+            className="border-r border-divider-line last:border-r-0"
+          />
+          <StatItem value={"4.96"} label="MEMBER SATISFACTION" />
         </div>
       </div>
     </section>

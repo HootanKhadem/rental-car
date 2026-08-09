@@ -1,3 +1,5 @@
+import FeatureCard from "./components/FeatureCard";
+
 export default function AssistantServer() {
   return (
     <section
@@ -15,14 +17,9 @@ export default function AssistantServer() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
-          <div
-            className="rounded-xl p-6 bg-background-card border border-border-card hover:border-icon-card transform transition-transform duration-300 ease-out hover:-translate-y-1"
-            style={{ willChange: "transform" }}
-          >
-            <div
-              className="w-12 h-12 rounded-lg flex items-center justify-center mb-4"
-              style={{ backgroundColor: "var(--color-background-icon-card)" }}
-            >
+          <FeatureCard
+            title="Instant chat assistant"
+            icon={
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -48,22 +45,15 @@ export default function AssistantServer() {
                   </clipPath>
                 </defs>
               </svg>
-            </div>
-            <div className="text-lg font-semibold">Instant chat assistant</div>
-            <div className="text-sm text-zinc-400 mt-2">
-              Chat with our AI 24/7 — it recommends the right car, books it, and
-              tracks delivery, in Arabic and English.
-            </div>
-          </div>
-
-          <div
-            className="rounded-xl p-6 bg-background-card border border-border-card hover:border-icon-card transform transition-transform duration-300 ease-out hover:-translate-y-1"
-            style={{ willChange: "transform" }}
+            }
           >
-            <div
-              className="w-12 h-12 rounded-lg flex items-center justify-center mb-4"
-              style={{ backgroundColor: "var(--color-background-icon-card)" }}
-            >
+            Chat with our AI 24/7 — it recommends the right car, books it, and
+            tracks delivery, in Arabic and English.
+          </FeatureCard>
+
+          <FeatureCard
+            title="Interest-based notifications"
+            icon={
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -94,24 +84,15 @@ export default function AssistantServer() {
                   </clipPath>
                 </defs>
               </svg>
-            </div>
-            <div className="text-lg font-semibold">
-              Interest-based notifications
-            </div>
-            <div className="text-sm text-zinc-400 mt-2">
-              We learn from your activity and preferences to send timely offers
-              and reminders — the car you love, when you need it.
-            </div>
-          </div>
-
-          <div
-            className="rounded-xl p-6 bg-background-card border border-border-card hover:border-icon-card transform transition-transform duration-300 ease-out hover:-translate-y-1"
-            style={{ willChange: "transform" }}
+            }
           >
-            <div
-              className="w-12 h-12 rounded-lg flex items-center justify-center mb-4"
-              style={{ backgroundColor: "var(--color-background-icon-card)" }}
-            >
+            We learn from your activity and preferences to send timely offers
+            and reminders — the car you love, when you need it.
+          </FeatureCard>
+
+          <FeatureCard
+            title="Smart door delivery"
+            icon={
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -132,13 +113,11 @@ export default function AssistantServer() {
                   </clipPath>
                 </defs>
               </svg>
-            </div>
-            <div className="text-lg font-semibold">Smart door delivery</div>
-            <div className="text-sm text-zinc-400 mt-2">
-              AI plans the fastest delivery route and gives you a live arrival
-              time — the car comes to you anywhere in Kuwait.
-            </div>
-          </div>
+            }
+          >
+            AI plans the fastest delivery route and gives you a live arrival
+            time — the car comes to you anywhere in Kuwait.
+          </FeatureCard>
         </div>
       </div>
     </section>
