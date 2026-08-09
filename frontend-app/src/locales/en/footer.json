@@ -1,0 +1,32 @@
+{
+  "footer": {
+    "tagline": "Kuwait & the Gulfs first AI-powered rental-car delivery service.",
+    "columns": {
+      "fleet": {
+        "title": "Fleet",
+        "items": {
+          "luxury": "Luxury",
+          "suv": "SUV",
+          "electric": "Electric"
+        }
+      },
+      "club": {
+        "title": "Club",
+        "items": {
+          "membership": "Membership",
+          "rewards": "Rewards"
+        }
+      },
+      "support": {
+        "title": "Support",
+        "items": {
+          "assistant": "AI Assistant",
+          "contact": "Contact us",
+          "terms": "Terms & conditions"
+        }
+      }
+    },
+    "copyright": "© 2026 City Drive · Prototype",
+    "note": "For demonstration purposes"
+  }
+}

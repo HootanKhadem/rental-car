@@ -10,6 +10,8 @@ import enCatalog from "../locales/en/catalog.json";
 import arCatalog from "../locales/ar/catalog.json";
 import enMembership from "../locales/en/membership.json";
 import arMembership from "../locales/ar/membership.json";
+import enFooter from "../locales/en/footer.json";
+import arFooter from "../locales/ar/footer.json";
 
 const resources = {
   en: {
@@ -19,6 +21,7 @@ const resources = {
       ...enAssistant,
       ...enCatalog,
       ...enMembership,
+      ...enFooter,
     },
   },
   ar: {
@@ -28,6 +31,7 @@ const resources = {
       ...arAssistant,
       ...arCatalog,
       ...arMembership,
+      ...arFooter,
     },
   },
 };
@@ -36,7 +40,33 @@ let initialized = false;
 
 export function initI18n() {
   if (typeof window === "undefined") return; // only init on client
-  if (initialized) return;
+  // If already initialized, ensure any newly added resource bundles
+  // (e.g. footer) are merged so hot-reload updates translations.
+  if (initialized) {
+    try {
+      // merge footer bundles in case they were added after initial init
+      // use deep merge and allow overwrite to ensure new keys appear
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (i18n as any).addResourceBundle(
+        "en",
+        "translation",
+        enFooter,
+        true,
+        true,
+      );
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (i18n as any).addResourceBundle(
+        "ar",
+        "translation",
+        arFooter,
+        true,
+        true,
+      );
+    } catch (e) {
+      // ignore if bundles already exist or addResourceBundle not available
+    }
+    return;
+  }
 
   const saved = window.localStorage.getItem("lang");
   // `navigator.userLanguage` exists in some older browsers (IE); TypeScript
