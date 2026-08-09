@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { createPortal } from "react-dom";
 
 type ModalProps = {
   isOpen: boolean;
@@ -19,6 +20,8 @@ export default function Modal({
   const ANIM_MS = 200;
   const [mounted, setMounted] = React.useState<boolean>(isOpen);
   const [visible, setVisible] = React.useState<boolean>(false);
+  const panelRef = React.useRef<HTMLDivElement | null>(null);
+  const previousActive = React.useRef<HTMLElement | null>(null);
 
   // control body scroll lock when modal is mounted
   React.useEffect(() => {
@@ -56,9 +59,79 @@ export default function Modal({
     };
   }, [isOpen]);
 
+  // manage focus and keyboard interactions while modal is mounted
+  React.useEffect(() => {
+    if (!mounted) return;
+
+    // save previously focused element to restore later
+    previousActive.current = document.activeElement as HTMLElement | null;
+
+    // focus the panel or first focusable element inside it
+    const focusPanel = () => {
+      try {
+        if (!panelRef.current) return;
+        const focusable = panelRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])',
+        );
+        if (focusable.length) focusable[0].focus();
+        else panelRef.current.focus();
+      } catch {
+        // ignore
+      }
+    };
+
+    // small delay so element is mounted and focusable
+    const id = window.setTimeout(focusPanel, 50);
+
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        onClose();
+        return;
+      }
+
+      if (e.key === "Tab" && panelRef.current) {
+        const focusable = Array.from(
+          panelRef.current.querySelectorAll<HTMLElement>(
+            'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])',
+          ),
+        ).filter((el) => el.offsetParent !== null);
+
+        if (focusable.length === 0) {
+          e.preventDefault();
+          return;
+        }
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        } else if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        }
+      }
+    }
+
+    document.addEventListener("keydown", onKey);
+
+    return () => {
+      window.clearTimeout(id);
+      document.removeEventListener("keydown", onKey);
+      // restore focus
+      try {
+        if (previousActive.current) previousActive.current.focus();
+      } catch {
+        // ignore
+      }
+    };
+  }, [mounted, onClose]);
+
   if (!mounted) return null;
 
-  return (
+  const modalContent = (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center px-4"
       aria-modal="true"
@@ -76,8 +149,11 @@ export default function Modal({
 
       <div
         // modal panel scales/fades/translate
+        ref={panelRef}
+        tabIndex={-1}
+        aria-labelledby={title ? "rc-modal-title" : undefined}
         className={
-          "relative w-full max-w-lg mx-auto bg-background-main border border-divider-line rounded-lg p-6 shadow-xl text-white transform transition-all duration-200 " +
+          "relative w-full max-w-lg mx-auto bg-background-main border border-divider-line rounded-lg p-6 shadow-xl text-white transform transition-all duration-200 max-h-[90vh] overflow-auto " +
           (visible
             ? "opacity-100 translate-y-0 scale-100"
             : "opacity-0 translate-y-4 scale-95") +
@@ -87,7 +163,11 @@ export default function Modal({
         style={{ willChange: "opacity, transform" }}
       >
         <div className="flex items-start justify-between mb-4">
-          {title ? <h3 className="text-2xl font-semibold">{title}</h3> : null}
+          {title ? (
+            <h3 id="rc-modal-title" className="text-2xl font-semibold">
+              {title}
+            </h3>
+          ) : null}
           <button
             aria-label="close modal"
             onClick={onClose}
@@ -113,4 +193,10 @@ export default function Modal({
       </div>
     </div>
   );
+
+  // Render into document.body so `position: fixed` is relative to viewport
+  // and not affected by transformed ancestors in the app layout.
+  return typeof document !== "undefined"
+    ? createPortal(modalContent, document.body)
+    : modalContent;
 }

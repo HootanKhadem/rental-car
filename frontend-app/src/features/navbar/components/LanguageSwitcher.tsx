@@ -2,16 +2,34 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import useClientI18n from "@/src/i18n/useI18n";
+import { loadNamespace } from "@/src/i18n/i18n";
 
 export default function LanguageSwitcher() {
   const mounted = useClientI18n();
   const { i18n } = useTranslation();
   const [isHover, setIsHover] = useState(false);
 
-  const toggle = () => {
+  const toggle = async () => {
     if (typeof window === "undefined") return;
     const next = i18n.language === "ar" ? "en" : "ar";
-    i18n.changeLanguage(next);
+    const NAMESPACES = [
+      "navbar",
+      "hero",
+      "assistant",
+      "catalog",
+      "membership",
+      "footer",
+    ];
+
+    try {
+      await Promise.all(NAMESPACES.map((ns) => loadNamespace(next, ns)));
+    } catch (e) {
+      // ignore load errors; changeLanguage will fallback
+      // eslint-disable-next-line no-console
+      console.warn("i18n: failed to preload namespaces", e);
+    }
+
+    await i18n.changeLanguage(next);
     window.localStorage.setItem("lang", next);
     document.documentElement.lang = next;
     document.documentElement.dir = next === "ar" ? "rtl" : "ltr";

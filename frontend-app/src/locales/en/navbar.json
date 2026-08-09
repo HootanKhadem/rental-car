@@ -25,6 +25,14 @@
       "mubarak": "Mubarak Al-Kabeer"
     },
     "areaPlaceholder": "Salmiya, street...",
+    "emailPlaceholder": "name@email.com",
+    "error": {
+      "required": "This field is required",
+      "invalidEmail": "Enter a valid email",
+      "userExists": "A user with this email already exists",
+      "userNotFound": "No account found with this email",
+      "generic": "Something went wrong, please try again"
+    },
     "welcome": "Welcome back.",
     "signInButton": "SIGN IN",
     "noAccount": "No account?",
@@ -36,7 +44,7 @@
     "item1_sub": "15% off Range Rover this week",
     "item2_title": "Based on your SUV interest",
     "item2_sub": "Patrol & Land Cruiser available now for delivery",
-    "close":"Close"
+    "close": "Close"
   },
   "brand": {
     "city": "City",

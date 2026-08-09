@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 type User = {
   fullName: string;
@@ -38,12 +38,21 @@ function writeCurrent(user: User | null) {
   else localStorage.removeItem(CURRENT_KEY);
 }
 
-export default function useAuth() {
-  // avoid reading localStorage during render to prevent hydration mismatches
+type AuthContextShape = {
+  user: User | null;
+  isAuthenticated: boolean;
+  register: (u: User) => User;
+  signIn: (email: string) => User;
+  signOut: () => void;
+};
+
+const AuthContext = createContext<AuthContextShape | undefined>(undefined);
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
 
-  // populate current user after mount (schedule async to avoid sync setState in effect)
   useEffect(() => {
+    // initialize from localStorage on mount
     const id = window.setTimeout(() => setUser(readCurrent()), 0);
     return () => window.clearTimeout(id);
   }, []);
@@ -56,15 +65,6 @@ export default function useAuth() {
     return () => window.removeEventListener("storage", onStorage);
   }, []);
 
-  useEffect(() => {
-    // listen for custom events in same tab
-    function onEvent() {
-      setUser(readCurrent());
-    }
-    window.addEventListener("rc-auth-change", onEvent);
-    return () => window.removeEventListener("rc-auth-change", onEvent);
-  }, []);
-
   function register(newUser: User) {
     const users = readUsers();
     const exists = users.find((u) => u.email === newUser.email);
@@ -74,9 +74,7 @@ export default function useAuth() {
     const next = [...users, newUser];
     writeUsers(next);
     writeCurrent(newUser);
-    // notify other tabs (storage) and update same-tab listeners via event
-    window.dispatchEvent(new Event("storage"));
-    window.dispatchEvent(new Event("rc-auth-change"));
+    setUser(newUser);
     return newUser;
   }
 
@@ -85,23 +83,33 @@ export default function useAuth() {
     const found = users.find((u) => u.email === email);
     if (!found) throw new Error("User not found");
     writeCurrent(found);
-    window.dispatchEvent(new Event("storage"));
-    window.dispatchEvent(new Event("rc-auth-change"));
+    setUser(found);
     return found;
   }
 
   function signOut() {
     writeCurrent(null);
-    window.dispatchEvent(new Event("storage"));
-    window.dispatchEvent(new Event("rc-auth-change"));
     setUser(null);
   }
 
-  return {
-    user,
-    isAuthenticated: !!user,
-    register,
-    signIn,
-    signOut,
-  } as const;
+  return (
+    <AuthContext.Provider
+      value={{ user, isAuthenticated: !!user, register, signIn, signOut }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 }
+
+export function useAuthContext() {
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error("useAuthContext must be used within AuthProvider");
+  return ctx;
+}
+
+// Non-throwing variant for components that need a safe fallback
+export function useAuthContextMaybe() {
+  return useContext(AuthContext) ?? null;
+}
+
+export default AuthProvider;
