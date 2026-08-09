@@ -88,7 +88,15 @@ export default function MobileMenu({ items, onClose }: Props) {
 
         <div className="px-6 pb-10">
           <div className="flex flex-col gap-3">
-            <Button variant="outline" size="md" rounded="md">
+            <Button
+              variant="outline"
+              size="md"
+              rounded="md"
+              onClick={() => {
+                const e = new CustomEvent("open-signin-modal");
+                window.dispatchEvent(e);
+              }}
+            >
               {mounted ? t("auth.signIn") : ""}
             </Button>
             <Button
@@ -97,6 +105,10 @@ export default function MobileMenu({ items, onClose }: Props) {
               rounded="md"
               bgClass="bg-button-primary-green"
               textClass="text-white"
+              onClick={() => {
+                const e = new CustomEvent("open-register-modal");
+                window.dispatchEvent(e);
+              }}
             >
               {mounted ? t("auth.register") : ""}
             </Button>

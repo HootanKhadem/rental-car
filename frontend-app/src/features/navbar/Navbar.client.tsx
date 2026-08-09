@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import useClientI18n from "@/src/i18n/useI18n";
 import { Logo, DesktopNav, AuthButtons, MobileMenu } from "./components";
+import RegisterModal from "./components/RegisterModal";
+import SignInModal from "./components/SignInModal";
 import LanguageSwitcher from "./components/LanguageSwitcher";
 import type { MenuItem } from "./components";
 import { defaultMenu } from "@/src/data";
@@ -47,6 +49,32 @@ export default function NavbarClient({ menuItems }: NavbarProps) {
       ...it,
       label: mounted ? t(hrefToKey[it.href] ?? it.label) : it.label,
     }));
+
+  const [registerOpen, setRegisterOpen] = useState(false);
+  const [signInOpen, setSignInOpen] = useState(false);
+
+  // Listen for mobile menu event to open register modal
+  useEffect(() => {
+    function handler() {
+      setRegisterOpen(true);
+    }
+    window.addEventListener("open-register-modal", handler as EventListener);
+    return () =>
+      window.removeEventListener(
+        "open-register-modal",
+        handler as EventListener,
+      );
+  }, []);
+
+  // Listen for mobile menu event to open sign-in modal
+  useEffect(() => {
+    function handler() {
+      setSignInOpen(true);
+    }
+    window.addEventListener("open-signin-modal", handler as EventListener);
+    return () =>
+      window.removeEventListener("open-signin-modal", handler as EventListener);
+  }, []);
 
   return (
     <header
@@ -95,6 +123,11 @@ export default function NavbarClient({ menuItems }: NavbarProps) {
       </div>
 
       {open && <MobileMenu items={items} onClose={() => setOpen(false)} />}
+      <RegisterModal
+        isOpen={registerOpen}
+        onClose={() => setRegisterOpen(false)}
+      />
+      <SignInModal isOpen={signInOpen} onClose={() => setSignInOpen(false)} />
     </header>
   );
 }
