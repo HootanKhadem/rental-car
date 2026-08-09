@@ -1,0 +1,37 @@
+{
+  "membership": {
+    "eyebrow": "CITY DRIVE CLUB",
+    "title": "Your Membership",
+    "currentTier": "CURRENT TIER",
+    "memberNoPrefix": "No.",
+    "pointsLabel": "POINTS",
+    "nextLabel": "{{remaining}} PTS TO {{level}}",
+    "levels": {
+      "platinum": "PLATINUM",
+      "elite": "ELITE",
+      "next": "NEXT"
+    },
+    "tiers": {
+      "silver": {
+        "title": "Silver",
+        "sub": "0+",
+        "highlights": ["Free delivery", "10 pts / KWD"]
+      },
+      "gold": {
+        "title": "Gold",
+        "sub": "10K+",
+        "highlights": ["Priority fleet", "15 pts / KWD"]
+      },
+      "platinum": {
+        "title": "Platinum",
+        "sub": "16K+",
+        "highlights": ["Guaranteed cars", "20 pts / KWD"]
+      },
+      "elite": {
+        "title": "Elite",
+        "sub": "By invitation",
+        "highlights": ["Dedicated concierge"]
+      }
+    }
+  }
+}

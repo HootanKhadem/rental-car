@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
 import Button from "@/components/ui/Button";
+import { useTranslation } from "react-i18next";
+import { initI18n } from "@/src/i18n/i18n";
 
 type Props = {
   tier: string;
@@ -18,24 +20,27 @@ export default function CurrentTier({
   nextLabel,
 }: Props) {
   const percent = Math.min(100, Math.round((points / 30000) * 100));
+  initI18n();
+  const { t } = useTranslation();
 
   return (
     <div className="rounded-xl border border-icon-card p-6 h-full font-mono flex flex-col justify-between text-zinc-100 bg-gradient-to-br from-background-card to-emerald-950">
       <div>
         <div className="text-xs text-title-yellow tracking-widest">
-          CURRENT TIER
+          {t("membership.currentTier")}
         </div>
         <h2 className="mt-3 text-3xl font-serif">{tier}</h2>
         <div className="text-[12px] text-zinc-400 mt-2">
-          No. {memberNo} · {year}
+          {t("membership.memberNoPrefix")} {memberNo} · {year}
         </div>
 
         <div className="mt-6">
           <div className="text-4xl font-serif text-gradient-gold text-title-yellow">
             {points.toLocaleString()}
-            <span className="text-xs text-zinc-400 uppercase tracking-widest font-mono ml-2">POINTS</span>
+            <span className="text-xs text-zinc-400 uppercase tracking-widest font-mono ml-2">
+              {t("membership.pointsLabel")}
+            </span>
           </div>
-
 
           <div className="mt-4">
             <div className="w-full bg-[rgba(0,0,0,0.25)] h-2 rounded-full overflow-hidden">

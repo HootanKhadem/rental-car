@@ -1,5 +1,7 @@
 "use client";
 import React from "react";
+import { useTranslation } from "react-i18next";
+import { initI18n } from "@/src/i18n/i18n";
 type Props = {
   title: string;
   sub?: string;
@@ -15,6 +17,8 @@ export default function TierCard({
   active = false,
   onClick,
 }: Props) {
+  initI18n();
+  const { t } = useTranslation();
   return (
     <button
       onClick={onClick}

@@ -1,0 +1,37 @@
+{
+  "membership": {
+    "eyebrow": "نادي سيتي درايف",
+    "title": "العضوية الخاصة بك",
+    "currentTier": "المستوى الحالي",
+    "memberNoPrefix": "رقم العضو",
+    "pointsLabel": "النقاط",
+    "nextLabel": "{{remaining}} نقطة للوصول إلى {{level}}",
+    "levels": {
+      "platinum": "بلاتينوم",
+      "elite": "إيليت",
+      "next": "التالي"
+    },
+    "tiers": {
+      "silver": {
+        "title": "الفضي",
+        "sub": "0+",
+        "highlights": ["توصيل مجاني", "10 نقاط / KWD"]
+      },
+      "gold": {
+        "title": "الذهبي",
+        "sub": "10K+",
+        "highlights": ["أسطول متميز", "15 نقطة / KWD"]
+      },
+      "platinum": {
+        "title": "بلاتينوم",
+        "sub": "16K+",
+        "highlights": ["سيارات مضمونة", "20 نقطة / KWD"]
+      },
+      "elite": {
+        "title": "إيليت",
+        "sub": "بناءً على الدعوة",
+        "highlights": ["مساعد شخصي مخصص"]
+      }
+    }
+  }
+}

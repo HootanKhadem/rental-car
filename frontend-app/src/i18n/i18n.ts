@@ -8,10 +8,28 @@ import enAssistant from "../locales/en/assistant.json";
 import arAssistant from "../locales/ar/assistant.json";
 import enCatalog from "../locales/en/catalog.json";
 import arCatalog from "../locales/ar/catalog.json";
+import enMembership from "../locales/en/membership.json";
+import arMembership from "../locales/ar/membership.json";
 
 const resources = {
-  en: { translation: { ...enNav, ...enHero, ...enAssistant, ...enCatalog } },
-  ar: { translation: { ...arNav, ...arHero, ...arAssistant, ...arCatalog } },
+  en: {
+    translation: {
+      ...enNav,
+      ...enHero,
+      ...enAssistant,
+      ...enCatalog,
+      ...enMembership,
+    },
+  },
+  ar: {
+    translation: {
+      ...arNav,
+      ...arHero,
+      ...arAssistant,
+      ...arCatalog,
+      ...arMembership,
+    },
+  },
 };
 
 let initialized = false;
