@@ -1,18 +1,23 @@
 "use client";
 import React from "react";
 
+import { useTranslation } from "react-i18next";
+import { initI18n } from "@/src/i18n/i18n";
+
 type Props = {
   value: string;
   onChange: (v: string) => void;
 };
 
-const OPTIONS: { value: string; label: string }[] = [
-  { value: "featured", label: "Sort · Featured" },
-  { value: "price-asc", label: "Price · Low to high" },
-  { value: "price-desc", label: "Price · High to low" },
-];
-
 export default function SortDropdown({ value, onChange }: Props) {
+  initI18n();
+  const { t } = useTranslation();
+
+  const OPTIONS: { value: string; label: string }[] = [
+    { value: "featured", label: t("catalog.sort.featured") },
+    { value: "price-asc", label: t("catalog.sort.priceAsc") },
+    { value: "price-desc", label: t("catalog.sort.priceDesc") },
+  ];
   const [open, setOpen] = React.useState(false);
   const ref = React.useRef<HTMLDivElement | null>(null);
 

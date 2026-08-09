@@ -1,11 +1,15 @@
 "use client";
 import React from "react";
+import { useTranslation } from "react-i18next";
+import { initI18n } from "@/src/i18n/i18n";
 import Image from "next/image";
 import { Car } from "../types";
 import Button from "@/components/ui/Button";
 
 function LikeButton() {
   const [liked, setLiked] = React.useState(false);
+  initI18n();
+  const { t } = useTranslation();
   return (
     <button
       type="button"
@@ -14,7 +18,7 @@ function LikeButton() {
         e.stopPropagation();
         setLiked((v) => !v);
       }}
-      title={liked ? "Unsave" : "Save"}
+      title={liked ? t("catalog.card.unsave") : t("catalog.card.save")}
       className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors"
     >
       {liked ? (
@@ -47,7 +51,9 @@ function LikeButton() {
           />
         </svg>
       )}
-      <span className="sr-only">{liked ? "Unsave item" : "Save item"}</span>
+      <span className="sr-only">
+        {liked ? t("catalog.card.unsaveItem") : t("catalog.card.saveItem")}
+      </span>
     </button>
   );
 }
@@ -55,6 +61,9 @@ function LikeButton() {
 type Props = { car: Car };
 
 export default function CarCard({ car }: Props) {
+  initI18n();
+  const { t } = useTranslation();
+
   return (
     <article className="group rounded-xl overflow-hidden bg-background-car-card border border-border-card transform transition-all duration-300 will-change-transform hover:-translate-y-1 hover:shadow-xl hover:border-icon-card">
       <div className="relative h-48 w-full bg-zinc-900/20">
@@ -74,14 +83,16 @@ export default function CarCard({ car }: Props) {
           </>
         ) : (
           <div className="w-full h-full flex items-center justify-center text-zinc-600">
-            No image
+            {t("catalog.card.noImage")}
           </div>
         )}
       </div>
 
       <div className="p-4">
         <div className="text-xs text-icon-card tracking-widest font-mono">
-          {car.category.toUpperCase()}
+          {t(`categories.${car.category}`, {
+            defaultValue: car.category,
+          }).toUpperCase()}
         </div>
         <h3 className="text-2xl font-medium mt-2 font-serif">{car.title}</h3>
 
@@ -93,7 +104,7 @@ export default function CarCard({ car }: Props) {
                   {car.seats ?? "-"}
                 </div>
                 <div className="text-[9px] text-zinc-400 tracking-widest mt-1 uppercase">
-                  SEATS
+                  {t("catalog.card.seats").toUpperCase()}
                 </div>
               </div>
 
@@ -102,7 +113,7 @@ export default function CarCard({ car }: Props) {
                   {car.fuel ?? "-"}
                 </div>
                 <div className="text-[9px] text-zinc-400 tracking-widest mt-1 uppercase">
-                  ENGINE
+                  {t("catalog.card.engine").toUpperCase()}
                 </div>
               </div>
 
@@ -111,7 +122,7 @@ export default function CarCard({ car }: Props) {
                   {car.transmission ?? "-"}
                 </div>
                 <div className="text-[9px] text-zinc-400 tracking-widest mt-1 uppercase">
-                  TRANS
+                  {t("catalog.card.transmission").toUpperCase()}
                 </div>
               </div>
             </div>
@@ -122,7 +133,9 @@ export default function CarCard({ car }: Props) {
           <div>
             <div className="text-2xl text-zinc-100 font-serif">
               KWD {car.pricePerDay}{" "}
-              <span className="text-zinc-400 text-xs">/ day</span>
+              <span className="text-zinc-400 text-xs">
+                {t("catalog.card.perDay")}
+              </span>
             </div>
           </div>
           <Button
@@ -136,7 +149,7 @@ export default function CarCard({ car }: Props) {
             hoverColor="#07110a"
             hoverBorder="var(--color-button-primary-yellow)"
           >
-            Reserve
+            {t("catalog.card.reserve")}
           </Button>
         </div>
       </div>

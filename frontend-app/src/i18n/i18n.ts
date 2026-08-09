@@ -6,10 +6,12 @@ import enHero from "../locales/en/hero.json";
 import arHero from "../locales/ar/hero.json";
 import enAssistant from "../locales/en/assistant.json";
 import arAssistant from "../locales/ar/assistant.json";
+import enCatalog from "../locales/en/catalog.json";
+import arCatalog from "../locales/ar/catalog.json";
 
 const resources = {
-  en: { translation: { ...enNav, ...enHero, ...enAssistant } },
-  ar: { translation: { ...arNav, ...arHero, ...arAssistant } },
+  en: { translation: { ...enNav, ...enHero, ...enAssistant, ...enCatalog } },
+  ar: { translation: { ...arNav, ...arHero, ...arAssistant, ...arCatalog } },
 };
 
 let initialized = false;

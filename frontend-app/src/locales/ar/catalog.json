@@ -1,0 +1,42 @@
+{
+  "catalog": {
+    "showing": "عرض {{count}} من أصل {{total}} سيارة",
+    "features": {
+      "insurance": { "title": "تأمين كامل", "subtitle": "مشمول مع كل حجز" },
+      "delivery": {
+        "title": "توصيل مجاني",
+        "subtitle": "إلى أي عنوان في الكويت"
+      },
+      "payment": { "title": "دفع آمن", "subtitle": "KNET · فيزا · ماستركارد" },
+      "support": { "title": "دعم 24/7", "subtitle": "مساعد ذكي + فريق بشري" }
+    },
+    "search": { "placeholder": "ابحث بالاسم أو الفئة...", "sr": "بحث" },
+    "filters": { "all": "الكل" },
+    "sort": {
+      "featured": "الترتيب · المميز",
+      "priceAsc": "السعر · من الأقل للأعلى",
+      "priceDesc": "السعر · من الأعلى للأقل"
+    },
+    "card": {
+      "noImage": "لا توجد صورة",
+      "seats": "مقاعد",
+      "engine": "المحرك",
+      "transmission": "ناقل الحركة",
+      "perDay": "/ يوم",
+      "reserve": "احجز",
+      "save": "حفظ",
+      "unsave": "إلغاء الحفظ",
+      "saveItem": "حفظ العنصر",
+      "unsaveItem": "إلغاء حفظ العنصر"
+    }
+  },
+  "categories": {
+    "Luxury SUV": "سيارة دفع رباعي فاخرة",
+    "Luxury Sedan": "سيدان فاخرة",
+    "Sports Car": "سيارة رياضية",
+    "pickup": "بيك أب",
+    "electric": "كهربائية",
+    "crossover": "كروس أوفر",
+    "Sedan": "سيدان"
+  }
+}

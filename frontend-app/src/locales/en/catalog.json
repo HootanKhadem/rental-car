@@ -1,0 +1,54 @@
+{
+  "catalog": {
+    "showing": "Showing {{count}} of {{total}} cars",
+    "features": {
+      "insurance": {
+        "title": "Full insurance",
+        "subtitle": "Included with every booking"
+      },
+      "delivery": {
+        "title": "Free delivery",
+        "subtitle": "To any location in Kuwait"
+      },
+      "payment": {
+        "title": "Secure payment",
+        "subtitle": "KNET · Visa · Mastercard"
+      },
+      "support": {
+        "title": "24/7 support",
+        "subtitle": "AI assistant + human team"
+      }
+    },
+    "search": {
+      "placeholder": "Search by name or category...",
+      "sr": "Search"
+    },
+    "filters": { "all": "All" },
+    "sort": {
+      "featured": "Sort · Featured",
+      "priceAsc": "Price · Low to high",
+      "priceDesc": "Price · High to low"
+    },
+    "card": {
+      "noImage": "No image",
+      "seats": "Seats",
+      "engine": "Engine",
+      "transmission": "Trans",
+      "perDay": "/ day",
+      "reserve": "Reserve",
+      "save": "Save",
+      "unsave": "Unsave",
+      "saveItem": "Save item",
+      "unsaveItem": "Unsave item"
+    }
+  },
+  "categories": {
+    "Luxury SUV": "Luxury SUV",
+    "Luxury Sedan": "Luxury Sedan",
+    "Sports Car": "Sports Car",
+    "pickup": "Pickup",
+    "electric": "Electric",
+    "crossover": "Crossover",
+    "Sedan": "Sedan"
+  }
+}
