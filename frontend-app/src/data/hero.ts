@@ -7,8 +7,8 @@ export const heroDescription =
 
 export const heroImage: HeroImageData = {
   src: "/pictures/ford-mustang-692.jpg",
-  alt: "Ford Mustang",
-  title: "Ford Mustang",
+  alt: "Ford Mustang 1969",
+  title: "Ford Mustang 1969",
   price: "45",
 };
 

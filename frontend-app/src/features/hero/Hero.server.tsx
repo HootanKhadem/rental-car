@@ -26,14 +26,14 @@ export default function HeroServer() {
               />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-700" />
             </span>
-            <span className="text-xs">{heroBadge}</span>
+            <span className="text-[11px] sm:text-xs">{heroBadge}</span>
           </span>
 
-          <h1 className="text-7xl font-serif leading-tight text-zinc-100">
+          <h1 className="text-5xl sm:text-7xl font-serif leading-tight text-zinc-100">
             {heroTitle}
           </h1>
 
-          <p className="text-zinc-400 max-w-7xl">{heroDescription}</p>
+          <p className="text-zinc-400 max-w-7xl text-sm sm:text-md">{heroDescription}</p>
 
           <div className="w-full flex justify-center lg:justify-start">
             <HeroClient />
