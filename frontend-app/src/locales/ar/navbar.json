@@ -9,6 +9,35 @@
     "signIn": "تسجيل الدخول",
     "register": "سجل"
   },
+  "modal": {
+    "createAccount": "إنشاء حساب",
+    "fullName": "الاسم الكامل",
+    "email": "البريد الإلكتروني",
+    "governorate": "المحافظة",
+    "area": "المنطقة / العنوان",
+    "createButton": "انشاء حساب",
+    "haveAccount": "هل لديك حساب؟",
+    "signInLink": "تسجيل الدخول",
+    "select": "...اختر",
+    "gov": {
+      "hawalli": "حوْلي",
+      "ahmadi": "الأحمدي",
+      "mubarak": "مبارك الكبير"
+    },
+    "areaPlaceholder": "السالمية، شارع...",
+    "welcome": "مرحبا بعودتك.",
+    "signInButton": "تسجيل الدخول",
+    "noAccount": "لا تملك حساب؟",
+    "registerLink": "سجل"
+  },
+  "notifications": {
+    "title": "الإشعارات",
+    "item1_title": "عرض لأعضاء الذهبية",
+    "item1_sub": "خصم 15% على رنج روفر هذا الأسبوع",
+    "item2_title": "بناءً على اهتمامك بـ SUV",
+    "item2_sub": "باترول ولاند كروزر متاحان الآن للتوصيل",
+    "close":"إغلاق"
+  },
   "brand": {
     "city": "سيتي",
     "drive": "درايف"

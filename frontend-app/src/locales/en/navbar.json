@@ -9,6 +9,35 @@
     "signIn": "SIGN IN",
     "register": "REGISTER"
   },
+  "modal": {
+    "createAccount": "Create account",
+    "fullName": "FULL NAME",
+    "email": "EMAIL",
+    "governorate": "GOVERNORATE",
+    "area": "AREA / ADDRESS",
+    "createButton": "CREATE ACCOUNT",
+    "haveAccount": "Have an account?",
+    "signInLink": "Sign in",
+    "select": "...Select",
+    "gov": {
+      "hawalli": "Hawalli",
+      "ahmadi": "Ahmadi",
+      "mubarak": "Mubarak Al-Kabeer"
+    },
+    "areaPlaceholder": "Salmiya, street...",
+    "welcome": "Welcome back.",
+    "signInButton": "SIGN IN",
+    "noAccount": "No account?",
+    "registerLink": "Register"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "item1_title": "Gold member offer",
+    "item1_sub": "15% off Range Rover this week",
+    "item2_title": "Based on your SUV interest",
+    "item2_sub": "Patrol & Land Cruiser available now for delivery",
+    "close":"Close"
+  },
   "brand": {
     "city": "City",
     "drive": "Drive"

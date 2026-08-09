@@ -6,6 +6,7 @@ import { Logo, DesktopNav, AuthButtons, MobileMenu } from "./components";
 import RegisterModal from "./components/RegisterModal";
 import SignInModal from "./components/SignInModal";
 import LanguageSwitcher from "./components/LanguageSwitcher";
+import NotificationButton from "./components/NotificationButton";
 import type { MenuItem } from "./components";
 import { defaultMenu } from "@/src/data";
 
@@ -95,6 +96,7 @@ export default function NavbarClient({ menuItems }: NavbarProps) {
 
           <div className="flex items-center gap-4">
             <LanguageSwitcher />
+            <NotificationButton />
             <AuthButtons />
           </div>
 

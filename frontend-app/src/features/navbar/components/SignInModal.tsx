@@ -3,12 +3,14 @@ import React from "react";
 import Modal from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import useAuth from "@/src/features/auth/useAuth";
+import { useTranslation } from "react-i18next";
 
 type Props = { isOpen: boolean; onClose: () => void };
 
 export default function SignInModal({ isOpen, onClose }: Props) {
   const [email, setEmail] = React.useState("");
   const auth = useAuth();
+  const { t } = useTranslation();
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -29,12 +31,14 @@ export default function SignInModal({ isOpen, onClose }: Props) {
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Sign in">
+    <Modal isOpen={isOpen} onClose={onClose} title={t("modal.signIn")}>
       <form onSubmit={onSubmit} className="flex flex-col gap-4">
-        <p className="text-neutral-400">Welcome back.</p>
+        <p className="text-neutral-400">{t("modal.welcome")}</p>
 
         <div>
-          <label className="text-sm text-neutral-300 mb-1 block">EMAIL</label>
+          <label className="text-sm text-neutral-300 mb-1 block">
+            {t("modal.email")}
+          </label>
           <input
             name="email"
             value={email}
@@ -53,18 +57,18 @@ export default function SignInModal({ isOpen, onClose }: Props) {
             bgClass="bg-gradient-to-r from-emerald-500 to-emerald-400"
             textClass="text-white"
           >
-            SIGN IN
+            {t("modal.signInButton")}
           </Button>
         </div>
 
         <p className="text-center text-sm text-neutral-400">
-          No account?{" "}
+          {t("modal.noAccount")}{" "}
           <button
             type="button"
             onClick={openRegister}
             className="text-title-yellow"
           >
-            Register
+            {t("modal.registerLink")}
           </button>
         </p>
       </form>
