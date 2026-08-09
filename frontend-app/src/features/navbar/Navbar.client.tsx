@@ -4,6 +4,12 @@ import { useTranslation } from "react-i18next";
 import useClientI18n from "@/src/i18n/useI18n";
 import { Logo, DesktopNav, AuthButtons, MobileMenu } from "./components";
 import AuthProvider from "@/src/features/auth/AuthProvider";
+import ReserveProvider from "@/src/features/reserve/ReserveProvider";
+import dynamic from "next/dynamic";
+
+const ReserveModal = dynamic(() => import("../reserve/ReserveModal.client"), {
+  ssr: false,
+});
 import RegisterModal from "./components/RegisterModal";
 import SignInModal from "./components/SignInModal";
 import LanguageSwitcher from "./components/LanguageSwitcher";
@@ -80,64 +86,74 @@ export default function NavbarClient({ menuItems }: NavbarProps) {
 
   return (
     <AuthProvider>
-      <header
-        className={
-          "fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 text-white " +
-          (scrolled
-            ? "bg-background-main/80 backdrop-blur-sm border-b border-[#233026] shadow-md"
-            : "bg-background-main border-b border-divider-line")
-        }
-      >
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center justify-between h-20">
-            <Logo />
+      <ReserveProvider>
+        <header
+          className={
+            "fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 text-white " +
+            (scrolled
+              ? "bg-background-main/80 backdrop-blur-sm border-b border-[#233026] shadow-md"
+              : "bg-background-main border-b border-divider-line")
+          }
+        >
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="flex items-center justify-between h-20">
+              <Logo />
 
-            <div suppressHydrationWarning>
-              {mounted && <DesktopNav items={items} />}
-            </div>
+              <div suppressHydrationWarning>
+                {mounted && <DesktopNav items={items} />}
+              </div>
 
-            <div className="flex items-center gap-4">
-              <LanguageSwitcher />
-              <NotificationButton />
-              <AuthButtons
-                onOpenRegister={() => setRegisterOpen(true)}
-                onOpenSignIn={() => setSignInOpen(true)}
-              />
-            </div>
+              <div className="flex items-center gap-4">
+                <LanguageSwitcher />
+                <NotificationButton />
+                <AuthButtons
+                  onOpenRegister={() => setRegisterOpen(true)}
+                  onOpenSignIn={() => setSignInOpen(true)}
+                />
+              </div>
 
-            <div className="md:hidden">
-              <button
-                aria-label="menu"
-                onClick={() => setOpen((v) => !v)}
-                className="p-2 rounded-md border border-neutral-800"
-              >
-                <svg
-                  className="w-6 h-6"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
+              <div className="md:hidden">
+                <button
+                  aria-label="menu"
+                  onClick={() => setOpen((v) => !v)}
+                  className="p-2 rounded-md border border-neutral-800"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d={
-                      open ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"
-                    }
-                  />
-                </svg>
-              </button>
+                  <svg
+                    className="w-6 h-6"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d={
+                        open
+                          ? "M6 18L18 6M6 6l12 12"
+                          : "M4 6h16M4 12h16M4 18h16"
+                      }
+                    />
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        {open && <MobileMenu items={items} onClose={() => setOpen(false)} />}
-        <RegisterModal
-          isOpen={registerOpen}
-          onClose={() => setRegisterOpen(false)}
-        />
-        <SignInModal isOpen={signInOpen} onClose={() => setSignInOpen(false)} />
-      </header>
+          {open && <MobileMenu items={items} onClose={() => setOpen(false)} />}
+          <RegisterModal
+            isOpen={registerOpen}
+            onClose={() => setRegisterOpen(false)}
+          />
+          <SignInModal
+            isOpen={signInOpen}
+            onClose={() => setSignInOpen(false)}
+          />
+          {/* Reserve modal managed by ReserveProvider */}
+          {/* import client modal so it's rendered under provider */}
+          <ReserveModal />
+        </header>
+      </ReserveProvider>
     </AuthProvider>
   );
 }

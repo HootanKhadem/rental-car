@@ -169,15 +169,32 @@ export default function CarCard({ car }: Props) {
           <Button
             variant="outline"
             size="md"
-            rounded="md"
+          
             className="transition-colors duration-200"
             borderClass="border-button-primary-yellow"
             textClass="text-button-primary-yellow"
             hoverBg="var(--color-button-primary-yellow)"
             hoverColor="#07110a"
             hoverBorder="var(--color-button-primary-yellow)"
-          >
-            {mounted ? t("catalog.card.reserve") : ""}
+            
+              onClick={() => {
+                try {
+                  window.dispatchEvent(
+                    new CustomEvent("open-reserve", {
+                      detail: {
+                        id: car.id,
+                        title: mounted ? t(`cars.${car.id}`) : car.title,
+                        pricePerDay: car.pricePerDay,
+                        image: car.image,
+                      },
+                    }),
+                  );
+                } catch {
+                  // ignore
+                }
+              }}
+              >
+                Reserve
           </Button>
         </div>
       </div>
