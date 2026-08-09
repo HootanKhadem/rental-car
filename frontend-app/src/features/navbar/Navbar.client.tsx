@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { Logo, DesktopNav, AuthButtons, MobileMenu } from "./components";
 import type { MenuItem } from "./components";
+import { defaultMenu } from "@/src/data";
 
 export type NavbarProps = { menuItems?: MenuItem[] };
 
@@ -27,12 +28,7 @@ export default function NavbarClient({ menuItems }: NavbarProps) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const items = menuItems ?? [
-    { label: "FLEET", href: "/#fleet" },
-    { label: "AI ASSISTANT", href: "/#ai" },
-    { label: "MEMBERSHIP", href: "/#membership" },
-    { label: "SUPPORT", href: "/#support" },
-  ];
+  const items = menuItems ?? defaultMenu;
 
   return (
     <header

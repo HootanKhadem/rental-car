@@ -1,6 +1,13 @@
 import React from "react";
 import HeroClient from "./Hero.client";
 import { StatItem, HeroImage } from "./components";
+import {
+  heroBadge,
+  heroTitle,
+  heroDescription,
+  heroImage,
+  heroStats,
+} from "@/src/data/hero";
 
 export default function HeroServer() {
   return (
@@ -19,20 +26,14 @@ export default function HeroServer() {
               />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-700" />
             </span>
-            <span className="text-xs">
-              KUWAIT IS FIRST AI CAR-DELIVERY SYSTEM
-            </span>
+            <span className="text-xs">{heroBadge}</span>
           </span>
 
           <h1 className="text-7xl font-serif leading-tight text-zinc-100">
-            Your car comes to you,
+            {heroTitle}
           </h1>
 
-          <p className="text-zinc-400 max-w-7xl">
-            A curated fleet of the finest and newest cars, delivered to your
-            door in 60 minutes. A smart assistant guides you, with notifications
-            built around your interests. No queues, no counters.
-          </p>
+          <p className="text-zinc-400 max-w-7xl">{heroDescription}</p>
 
           <div className="w-full flex justify-center lg:justify-start">
             <HeroClient />
@@ -40,33 +41,45 @@ export default function HeroServer() {
         </div>
 
         <HeroImage
-          src="/porsche-pic.jpg"
-          alt="Toyota Land Cruiser 300"
-          title="Porsche 911 GT3"
+          src={heroImage.src}
+          alt={heroImage.alt}
+          title={heroImage.title}
           priceLabel={
             <>
-              <span className="font-medium">55</span> / day
+              <span className="font-medium">{heroImage.price}</span> / day
             </>
           }
         />
 
         <div className="grid grid-cols-3 col-span-2 border-t border-b border-divider-line">
-          <StatItem
-            value="120+"
-            label="CARS IN FLEET"
-            className="border-r border-divider-line last:border-r-0"
-          />
-          <StatItem
-            value={
-              <>
-                <span>60</span>
-                <span className="text-sm text-zinc-400">min</span>
-              </>
-            }
-            label="AVG. DELIVERY TIME"
-            className="border-r border-divider-line last:border-r-0"
-          />
-          <StatItem value={"4.96"} label="MEMBER SATISFACTION" />
+          {heroStats.map((s, idx) => {
+            const isBorder = idx < heroStats.length - 1;
+            const className = isBorder
+              ? "border-r border-divider-line last:border-r-0"
+              : undefined;
+
+            const renderValue = () => {
+              if (typeof s.value === "string" && s.value.endsWith("min")) {
+                const number = s.value.replace("min", "");
+                return (
+                  <>
+                    <span>{number}</span>
+                    <span className="text-sm text-zinc-400">min</span>
+                  </>
+                );
+              }
+              return s.value;
+            };
+
+            return (
+              <StatItem
+                key={s.label}
+                value={renderValue()}
+                label={s.label}
+                className={className}
+              />
+            );
+          })}
         </div>
       </div>
     </section>

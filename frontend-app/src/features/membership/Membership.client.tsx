@@ -1,50 +1,14 @@
 "use client";
 import React from "react";
-import Button from "@/components/ui/Button";
 import CurrentTier from "./components/CurrentTier";
 import TierCard from "./components/TierCard";
 
-const TIERS = [
-  {
-    id: "silver",
-    title: "Silver",
-    sub: "0+",
-    highlights: ["Free delivery", "10 pts / KWD"],
-  },
-  {
-    id: "gold",
-    title: "Gold",
-    sub: "10K+",
-    highlights: ["Priority fleet", "15 pts / KWD"],
-  },
-  {
-    id: "platinum",
-    title: "Platinum",
-    sub: "16K+",
-    highlights: ["Guaranteed cars", "20 pts / KWD"],
-  },
-  {
-    id: "elite",
-    title: "Elite",
-    sub: "By invitation",
-    highlights: ["Dedicated concierge"],
-  },
-];
-
-const TIER_DATA: Record<
-  string,
-  { points: number; memberNo?: string; year?: number }
-> = {
-  silver: { points: 1250, memberNo: "CD-10001", year: 2023 },
-  gold: { points: 12450, memberNo: "CD-04417", year: 2023 },
-  platinum: { points: 20000, memberNo: "CD-20002", year: 2023 },
-  elite: { points: 40000, memberNo: "CD-90009", year: 2023 },
-};
+import { tiers, tierData } from "@/src/data/membership";
 
 export default function MembershipClient() {
   const [selected, setSelected] = React.useState("gold");
 
-  const data = TIER_DATA[selected] ?? TIER_DATA["gold"];
+  const data = tierData[selected] ?? tierData["gold"];
   const nextThreshold =
     selected === "silver"
       ? 10000
@@ -84,7 +48,7 @@ export default function MembershipClient() {
         </div>
 
         <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-          {TIERS.map((t) => (
+          {tiers.map((t) => (
             <TierCard
               key={t.id}
               title={t.title}

@@ -9,8 +9,8 @@ type Props = {
 };
 
 export default function HeroImage({
-  src = "/porsche-pic.jpg",
-  alt = "Toyota Land Cruiser 300",
+  src = "/pictures/porsche-pic.jpg",
+  alt = "Porsche 911",
   title = "Porsche 911 GT3",
   priceLabel = (
     <>
@@ -30,7 +30,7 @@ export default function HeroImage({
           priority
         />
 
-        <div className="absolute inset-x-0 bottom-0 p-4 text-white">
+        <div className="absolute inset-x-0 bottom-0 px-4 py-3 text-white">
           <div className="bg-black/30 backdrop-blur-sm rounded-md px-3 py-2">
             <div className="text-xl font-serif">{title}</div>
             <div className="text-sm text-zinc-200 mt-1">KWD {priceLabel}</div>

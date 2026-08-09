@@ -1,13 +1,16 @@
 "use client";
-import React from "react";
+
+type Category = { name: string; count: number };
 
 type Props = {
-  categories: string[];
+  categories: Category[];
   active: string;
   onSelect: (c: string) => void;
 };
 
 export default function Filters({ categories, active, onSelect }: Props) {
+  const total = categories.reduce((s, c) => s + c.count, 0);
+
   return (
     <div className="flex items-center gap-3 flex-wrap">
       <button
@@ -18,20 +21,21 @@ export default function Filters({ categories, active, onSelect }: Props) {
             : "bg-transparent text-white/60 border border-white/10"
         }`}
       >
-        All
+        All <span className="ml-2 text-[11px] text-zinc-600">{total}</span>
       </button>
 
       {categories.map((c) => (
         <button
-          key={c}
-          onClick={() => onSelect(c)}
-          className={`px-3 py-1 rounded-full uppercase text-xs font-mono tracking-widest cursor-pointer ${
-            active === c
+          key={c.name}
+          onClick={() => onSelect(c.name)}
+          className={`px-3 py-1 rounded-full uppercase text-xs font-mono tracking-widest cursor-pointer flex items-center gap-2 ${
+            active === c.name
               ? "bg-button-primary-yellow text-black"
               : "bg-transparent text-white/60 border border-white/10"
           }`}
         >
-          {c}
+          <span>{c.name}</span>
+          <span className="text-[11px] text-zinc-600">{c.count}</span>
         </button>
       ))}
     </div>

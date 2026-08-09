@@ -1,63 +1,13 @@
 "use client";
 import React, { useMemo, useState } from "react";
 import { Car } from "./types";
+import sampleCars from "@/src/data/catalog";
 import SearchBar from "./components/SearchBar";
 import Filters from "./components/Filters";
 import CarGrid from "./components/CarGrid";
 import SortDropdown from "./components/SortDropdown";
 
-const MOCK_CARS: Car[] = [
-  {
-    id: "1",
-    title: "Toyota Land Cruiser 300",
-    category: "Luxury SUV",
-    seats: 7,
-    fuel: "V8",
-    transmission: "Auto",
-    pricePerDay: 55,
-    image: "/pictures/land-cruiser.jpg",
-  },
-  {
-    id: "2",
-    title: "Mercedes GLE",
-    category: "Luxury SUV",
-    seats: 5,
-    fuel: "Diesel",
-    transmission: "Auto",
-    pricePerDay: 70,
-    image: "/pictures/benz.jpg",
-  },
-  {
-    id: "3",
-    title: "Range Rover Vogue",
-    category: "Luxury SUV",
-    seats: 5,
-    fuel: "Hybrid",
-    transmission: "Auto",
-    pricePerDay: 90,
-    image: "/pictures/range-rover.jpeg",
-  },
-  {
-    id: "4",
-    title: "Nissan Patrol",
-    category: "Full-size SUV",
-    seats: 8,
-    fuel: "V8",
-    transmission: "Auto",
-    pricePerDay: 48,
-    image: "/pictures/nissan-patrol.jpg",
-  },
-  {
-    id: "5",
-    title: "Hyundai Ioniq 5",
-    category: "Electric",
-    seats: 5,
-    fuel: "Electric",
-    transmission: "Auto",
-    pricePerDay: 28,
-    image: "/pictures/hyundai.jpg",
-  },
-];
+const MOCK_CARS: Car[] = sampleCars as unknown as Car[];
 
 export default function CatalogClient() {
   const [query, setQuery] = useState("");
@@ -65,8 +15,11 @@ export default function CatalogClient() {
   const [sort, setSort] = useState("featured");
 
   const categories = useMemo(() => {
-    const set = new Set(MOCK_CARS.map((c) => c.category));
-    return Array.from(set);
+    const map = new Map<string, number>();
+    MOCK_CARS.forEach((c) =>
+      map.set(c.category, (map.get(c.category) || 0) + 1),
+    );
+    return Array.from(map.entries()).map(([name, count]) => ({ name, count }));
   }, []);
 
   const filtered = useMemo(() => {
