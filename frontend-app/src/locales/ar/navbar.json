@@ -1,0 +1,16 @@
+{
+  "menu": {
+    "fleet": "أسطول",
+    "assistant": "مساعد الذكاء الاصطناعي",
+    "membership": "العضوية",
+    "support": "الدعم"
+  },
+  "auth": {
+    "signIn": "تسجيل الدخول",
+    "register": "سجل"
+  },
+  "brand": {
+    "city": "سيتي",
+    "drive": "درايف"
+  }
+}

@@ -13,9 +13,9 @@ export const heroImage: HeroImageData = {
 };
 
 export const heroStats: HeroStat[] = [
-  { value: "120+", label: "CARS IN FLEET" },
-  { value: "60min", label: "AVG. DELIVERY TIME" },
-  { value: "4.96", label: "MEMBER SATISFACTION" },
+  { value: "120+", label: "stats.cars" },
+  { value: "60min", label: "stats.delivery" },
+  { value: "4.96", label: "stats.satisfaction" },
 ];
 
 // eslint-disable-next-line import/no-anonymous-default-export

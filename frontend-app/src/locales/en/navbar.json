@@ -1,0 +1,16 @@
+{
+  "menu": {
+    "fleet": "FLEET",
+    "assistant": "AI ASSISTANT",
+    "membership": "MEMBERSHIP",
+    "support": "SUPPORT"
+  },
+  "auth": {
+    "signIn": "SIGN IN",
+    "register": "REGISTER"
+  },
+  "brand": {
+    "city": "City",
+    "drive": "Drive"
+  }
+}

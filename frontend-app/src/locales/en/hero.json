@@ -1,0 +1,22 @@
+{
+  "hero": {
+    "badge": "KUWAIT IS FIRST AI CAR-DELIVERY SYSTEM",
+    "title": "Your car comes to you,",
+    "description": "A curated fleet of the finest and newest cars, delivered to your door in 60 minutes. A smart assistant guides you, with notifications built around your interests. No queues, no counters.",
+    "cta": {
+      "browse": "BROWSE THE FLEET",
+      "assistant": "MEET THE AI ASSISTANT"
+    },
+    "perDay": "/ day",
+    "min": "min",
+    "image": {
+      "title": "Ford Mustang 1969",
+      "alt": "Ford Mustang 1969"
+    }
+  },
+  "stats": {
+    "cars": "CARS IN FLEET",
+    "delivery": "AVG. DELIVERY TIME",
+    "satisfaction": "MEMBER SATISFACTION"
+  }
+}

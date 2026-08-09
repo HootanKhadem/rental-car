@@ -3,10 +3,14 @@ import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import type { MenuItem } from "./DesktopNav";
+import { useTranslation } from "react-i18next";
+
+// Mobile menu translations: menu items are passed translated by parent; auth buttons use i18n here
 
 type Props = { items: MenuItem[]; onClose: () => void };
 
 export default function MobileMenu({ items, onClose }: Props) {
+  const { t } = useTranslation();
   React.useEffect(() => {
     const prevOverflow = document.body.style.overflow;
     // lock body scroll when menu is open
@@ -83,7 +87,7 @@ export default function MobileMenu({ items, onClose }: Props) {
         <div className="px-6 pb-10">
           <div className="flex flex-col gap-3">
             <Button variant="outline" size="md" rounded="md">
-              Sign in
+              {t("auth.signIn")}
             </Button>
             <Button
               variant="solid"
@@ -92,7 +96,7 @@ export default function MobileMenu({ items, onClose }: Props) {
               bgClass="bg-button-primary-green"
               textClass="text-white"
             >
-              Register
+              {t("auth.register")}
             </Button>
           </div>
         </div>

@@ -1,8 +1,11 @@
 "use client";
 import React from "react";
 import { Button } from "@/components/ui/Button";
+import { useTranslation } from "react-i18next";
 
 export default function AuthButtons() {
+  const { t } = useTranslation();
+
   return (
     <div className="hidden md:flex items-center gap-3 font-[monospace]">
       <Button
@@ -11,7 +14,7 @@ export default function AuthButtons() {
         rounded="md"
         className="hover:border hover:border-title-yellow hover:text-title-yellow hover:bg-transparent"
       >
-        SIGN IN
+        {t("auth.signIn")}
       </Button>
       <Button
         variant="solid"
@@ -21,7 +24,7 @@ export default function AuthButtons() {
         textClass="text-white"
         className="hover:opacity-95"
       >
-        REGISTER
+        {t("auth.register")}
       </Button>
     </div>
   );

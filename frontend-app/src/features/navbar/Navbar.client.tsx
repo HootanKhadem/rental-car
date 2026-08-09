@@ -1,12 +1,18 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { initI18n } from "@/src/i18n/i18n";
 import { Logo, DesktopNav, AuthButtons, MobileMenu } from "./components";
+import LanguageSwitcher from "./components/LanguageSwitcher";
 import type { MenuItem } from "./components";
 import { defaultMenu } from "@/src/data";
 
 export type NavbarProps = { menuItems?: MenuItem[] };
 
 export default function NavbarClient({ menuItems }: NavbarProps) {
+  initI18n();
+  const { t, i18n } = useTranslation();
+
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -28,7 +34,19 @@ export default function NavbarClient({ menuItems }: NavbarProps) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const items = menuItems ?? defaultMenu;
+  const hrefToKey: Record<string, string> = {
+    "/#fleet": "menu.fleet",
+    "/#ai": "menu.assistant",
+    "/#membership": "menu.membership",
+    "/#support": "menu.support",
+  };
+
+  const items =
+    menuItems ??
+    defaultMenu.map((it) => ({
+      ...it,
+      label: t(hrefToKey[it.href] ?? it.label),
+    }));
 
   return (
     <header
@@ -45,7 +63,10 @@ export default function NavbarClient({ menuItems }: NavbarProps) {
 
           <DesktopNav items={items} />
 
-          <AuthButtons />
+          <div className="flex items-center gap-4">
+            <LanguageSwitcher />
+            <AuthButtons />
+          </div>
 
           <div className="md:hidden">
             <button
