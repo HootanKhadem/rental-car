@@ -9,6 +9,7 @@ import Modal from "@/components/ui/Modal";
 import { useReserve } from "./ReserveProvider";
 import Image from "next/image";
 import SignatureCanvas from "react-signature-canvas";
+import { Button } from "@/components/ui/Button";
 
 const TOTAL_STEPS = 9;
 
@@ -462,15 +463,15 @@ export default function ReserveModal() {
         )}
 
         {r.step === 5 && (
-          <div className="wiz-pane" data-step="5">
-            <div className="tc-box p-4 text-sm bg-[rgba(255,255,255,0.02)] rounded-md">
+          <div data-step="5">
+            <div className="p-4 text-sm text-emerald-100 rounded-lg bg-background-main border border-background-icon-card">
               {t("termsText")}
             </div>
-            <label className="check-row mt-3 flex items-start gap-3">
+            <label className="mt-3 flex items-start gap-3">
               <input
                 type="checkbox"
                 id="tcCheck"
-                className="mt-1"
+                className="mt-1 w-4.5 h-4.5 accent-emerald-600"
                 checked={agreeTerms}
                 onChange={(e) => setAgreeTerms(e.target.checked)}
               />{" "}
@@ -480,18 +481,18 @@ export default function ReserveModal() {
         )}
 
         {r.step === 6 && (
-          <div className="wiz-pane" data-step="6">
+          <div data-step="6">
             <p className="text-sm text-zinc-400 mb-3">{t("signatureNotice")}</p>
             <label className="font-mono text-xs text-zinc-400">
               Digital signature
             </label>
-            <div className="mt-2">
+            <div>
               <SignatureCanvas
                 ref={sigCanvasRef}
-                penColor="#ffffff"
+                penColor="black"
                 canvasProps={{
                   className:
-                    "w-full h-32 bg-[rgba(255,255,255,0.02)] rounded-md",
+                    "w-full h-40 bg-neutral-200 rounded-lg border border-background-icon-card",
                 }}
                 onEnd={() => {
                   const data = sigCanvasRef.current?.toDataURL?.();
@@ -501,12 +502,12 @@ export default function ReserveModal() {
               <div className="flex items-center gap-3 mt-2">
                 <button
                   type="button"
-                  className="py-1 px-3 rounded-md border border-zinc-700 text-sm"
+                  className="py-1 px-3 rounded-lg cursor-pointer hover:border-title-yellow hover:text-title-yellow border border-neutral-700 text-xs text-neutral-300"
                   onClick={clearSignature}
                 >
                   Clear
                 </button>
-                {signature ? (
+                {/* {signature ? (
                   <div className="text-sm text-emerald-400">
                     {t("signatureSaved")}
                   </div>
@@ -514,15 +515,46 @@ export default function ReserveModal() {
                   <div className="text-sm text-zinc-400">
                     {t("drawSignature")}
                   </div>
-                )}
+                )} */}
               </div>
             </div>
             <div className="mt-3">
               <div
-                className={`upload-box cursor-pointer rounded-lg border-2 border-dashed ${selfieFile ? "border-emerald-700 bg-emerald-950/30" : "border-zinc-700"} p-4 text-center`}
+                className={`upload-box cursor-pointer rounded-xl border-2 border-dotted ${selfieFile ? "border-emerald-700 bg-emerald-950/30" : "border-neutral-700 hover:border-[#C6A664] bg-background-main"} py-8 px-5 text-center`}
                 onClick={() => onSelectFile(fileSelfieRef, setSelfieFile)}
               >
-                <div className="ub-ic text-2xl">📸</div>
+                <div className="text-2xl flex justify-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="#C6A664"
+                  >
+                    <g clipPath="url(#clip0_4418_6760)">
+                      <path
+                        d="M17.2399 22.75H6.75993C3.95993 22.75 2.17993 21.08 2.01993 18.29L1.49993 10.04C1.41993 8.79 1.84993 7.59 2.70993 6.68C3.55993 5.77 4.75993 5.25 5.99993 5.25C6.31993 5.25 6.62993 5.06 6.77993 4.76L7.49993 3.33C8.08993 2.16 9.56993 1.25 10.8599 1.25H13.1499C14.4399 1.25 15.9099 2.16 16.4999 3.32L17.2199 4.78C17.3699 5.06 17.6699 5.25 17.9999 5.25C19.2399 5.25 20.4399 5.77 21.2899 6.68C22.1499 7.6 22.5799 8.79 22.4999 10.04L21.9799 18.3C21.7999 21.13 20.0699 22.75 17.2399 22.75ZM10.8599 2.75C10.1199 2.75 9.17993 3.33 8.83993 4L8.11993 5.44C7.69993 6.25 6.88993 6.75 5.99993 6.75C5.15993 6.75 4.37993 7.09 3.79993 7.7C3.22993 8.31 2.93993 9.11 2.99993 9.94L3.51993 18.2C3.63993 20.22 4.72993 21.25 6.75993 21.25H17.2399C19.2599 21.25 20.3499 20.22 20.4799 18.2L20.9999 9.94C21.0499 9.11 20.7699 8.31 20.1999 7.7C19.6199 7.09 18.8399 6.75 17.9999 6.75C17.1099 6.75 16.2999 6.25 15.8799 5.46L15.1499 4C14.8199 3.34 13.8799 2.76 13.1399 2.76H10.8599V2.75Z"
+                        fill="white"
+                        style={{ fill: "var(--fillg)" }}
+                      />
+                      <path
+                        d="M13.5 8.75H10.5C10.09 8.75 9.75 8.41 9.75 8C9.75 7.59 10.09 7.25 10.5 7.25H13.5C13.91 7.25 14.25 7.59 14.25 8C14.25 8.41 13.91 8.75 13.5 8.75Z"
+                        fill="white"
+                        style={{ fill: "var(--fillg)" }}
+                      />
+                      <path
+                        d="M12 18.75C9.79 18.75 8 16.96 8 14.75C8 12.54 9.79 10.75 12 10.75C14.21 10.75 16 12.54 16 14.75C16 16.96 14.21 18.75 12 18.75ZM12 12.25C10.62 12.25 9.5 13.37 9.5 14.75C9.5 16.13 10.62 17.25 12 17.25C13.38 17.25 14.5 16.13 14.5 14.75C14.5 13.37 13.38 12.25 12 12.25Z"
+                        fill="white"
+                        style={{ fill: "var(--fillg)" }}
+                      />
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_4418_6760">
+                        <rect width="24" height="24" fill="white" />
+                      </clipPath>
+                    </defs>
+                  </svg>
+                </div>
                 {selfieFile ? (
                   <div>
                     <div className="ub-t font-semibold mt-2">
@@ -543,35 +575,36 @@ export default function ReserveModal() {
                   </>
                 )}
               </div>
+
               <input
                 ref={fileSelfieRef}
                 type="file"
                 accept="image/*"
-                className="hide"
+                className="hidden"
               />
             </div>
           </div>
         )}
 
         {r.step === 7 && (
-          <div className="wiz-pane" data-step="7">
-            <div className="summary-row total flex items-center justify-between">
-              <span className="text-lg">{t("amountDue")}</span>
-              <span className="sv font-serif text-2xl text-amber-400">
+          <div data-step="7">
+            <div className="flex items-center justify-between my-7">
+              <span className="text-lg font-semibold">{t("amountDue")}</span>
+              <span className="sv font-serif text-xl text-title-yellow">
                 KWD {estTotal}
               </span>
             </div>
 
-            <label className="block mt-4 text-sm text-zinc-400">
+            <label className="text-xs text-neutral-400 mb-2 block">
               {t("choosePayment")}
             </label>
-            <div className="pay-methods mt-2 grid grid-cols-2 gap-3">
+            <div className="mt-2 grid grid-cols-2 gap-3">
               {["knet", "visa", "paypal", "apple"].map((key) => (
                 <button
                   key={key}
                   type="button"
                   onClick={() => setPayMethod(key)}
-                  className={`py-3 rounded-md border text-sm ${payMethod === key ? "border-emerald-500 bg-emerald-800 text-emerald-200" : "border-zinc-800 text-zinc-200"}`}
+                  className={`py-3 rounded-lg cursor-pointer border hover:border-emerald-700 text-sm ${payMethod === key ? "border-emerald-500 bg-emerald-950 text-emerald-200" : "border-background-icon-card text-zinc-200"}`}
                 >
                   {key === "knet"
                     ? "KNET · كـ نت"
@@ -585,73 +618,98 @@ export default function ReserveModal() {
             </div>
 
             <div className="mt-4">
-              <label className="block text-sm text-zinc-400 mb-2">
+              <label className="text-xs text-neutral-400 mb-2 block">
                 {t("cardNumber")}
               </label>
               <input
                 placeholder="•••• •••• •••• ••••"
                 value={cardNumber}
                 onChange={(e) => setCardNumber(e.target.value)}
-                className="w-full rounded-md p-3 bg-[rgba(255,255,255,0.02)] border border-zinc-700 text-lg"
+                className="w-full bg-[#0B1512] border border-background-icon-card rounded-lg text-sm p-3"
               />
 
               <div className="grid grid-cols-2 gap-3 mt-3">
                 <div>
-                  <label className="block text-sm text-zinc-400 mb-2">
+                  <label className="text-xs text-neutral-400 mb-2 block">
                     {t("expiry")}
                   </label>
                   <input
                     placeholder="MM/YY"
                     value={expiry}
                     onChange={(e) => setExpiry(e.target.value)}
-                    className="w-full rounded-md p-2 bg-[rgba(255,255,255,0.02)] border border-zinc-700"
+                    className="w-full bg-[#0B1512] border border-background-icon-card rounded-lg text-sm p-3"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm text-zinc-400 mb-2">
+                  <label className="text-xs text-neutral-400 mb-2 block">
                     {t("cvv")}
                   </label>
                   <input
                     placeholder="•••"
                     value={cvv}
                     onChange={(e) => setCvv(e.target.value)}
-                    className="w-full rounded-md p-2 bg-[rgba(255,255,255,0.02)] border border-zinc-700"
+                    className="w-full bg-[#0B1512] border border-background-icon-card rounded-lg text-sm p-3"
                   />
                 </div>
               </div>
             </div>
-            <div className="secure-note mt-4 p-3 rounded-md border border-emerald-700 bg-emerald-900/10 flex items-center gap-3 text-sm text-emerald-200">
-              <span className="text-2xl">🔒</span>
+            <div className="mt-4 p-3 rounded-lg border border-emerald-700 bg-emerald-950 flex items-center gap-3 text-sm text-emerald-100">
+              <span className="text-sm">🔒</span>
               <span>{t("secureNote")}</span>
             </div>
           </div>
         )}
 
         {r.step === 8 && (
-          <div className="wiz-pane" data-step="8">
-            <div className="success-wrap text-center">
-              <div className="sc-ic text-4xl">✅</div>
-              <h3 className="mt-3 text-xl font-semibold">
+          <div data-step="8">
+            <div className="success-wrap text-center py-6">
+              <div className="w-16 h-16 rounded-full bg-emerald-900/40 flex items-center justify-center mx-auto">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-8 h-8 text-emerald-400"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </div>
+
+              <h3 className="mt-4 text-2xl font-serif text-emerald-50 font-semibold">
                 {t("doneMsgTitle")}
               </h3>
-              <p className="text-sm text-zinc-400 mt-2" id="rsvDoneMsg">
-                {t("doneMsgBody")}
+
+              <p
+                className="text-sm text-emerald-100 mt-3 max-w-xl mx-auto"
+                id="rsvDoneMsg"
+              >
+                {r.car?.title
+                  ? i18n.language === "ar"
+                    ? `${r.car.title} در راه است. دستیار هوش مصنوعی اطلاعات تحویل و زمان رسیدن را برایتان ارسال می‌کند.`
+                    : `${r.car.title} is on its way. The AI assistant will message you delivery details and arrival time.`
+                  : t("doneMsgBody")}
               </p>
             </div>
           </div>
         )}
 
         {r.step !== 0 && (
-          <div className="wiz-nav mt-6 flex gap-3">
-            <button
-              className="btn btn-ghost"
-              onClick={() => r.back()}
+          <div className="mt-6 flex justify-between gap-4">
+            {r.step !== 8 &&
+              <Button variant="outline" size="sm" rounded="lg" className="w-full hover:border-title-yellow hover:text-title-yellow"
+            onClick={() => r.back()}
               disabled={r.step === 0}
             >
               {t("back")}
-            </button>
+            </Button>
+            }
             <button
-              className={`ml-auto py-2 px-4 rounded-md text-sm font-semibold ${canAdvance ? "" : "opacity-50 cursor-not-allowed"}`}
+              className={`w-full py-3 rounded-lg cursor-pointer text-sm font-semibold ${canAdvance ? "" : "opacity-50 cursor-not-allowed"}`}
               onClick={() => {
                 if (r.step === 8) {
                   try {
@@ -672,8 +730,8 @@ export default function ReserveModal() {
               style={
                 canAdvance
                   ? {
-                      background: "linear-gradient(90deg,#2f9b6e,#6ad29a)",
-                      color: "#07110a",
+                      background: "#10b981",
+                      color: "#fff",
                     }
                   : { background: "transparent", color: "#9ca3af" }
               }
