@@ -700,23 +700,28 @@ export default function ReserveModal() {
 
         {r.step !== 0 && (
           <div className="mt-6 flex justify-between gap-4">
-            {r.step !== 8 &&
-              <Button variant="outline" size="sm" rounded="lg" className="w-full hover:border-title-yellow hover:text-title-yellow"
-            onClick={() => r.back()}
-              disabled={r.step === 0}
-            >
-              {t("back")}
-            </Button>
-            }
+            {r.step !== 8 && (
+              <Button
+                variant="outline"
+                size="sm"
+                rounded="lg"
+                className="w-full hover:border-title-yellow hover:text-title-yellow"
+                onClick={() => r.back()}
+                disabled={r.step === 0}
+              >
+                {t("back")}
+              </Button>
+            )}
             <button
               className={`w-full py-3 rounded-lg cursor-pointer text-sm font-semibold ${canAdvance ? "" : "opacity-50 cursor-not-allowed"}`}
               onClick={() => {
                 if (r.step === 8) {
                   try {
-                    const n = addNotification(
-                      t("doneMsgTitle"),
-                      `${r.car?.title ?? ""} ${i18n.language === "ar" ? "في الطريق" : "is on its way"}`,
-                    );
+                    const n = addNotification({
+                      titleKey: "reserve:doneMsgTitle",
+                      subtitleKey: "reserve:doneMsgBodyWithCar",
+                      subtitleParams: { car: r.car?.title ?? "" },
+                    });
                     // mark acknowledged (OK) for the user as requested
                     acknowledgeNotification(n.id);
                   } catch (e) {

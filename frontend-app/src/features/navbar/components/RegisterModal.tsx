@@ -95,7 +95,7 @@ export default function RegisterModal({ isOpen, onClose }: Props) {
             </clipPath>
           </defs>
         </svg>
-        <p>Your data is protected and never shared with third parties.</p>
+        <p>{t("privacyNote")}</p>
       </div>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <div>

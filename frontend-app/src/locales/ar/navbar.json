@@ -38,6 +38,7 @@
     "noAccount": "لا تملك حساب؟",
     "registerLink": "سجل"
   },
+  "privacyNote": "بياناتك محمية ولن تتم مشاركتها مع أطراف ثالثة.",
   "notifications": {
     "title": "الإشعارات",
     "item1_title": "عرض لأعضاء الذهبية",

@@ -3,9 +3,52 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import {
   readNotifications,
+  writeNotifications,
   acknowledgeNotification,
   NotificationItem,
 } from "../../notifications/notifications";
+
+function migrateLegacyPure(itemsIn: NotificationItem[]) {
+  let changed = false;
+  const migrated = itemsIn.map((it) => {
+    let out = it;
+    if (!it.titleKey && it.title) {
+      const enTitle = "Reservation confirmed!";
+      const arTitle = "تم تأكيد الحجز!";
+      if (it.title === enTitle || it.title === arTitle) {
+        out = { ...out, titleKey: "reserve:doneMsgTitle" };
+        changed = true;
+      }
+    }
+    if (!it.subtitleKey && it.subtitle) {
+      // English pattern: "<car> is on its way"
+      const enMatch = it.subtitle.match(/^(.*) is on its way/i);
+      if (enMatch) {
+        const car = enMatch[1].trim();
+        out = {
+          ...out,
+          subtitleKey: "reserve:doneMsgBodyWithCar",
+          subtitleParams: { car },
+        };
+        changed = true;
+      } else {
+        // Arabic pattern: "<car> في الطريق"
+        const arMatch = it.subtitle.match(/^(.*)\sفي\sالطريق/);
+        if (arMatch) {
+          const car = arMatch[1].trim();
+          out = {
+            ...out,
+            subtitleKey: "reserve:doneMsgBodyWithCar",
+            subtitleParams: { car },
+          };
+          changed = true;
+        }
+      }
+    }
+    return out;
+  });
+  return { migrated, changed } as const;
+}
 
 export default function NotificationsPanel({
   onClose,
@@ -13,14 +56,22 @@ export default function NotificationsPanel({
   onClose: () => void;
 }) {
   const { t } = useTranslation();
-  const [items, setItems] = React.useState<NotificationItem[]>(() =>
-    readNotifications(),
-  );
+  const [items, setItems] = React.useState<NotificationItem[]>(() => {
+    const { migrated } = migrateLegacyPure(readNotifications());
+    return migrated;
+  });
 
   React.useEffect(() => {
     function onChange() {
-      setItems(readNotifications());
+      const { migrated, changed } = migrateLegacyPure(readNotifications());
+      if (changed) writeNotifications(migrated);
+      setItems(migrated);
     }
+
+    // initial migration write if needed (state already initialized with migrated items)
+    const initial = migrateLegacyPure(readNotifications());
+    if (initial.changed) writeNotifications(initial.migrated);
+
     window.addEventListener("rc-notifications-change", onChange);
     window.addEventListener("storage", onChange);
     return () => {
@@ -46,27 +97,31 @@ export default function NotificationsPanel({
             {t("notifications.empty", "No notifications")}
           </div>
         ) : (
-          items.map((it) => (
-            <div key={it.id} className="flex items-start gap-3">
-              <div className="w-10 h-10 rounded-md bg-emerald-700 flex items-center justify-center text-white">
-                🔔
+          items.map((it) => {
+            const titleText = it.titleKey
+              ? //eslint-disable-next-line
+                String(t(it.titleKey, it.titleParams as any))
+              : String(it.title ?? "");
+            const subtitleText = it.subtitleKey
+              ? //eslint-disable-next-line
+                String(t(it.subtitleKey, it.subtitleParams as any))
+              : String(it.subtitle ?? "");
+            return (
+              <div key={it.id} className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-md bg-emerald-700 flex items-center justify-center text-white">
+                  🔔
+                </div>
+                <div className="flex-1">
+                  <div className="font-semibold">{titleText}</div>
+                  {subtitleText ? (
+                    <div className="text-sm text-neutral-400">
+                      {subtitleText}
+                    </div>
+                  ) : null}
+                </div>
               </div>
-              <div className="flex-1">
-                <div className="font-semibold">{it.title}</div>
-                {it.subtitle ? (
-                  <div className="text-sm text-neutral-400">{it.subtitle}</div>
-                ) : null}
-                {/* <div className="mt-2">
-                  <button
-                    onClick={() => handleAck(it.id)}
-                    className="text-xs text-neutral-300 hover:text-white"
-                  >
-                    OK
-                  </button>
-                </div> */}
-              </div>
-            </div>
-          ))
+            );
+          })
         )}
       </div>
 
