@@ -108,6 +108,11 @@ export default function ReserveModal() {
     setSignature(null);
   }
 
+  function shortName(f: File | null | undefined) {
+    if (!f) return "";
+    return f.name.length > 36 ? f.name.slice(0, 33) + "..." : f.name;
+  }
+
   return (
     <Modal isOpen={r.isOpen} onClose={r.close} title={t("modalTitle")}>
       <div className="modal-h mb-3 flex items-start justify-between">
@@ -148,24 +153,75 @@ export default function ReserveModal() {
           <div className="wiz-pane" data-step="1">
             <p className="text-sm text-zinc-400 mb-4">{t("upload.civil")}</p>
             <div
-              className="upload-box cursor-pointer rounded-lg border-2 border-dashed border-zinc-700 p-4 text-center"
+              className={`upload-box cursor-pointer rounded-xl border-2 border-dotted ${civilFile ? "border-emerald-700 bg-emerald-950/30" : "border-neutral-700 hover:border-[#C6A664] bg-background-main"} py-8 px-5 text-center`}
               onClick={() => onSelectFile(fileCivilRef, setCivilFile)}
             >
-              <div className="ub-ic text-2xl">📄</div>
-              <div className="ub-t font-semibold mt-2">{t("step.civil")}</div>
-              <div className="ub-s text-sm text-zinc-400 mt-1">
-                {t("upload.civil")}
+              <div className="text-2xl flex justify-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="#C6A664"
+                >
+                  <g clipPath="url(#clip0_4418_169691)">
+                    <path
+                      d="M22 9.25H2C1.59 9.25 1.25 8.91 1.25 8.5C1.25 8.09 1.59 7.75 2 7.75H22C22.41 7.75 22.75 8.09 22.75 8.5C22.75 8.91 22.41 9.25 22 9.25Z"
+                      fill="white"
+                      style={{ fill: "var(--fillg)" }}
+                    />
+                    <path
+                      d="M8 17.25H6C5.59 17.25 5.25 16.91 5.25 16.5C5.25 16.09 5.59 15.75 6 15.75H8C8.41 15.75 8.75 16.09 8.75 16.5C8.75 16.91 8.41 17.25 8 17.25Z"
+                      fill="white"
+                      style={{ fill: "var(--fillg)" }}
+                    />
+                    <path
+                      d="M14.5 17.25H10.5C10.09 17.25 9.75 16.91 9.75 16.5C9.75 16.09 10.09 15.75 10.5 15.75H14.5C14.91 15.75 15.25 16.09 15.25 16.5C15.25 16.91 14.91 17.25 14.5 17.25Z"
+                      fill="white"
+                      style={{ fill: "var(--fillg)" }}
+                    />
+                    <path
+                      d="M17.56 21.25H6.44C2.46 21.25 1.25 20.05 1.25 16.11V7.89C1.25 3.95 2.46 2.75 6.44 2.75H17.55C21.53 2.75 22.74 3.95 22.74 7.89V16.1C22.75 20.05 21.54 21.25 17.56 21.25ZM6.44 4.25C3.3 4.25 2.75 4.79 2.75 7.89V16.1C2.75 19.2 3.3 19.74 6.44 19.74H17.55C20.69 19.74 21.24 19.2 21.24 16.1V7.89C21.24 4.79 20.69 4.25 17.55 4.25H6.44Z"
+                      fill="white"
+                      style={{ fill: "var(--fillg)" }}
+                    />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_4418_169691">
+                      <rect width="24" height="24" fill="white" />
+                    </clipPath>
+                  </defs>
+                </svg>
               </div>
+              {civilFile ? (
+                <div>
+                  <div className="ub-t font-semibold mt-2">
+                    {shortName(civilFile)}
+                  </div>
+                  <div className="ub-s text-sm text-emerald-300 mt-1">
+                    {t("fileSelected")}
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className="ub-t font-semibold mt-2">
+                    {t("step.civil")}
+                  </div>
+                  <div className="ub-s text-xs text-zinc-400 mt-1">
+                    {t("upload.civil")}
+                  </div>
+                </>
+              )}
             </div>
             <input
               ref={fileCivilRef}
               type="file"
               accept="image/*"
-              className="hide"
+              className="hidden"
             />
-            <div className="verify-row mt-3 text-sm text-emerald-300">
+            {/* <div className="verify-row mt-3 text-sm text-emerald-300">
               {civilFile ? t("fileSelected") : ""}
-            </div>
+            </div> */}
           </div>
         )}
 
@@ -173,36 +229,87 @@ export default function ReserveModal() {
           <div className="wiz-pane" data-step="2">
             <p className="text-sm text-zinc-400 mb-4">{t("upload.license")}</p>
             <div
-              className="upload-box cursor-pointer rounded-lg border-2 border-dashed border-zinc-700 p-4 text-center"
+              className={`upload-box cursor-pointer rounded-xl border-2 border-dotted ${licFile ? "border-emerald-700 bg-emerald-950/30" : "border-neutral-700 hover:border-[#C6A664] bg-background-main"} py-8 px-5 text-center`}
               onClick={() => onSelectFile(fileLicRef, setLicFile)}
             >
-              <div className="ub-ic text-2xl">📄</div>
-              <div className="ub-t font-semibold mt-2">{t("step.license")}</div>
-              <div className="ub-s text-sm text-zinc-400 mt-1">
-                {t("upload.hint")}
+              <div className="text-2xl flex justify-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="#C6A664"
+                >
+                  <g clipPath="url(#clip0_4418_169691)">
+                    <path
+                      d="M22 9.25H2C1.59 9.25 1.25 8.91 1.25 8.5C1.25 8.09 1.59 7.75 2 7.75H22C22.41 7.75 22.75 8.09 22.75 8.5C22.75 8.91 22.41 9.25 22 9.25Z"
+                      fill="white"
+                      style={{ fill: "var(--fillg)" }}
+                    />
+                    <path
+                      d="M8 17.25H6C5.59 17.25 5.25 16.91 5.25 16.5C5.25 16.09 5.59 15.75 6 15.75H8C8.41 15.75 8.75 16.09 8.75 16.5C8.75 16.91 8.41 17.25 8 17.25Z"
+                      fill="white"
+                      style={{ fill: "var(--fillg)" }}
+                    />
+                    <path
+                      d="M14.5 17.25H10.5C10.09 17.25 9.75 16.91 9.75 16.5C9.75 16.09 10.09 15.75 10.5 15.75H14.5C14.91 15.75 15.25 16.09 15.25 16.5C15.25 16.91 14.91 17.25 14.5 17.25Z"
+                      fill="white"
+                      style={{ fill: "var(--fillg)" }}
+                    />
+                    <path
+                      d="M17.56 21.25H6.44C2.46 21.25 1.25 20.05 1.25 16.11V7.89C1.25 3.95 2.46 2.75 6.44 2.75H17.55C21.53 2.75 22.74 3.95 22.74 7.89V16.1C22.75 20.05 21.54 21.25 17.56 21.25ZM6.44 4.25C3.3 4.25 2.75 4.79 2.75 7.89V16.1C2.75 19.2 3.3 19.74 6.44 19.74H17.55C20.69 19.74 21.24 19.2 21.24 16.1V7.89C21.24 4.79 20.69 4.25 17.55 4.25H6.44Z"
+                      fill="white"
+                      style={{ fill: "var(--fillg)" }}
+                    />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_4418_169691">
+                      <rect width="24" height="24" fill="white" />
+                    </clipPath>
+                  </defs>
+                </svg>
               </div>
+              {licFile ? (
+                <div>
+                  <div className="ub-t font-semibold mt-2">
+                    {shortName(licFile)}
+                  </div>
+                  <div className="ub-s text-sm text-emerald-300 mt-1">
+                    {t("fileSelected")}
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className="ub-t font-semibold mt-2">
+                    {t("step.license")}
+                  </div>
+                  <div className="ub-s text-sm text-zinc-400 mt-1">
+                    {t("upload.hint")}
+                  </div>
+                </>
+              )}
             </div>
             <input
               ref={fileLicRef}
               type="file"
               accept="image/*"
-              className="hide"
+              className="hidden"
             />
             <div className="field mt-4">
-              <label className="block text-sm text-zinc-400 mb-2">
+              <label className="text-xs text-neutral-400 mb-2 block">
                 License or Civil No
               </label>
               <input
                 value={licNo}
                 onChange={(e) => setLicNo(e.target.value)}
                 placeholder="123456789012"
-                className="w-full rounded-md p-2 bg-[rgba(255,255,255,0.02)] border border-zinc-700"
+                className="w-full bg-[#0B1512] border border-background-icon-card rounded-lg text-sm p-3"
               />
             </div>
             <div className="mt-3">
               <div className="flex items-center gap-3">
                 <button
-                  className="w-full py-2 rounded-md border border-zinc-700 text-sm"
+                  className="w-full py-2 rounded-md border text-neutral-300 border-emerald-900 cursor-pointer hover:border-title-yellow hover:text-title-yellow text-sm"
                   onClick={() => {
                     const v = licNo.trim();
                     if (!v || !/^\d+$/.test(v)) {
@@ -229,8 +336,8 @@ export default function ReserveModal() {
         )}
 
         {r.step === 3 && (
-          <div className="wiz-pane" data-step="3">
-            <div className="sel-car mb-4 flex items-center gap-4">
+          <div data-step="3">
+            <div className="mb-4 flex items-center gap-4 bg-background-main border border-background-icon-card p-3 rounded-lg">
               {r.car?.image ? (
                 <div className="w-28 h-16 relative rounded-md overflow-hidden bg-zinc-800">
                   <Image
@@ -243,26 +350,26 @@ export default function ReserveModal() {
               ) : null}
               <div>
                 <div className="font-serif text-lg">{r.car?.title}</div>
-                <div className="text-sm text-zinc-400">
-                  KWD {r.car?.pricePerDay}
+                <div className="text-xs text-title-yellow">
+                  KWD {r.car?.pricePerDay} / day
                 </div>
               </div>
             </div>
-            <div className="field-row grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm text-zinc-400 mb-2">
-                  {t("label.startDate")}
+                <label className="text-xs text-neutral-400 mb-2 block">
+                  {t("label.startDate").toUpperCase()}
                 </label>
                 <input
                   type="date"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full rounded-md p-2 bg-[rgba(255,255,255,0.02)] border border-zinc-700"
+                  className="w-full bg-[#0B1512] border border-background-icon-card rounded-lg text-sm p-3"
                 />
               </div>
               <div>
-                <label className="block text-sm text-zinc-400 mb-2">
-                  {t("label.days")}
+                <label className="text-xs text-neutral-400 mb-2 block">
+                  {t("label.days").toUpperCase()}
                 </label>
                 <input
                   type="number"
@@ -270,23 +377,25 @@ export default function ReserveModal() {
                   max={90}
                   value={days}
                   onChange={(e) => setDays(Number(e.target.value) || 1)}
-                  className="w-full rounded-md p-2 bg-[rgba(255,255,255,0.02)] border border-zinc-700"
+                  className="w-full bg-[#0B1512] border border-background-icon-card rounded-lg text-sm p-3"
                 />
               </div>
             </div>
-            <div className="verify-row mt-3 text-sm text-zinc-400">
+            <div className="verify-row mt-3 text-sm text-zinc-400 border-b border-zinc-400 pb-2">
               {t("pickupNote")}
             </div>
-            <div className="summary-row total mt-4 flex items-center justify-between">
+            <div className="text-lg mt-4 flex items-center justify-between">
               <span>{t("estimated")}</span>
-              <span className="sv font-serif">KWD {estTotal}</span>
+              <span className="font-serif text-title-yellow font-semibold">
+                KWD {estTotal}
+              </span>
             </div>
           </div>
         )}
 
         {r.step === 4 && (
-          <div className="wiz-pane" data-step="4">
-            <div className="summary-card mb-4 rounded-md border border-zinc-800 p-4 bg-[rgba(255,255,255,0.02)]">
+          <div data-step="4">
+            <div className="mb-4 flex items-center gap-4 bg-background-main border border-background-icon-card p-3 rounded-lg">
               <div className="flex items-center gap-4">
                 {r.car?.image ? (
                   <div className="w-28 h-16 relative rounded-md overflow-hidden bg-zinc-800">
@@ -300,33 +409,33 @@ export default function ReserveModal() {
                 ) : null}
                 <div className="flex-1">
                   <div className="font-serif text-lg">{r.car?.title}</div>
-                  <div className="text-sm text-zinc-400">
+                  <div className="text-xs text-title-yellow">
                     KWD {r.car?.pricePerDay} / day
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="feature-list space-y-3 mb-4">
-              <div className="fl flex items-center gap-3">
-                <span className="fc text-emerald-400">✓</span>
+            <div className="space-y-3 mb-4 text-sm">
+              <div className="flex items-center gap-3">
+                <span className="text-emerald-400">✓</span>
                 <span>{t("features.insurance")}</span>
               </div>
-              <div className="fl flex items-center gap-3">
-                <span className="fc text-emerald-400">✓</span>
+              <div className="flex items-center gap-3">
+                <span className="text-emerald-400">✓</span>
                 <span>{t("features.delivery")}</span>
               </div>
-              <div className="fl flex items-center gap-3">
-                <span className="fc text-emerald-400">✓</span>
+              <div className="flex items-center gap-3">
+                <span className="text-emerald-400">✓</span>
                 <span>{t("features.roadside")}</span>
               </div>
-              <div className="fl flex items-center gap-3">
-                <span className="fc text-emerald-400">✓</span>
+              <div className="flex items-center gap-3">
+                <span className="text-emerald-400">✓</span>
                 <span>{t("features.tracking")}</span>
               </div>
             </div>
 
-            <div className="divide-y divide-zinc-700 text-sm text-zinc-300">
+            <div className="divide-y divide-divider-line text-sm text-zinc-300">
               <div className="py-3 flex justify-between">
                 <span>{t("label.car")}</span>
                 <span className="text-right">{r.car?.title}</span>
@@ -343,9 +452,9 @@ export default function ReserveModal() {
               </div>
             </div>
 
-            <div className="summary-row mt-4 flex items-center justify-between">
+            <div className="mt-4 flex items-center justify-between border-t border-title-yellow/30 pt-2">
               <span className="text-lg font-semibold">{t("label.total")}</span>
-              <span className="sv font-serif text-xl text-amber-400">
+              <span className="font-serif text-xl text-amber-400">
                 KWD {estTotal}
               </span>
             </div>
@@ -410,16 +519,29 @@ export default function ReserveModal() {
             </div>
             <div className="mt-3">
               <div
-                className="upload-box cursor-pointer rounded-lg border-2 border-dashed border-zinc-700 p-4 text-center"
+                className={`upload-box cursor-pointer rounded-lg border-2 border-dashed ${selfieFile ? "border-emerald-700 bg-emerald-950/30" : "border-zinc-700"} p-4 text-center`}
                 onClick={() => onSelectFile(fileSelfieRef, setSelfieFile)}
               >
                 <div className="ub-ic text-2xl">📸</div>
-                <div className="ub-t font-semibold mt-2">
-                  {t("upload.selfie")}
-                </div>
-                <div className="ub-s text-sm text-zinc-400 mt-1">
-                  {t("upload.selfie")}
-                </div>
+                {selfieFile ? (
+                  <div>
+                    <div className="ub-t font-semibold mt-2">
+                      {shortName(selfieFile)}
+                    </div>
+                    <div className="ub-s text-sm text-emerald-300 mt-1">
+                      {t("fileSelected")}
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div className="ub-t font-semibold mt-2">
+                      {t("upload.selfie")}
+                    </div>
+                    <div className="ub-s text-sm text-zinc-400 mt-1">
+                      {t("upload.selfie")}
+                    </div>
+                  </>
+                )}
               </div>
               <input
                 ref={fileSelfieRef}
