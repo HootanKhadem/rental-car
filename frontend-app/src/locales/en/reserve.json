@@ -11,7 +11,8 @@
     "done": "Done"
   },
   "trustNote": "Booking is for registered members only, to keep your documents secure.",
-  "createAccount": "Create account",
+  "createAccount": "Create a free account to continue — takes under a minute.",
+  "createAccountButton":"Create Account",
   "upload": {
     "civil": "Upload your civil ID. Used for identity verification only.",
     "license": "Upload a valid local driving license.",

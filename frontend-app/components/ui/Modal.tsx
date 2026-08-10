@@ -140,7 +140,7 @@ export default function Modal({
       <div
         // overlay fades in/out
         className={
-          "absolute inset-0 bg-black/70 transition-opacity duration-200 " +
+          "absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-200 " +
           (visible ? "opacity-100" : "opacity-0")
         }
         onClick={onClose}
@@ -153,7 +153,7 @@ export default function Modal({
         tabIndex={-1}
         aria-labelledby={title ? "rc-modal-title" : undefined}
         className={
-          "relative w-full max-w-lg mx-auto bg-background-main border border-divider-line rounded-lg p-6 shadow-xl text-white transform transition-all duration-200 max-h-[90vh] overflow-auto " +
+          "relative w-full max-w-148 mx-auto bg-[#16261F] border border-divider-line rounded-2xl p-6 shadow-xl text-white transform transition-all duration-200 max-h-[90vh] overflow-auto " +
           (visible
             ? "opacity-100 translate-y-0 scale-100"
             : "opacity-0 translate-y-4 scale-95") +

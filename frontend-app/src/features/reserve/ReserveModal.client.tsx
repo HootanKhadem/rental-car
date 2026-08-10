@@ -112,7 +112,7 @@ export default function ReserveModal() {
     <Modal isOpen={r.isOpen} onClose={r.close} title={t("modalTitle")}>
       <div className="modal-h mb-3 flex items-start justify-between">
         <div>
-          <p className="text-sm text-zinc-400 mt-1">{`${r.step + 1} / ${TOTAL_STEPS} · ${stepLabel}`}</p>
+          <p className="text-sm font-semibold text-title-yellow mt-1 tracking-[3px]">{`${r.step + 1} / ${TOTAL_STEPS} · ${stepLabel}`}</p>
         </div>
       </div>
 
@@ -120,7 +120,7 @@ export default function ReserveModal() {
         {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
           <div
             key={i}
-            className={`h-2 flex-1 rounded-full ${i <= r.step ? "bg-emerald-500" : "bg-zinc-700"}`}
+            className={`h-2 flex-1 rounded-full ${i <= r.step ? "bg-emerald-400" : "bg-[#28392F]"}`}
           />
         ))}
       </div>
@@ -128,17 +128,17 @@ export default function ReserveModal() {
       <div className="modal-body">
         {r.step === 0 && (
           <div className="wiz-pane" data-step="0">
-            <div className="trust-note p-4 rounded-md border border-emerald-700 bg-emerald-900/20 text-emerald-200">
-              <span className="ti mr-2">●</span>
-              <span>{t("trustNote")}</span>
+            <div className="trust-note flex justify-start mt-7 mb-5 items-center gap-2 p-3 rounded-lg border border-emerald-700 bg-emerald-900/20 text-emerald-200">
+              <p className="mb-0.5 text-xs">●</p>
+              <p className="text-sm text-zinc-200">{t("trustNote")}</p>
             </div>
             <p className="text-sm text-zinc-400 mt-4">{t("createAccount")}</p>
             <div className="mt-6">
               <button
-                className="w-full py-3 rounded-md bg-emerald-600 hover:bg-emerald-500 text-white font-semibold"
+                className="w-full cursor-pointer py-3 rounded-md bg-emerald-600 hover:bg-emerald-500 text-white font-semibold"
                 onClick={openRegister}
               >
-                {t("createAccount")}
+                {t("createAccountButton")}
               </button>
             </div>
           </div>
