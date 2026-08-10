@@ -1,21 +1,11 @@
 "use client";
 import React from "react";
 import { useTranslation } from "react-i18next";
-
-type Item = { id: string; title: string; subtitle?: string };
-
-const demo: Item[] = [
-  {
-    id: "1",
-    title: "Gold member offer",
-    subtitle: "15% off Range Rover this week",
-  },
-  {
-    id: "2",
-    title: "Based on your SUV interest",
-    subtitle: "Patrol & Land Cruiser available now for delivery",
-  },
-];
+import {
+  readNotifications,
+  acknowledgeNotification,
+  NotificationItem,
+} from "../../notifications/notifications";
 
 export default function NotificationsPanel({
   onClose,
@@ -23,6 +13,27 @@ export default function NotificationsPanel({
   onClose: () => void;
 }) {
   const { t } = useTranslation();
+  const [items, setItems] = React.useState<NotificationItem[]>(() =>
+    readNotifications(),
+  );
+
+  React.useEffect(() => {
+    function onChange() {
+      setItems(readNotifications());
+    }
+    window.addEventListener("rc-notifications-change", onChange);
+    window.addEventListener("storage", onChange);
+    return () => {
+      window.removeEventListener("rc-notifications-change", onChange);
+      window.removeEventListener("storage", onChange);
+    };
+  }, []);
+
+  function handleAck(id: string) {
+    acknowledgeNotification(id);
+    setItems(readNotifications());
+  }
+
   return (
     <div className="w-80 bg-background-main border border-divider-line rounded-lg shadow-lg text-white overflow-hidden">
       <div className="px-4 py-3 border-b border-divider-line">
@@ -30,81 +41,33 @@ export default function NotificationsPanel({
       </div>
 
       <div className="p-3 space-y-3">
-        <div className="flex items-start gap-3">
-          <div className="w-10 h-10 rounded-md bg-emerald-700 flex items-center justify-center text-white">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="#ffffff"
-            >
-              <g clipPath="url(#clip0_655_7003)">
-                <path
-                  d="M20.8894 18.31H3.10938C2.69938 18.31 2.35938 17.97 2.35938 17.56V16.78C2.35938 16.22 2.57938 15.42 3.60938 14.8C3.63937 14.78 3.66938 14.77 3.69938 14.75L4.47938 14.42C4.47938 14.42 4.54938 14.39 4.58938 14.38C4.65938 14.36 4.79938 14.3 4.79938 14.22L5.46937 7.81C5.71937 6.02 6.84937 4.56 8.56938 3.76L10.0594 3.18C10.2194 3.09 10.4294 2.84 10.4894 2.59L10.7194 1.79C10.8094 1.47 11.1094 1.25 11.4394 1.25H12.5494C12.8794 1.25 13.1794 1.47 13.2694 1.79L13.4894 2.57C13.5594 2.85 13.7594 3.1 13.9894 3.22L15.3694 3.75C17.1294 4.56 18.2594 6.03 18.5094 7.79L19.1794 14.15C19.1794 14.31 19.3194 14.37 19.3894 14.39C19.4294 14.39 19.4694 14.41 19.4994 14.43L20.2794 14.76C20.2794 14.76 20.3394 14.79 20.3694 14.81C21.4094 15.43 21.6194 16.23 21.6194 16.79V17.57C21.6194 17.98 21.2794 18.32 20.8694 18.32L20.8894 18.31ZM3.85938 16.81L20.1394 16.78C20.1394 16.69 20.1394 16.42 19.6594 16.11L18.9794 15.82C18.2094 15.6 17.6994 14.97 17.6994 14.22L17.0394 7.96C16.8594 6.72 16.0694 5.7 14.8094 5.12L13.4094 4.58C12.7194 4.24 12.2294 3.63 12.0594 2.95L12.0094 2.78L11.9494 2.98C11.7894 3.63 11.2994 4.25 10.6694 4.56L9.15938 5.14C7.93937 5.7 7.14937 6.72 6.96937 7.99L6.30938 14.3C6.30938 14.97 5.79938 15.6 5.02938 15.82L4.34938 16.11C3.86937 16.41 3.86937 16.68 3.86937 16.78V16.81H3.85938Z"
-                  fill="white"
-                  style={{ fill: "var(--fillg)" }}
-                />
-                <path
-                  d="M12.0005 22.75C9.14055 22.75 6.81055 20.42 6.81055 17.56C6.81055 17.15 7.15055 16.81 7.56055 16.81C7.97055 16.81 8.31055 17.15 8.31055 17.56C8.31055 19.6 9.97055 21.25 12.0005 21.25C14.0305 21.25 15.6905 19.59 15.6905 17.56C15.6905 17.15 16.0305 16.81 16.4405 16.81C16.8505 16.81 17.1905 17.15 17.1905 17.56C17.1905 20.42 14.8605 22.75 12.0005 22.75Z"
-                  fill="white"
-                  style={{ fill: "var(--fillg)" }}
-                />
-              </g>
-              <defs>
-                <clipPath id="clip0_655_7003">
-                  <rect width="24" height="24" fill="white" />
-                </clipPath>
-              </defs>
-            </svg>
+        {items.length === 0 ? (
+          <div className="text-sm text-neutral-400">
+            {t("notifications.empty", "No notifications")}
           </div>
-          <div className="flex-1">
-            <div className="font-semibold">
-              {t("notifications.item1_title")}
+        ) : (
+          items.map((it) => (
+            <div key={it.id} className="flex items-start gap-3">
+              <div className="w-10 h-10 rounded-md bg-emerald-700 flex items-center justify-center text-white">
+                🔔
+              </div>
+              <div className="flex-1">
+                <div className="font-semibold">{it.title}</div>
+                {it.subtitle ? (
+                  <div className="text-sm text-neutral-400">{it.subtitle}</div>
+                ) : null}
+                {/* <div className="mt-2">
+                  <button
+                    onClick={() => handleAck(it.id)}
+                    className="text-xs text-neutral-300 hover:text-white"
+                  >
+                    OK
+                  </button>
+                </div> */}
+              </div>
             </div>
-            <div className="text-sm text-neutral-400">
-              {t("notifications.item1_sub")}
-            </div>
-          </div>
-        </div>
-
-        <div className="flex items-start gap-3">
-          <div className="w-10 h-10 rounded-md bg-emerald-700 flex items-center justify-center text-white">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="#ffffff"
-            >
-              <g clipPath="url(#clip0_655_7003)">
-                <path
-                  d="M20.8894 18.31H3.10938C2.69938 18.31 2.35938 17.97 2.35938 17.56V16.78C2.35938 16.22 2.57938 15.42 3.60938 14.8C3.63937 14.78 3.66938 14.77 3.69938 14.75L4.47938 14.42C4.47938 14.42 4.54938 14.39 4.58938 14.38C4.65938 14.36 4.79938 14.3 4.79938 14.22L5.46937 7.81C5.71937 6.02 6.84937 4.56 8.56938 3.76L10.0594 3.18C10.2194 3.09 10.4294 2.84 10.4894 2.59L10.7194 1.79C10.8094 1.47 11.1094 1.25 11.4394 1.25H12.5494C12.8794 1.25 13.1794 1.47 13.2694 1.79L13.4894 2.57C13.5594 2.85 13.7594 3.1 13.9894 3.22L15.3694 3.75C17.1294 4.56 18.2594 6.03 18.5094 7.79L19.1794 14.15C19.1794 14.31 19.3194 14.37 19.3894 14.39C19.4294 14.39 19.4694 14.41 19.4994 14.43L20.2794 14.76C20.2794 14.76 20.3394 14.79 20.3694 14.81C21.4094 15.43 21.6194 16.23 21.6194 16.79V17.57C21.6194 17.98 21.2794 18.32 20.8694 18.32L20.8894 18.31ZM3.85938 16.81L20.1394 16.78C20.1394 16.69 20.1394 16.42 19.6594 16.11L18.9794 15.82C18.2094 15.6 17.6994 14.97 17.6994 14.22L17.0394 7.96C16.8594 6.72 16.0694 5.7 14.8094 5.12L13.4094 4.58C12.7194 4.24 12.2294 3.63 12.0594 2.95L12.0094 2.78L11.9494 2.98C11.7894 3.63 11.2994 4.25 10.6694 4.56L9.15938 5.14C7.93937 5.7 7.14937 6.72 6.96937 7.99L6.30938 14.3C6.30938 14.97 5.79938 15.6 5.02938 15.82L4.34938 16.11C3.86937 16.41 3.86937 16.68 3.86937 16.78V16.81H3.85938Z"
-                  fill="white"
-                  style={{ fill: "var(--fillg)" }}
-                />
-                <path
-                  d="M12.0005 22.75C9.14055 22.75 6.81055 20.42 6.81055 17.56C6.81055 17.15 7.15055 16.81 7.56055 16.81C7.97055 16.81 8.31055 17.15 8.31055 17.56C8.31055 19.6 9.97055 21.25 12.0005 21.25C14.0305 21.25 15.6905 19.59 15.6905 17.56C15.6905 17.15 16.0305 16.81 16.4405 16.81C16.8505 16.81 17.1905 17.15 17.1905 17.56C17.1905 20.42 14.8605 22.75 12.0005 22.75Z"
-                  fill="white"
-                  style={{ fill: "var(--fillg)" }}
-                />
-              </g>
-              <defs>
-                <clipPath id="clip0_655_7003">
-                  <rect width="24" height="24" fill="white" />
-                </clipPath>
-              </defs>
-            </svg>
-          </div>
-          <div className="flex-1">
-            <div className="font-semibold">
-              {t("notifications.item2_title")}
-            </div>
-            <div className="text-sm text-neutral-400">
-              {t("notifications.item2_sub")}
-            </div>
-          </div>
-        </div>
+          ))
+        )}
       </div>
 
       <div className="px-3 py-2 border-t border-divider-line text-center">

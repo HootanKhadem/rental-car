@@ -1,6 +1,10 @@
 "use client";
 import React, { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import {
+  addNotification,
+  acknowledgeNotification,
+} from "../notifications/notifications";
 import Modal from "@/components/ui/Modal";
 import { useReserve } from "./ReserveProvider";
 import Image from "next/image";
@@ -33,7 +37,7 @@ export default function ReserveModal() {
   //eslint-disable-next-line
   const sigCanvasRef = useRef<any>(null);
 
-  const { t } = useTranslation("reserve");
+  const { t, i18n } = useTranslation("reserve");
 
   if (!r) return null;
 
@@ -527,7 +531,19 @@ export default function ReserveModal() {
             <button
               className={`ml-auto py-2 px-4 rounded-md text-sm font-semibold ${canAdvance ? "" : "opacity-50 cursor-not-allowed"}`}
               onClick={() => {
-                if (r.step === 8) return r.close();
+                if (r.step === 8) {
+                  try {
+                    const n = addNotification(
+                      t("doneMsgTitle"),
+                      `${r.car?.title ?? ""} ${i18n.language === "ar" ? "في الطريق" : "is on its way"}`,
+                    );
+                    // mark acknowledged (OK) for the user as requested
+                    acknowledgeNotification(n.id);
+                  } catch (e) {
+                    // ignore storage errors
+                  }
+                  return r.close();
+                }
                 if (!canAdvance) return;
                 return r.next();
               }}
