@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import Modal from "@/components/ui/Modal";
 import { useReserve } from "./ReserveProvider";
 import Image from "next/image";
@@ -24,13 +25,15 @@ export default function ReserveModal() {
   const [cardNumber, setCardNumber] = useState("");
   const [expiry, setExpiry] = useState("");
   const [cvv, setCvv] = useState("");
-//   const [processingPayment, setProcessingPayment] = useState(false);
+  //   const [processingPayment, setProcessingPayment] = useState(false);
 
   const fileCivilRef = useRef<HTMLInputElement | null>(null);
   const fileLicRef = useRef<HTMLInputElement | null>(null);
   const fileSelfieRef = useRef<HTMLInputElement | null>(null);
   //eslint-disable-next-line
   const sigCanvasRef = useRef<any>(null);
+
+  const { t } = useTranslation("reserve");
 
   if (!r) return null;
 
@@ -40,23 +43,23 @@ export default function ReserveModal() {
   const stepLabel = (() => {
     switch (r.step) {
       case 0:
-        return "Sign in";
+        return t("step.signin");
       case 1:
-        return "Civil ID";
+        return t("step.civil");
       case 2:
-        return "Driving license";
+        return t("step.license");
       case 3:
-        return "Pickup & period";
+        return t("step.pickup");
       case 4:
-        return "Review";
+        return t("step.review");
       case 5:
-        return "Terms";
+        return t("step.terms");
       case 6:
-        return "Signature";
+        return t("step.signature");
       case 7:
-        return "Payment";
+        return t("step.payment");
       case 8:
-        return "Done";
+        return t("step.done");
       default:
         return "";
     }
@@ -102,7 +105,7 @@ export default function ReserveModal() {
   }
 
   return (
-    <Modal isOpen={r.isOpen} onClose={r.close} title={"Reserve a car"}>
+    <Modal isOpen={r.isOpen} onClose={r.close} title={t("modalTitle")}>
       <div className="modal-h mb-3 flex items-start justify-between">
         <div>
           <p className="text-sm text-zinc-400 mt-1">{`${r.step + 1} / ${TOTAL_STEPS} · ${stepLabel}`}</p>
@@ -123,20 +126,15 @@ export default function ReserveModal() {
           <div className="wiz-pane" data-step="0">
             <div className="trust-note p-4 rounded-md border border-emerald-700 bg-emerald-900/20 text-emerald-200">
               <span className="ti mr-2">●</span>
-              <span>
-                Booking is for registered members only, to keep your documents
-                secure.
-              </span>
+              <span>{t("trustNote")}</span>
             </div>
-            <p className="text-sm text-zinc-400 mt-4">
-              Create a free account to continue — takes under a minute.
-            </p>
+            <p className="text-sm text-zinc-400 mt-4">{t("createAccount")}</p>
             <div className="mt-6">
               <button
                 className="w-full py-3 rounded-md bg-emerald-600 hover:bg-emerald-500 text-white font-semibold"
                 onClick={openRegister}
               >
-                Create account
+                {t("createAccount")}
               </button>
             </div>
           </div>
@@ -144,17 +142,15 @@ export default function ReserveModal() {
 
         {r.step === 1 && (
           <div className="wiz-pane" data-step="1">
-            <p className="text-sm text-zinc-400 mb-4">
-              Upload your civil ID. Used for identity verification only.
-            </p>
+            <p className="text-sm text-zinc-400 mb-4">{t("upload.civil")}</p>
             <div
               className="upload-box cursor-pointer rounded-lg border-2 border-dashed border-zinc-700 p-4 text-center"
               onClick={() => onSelectFile(fileCivilRef, setCivilFile)}
             >
               <div className="ub-ic text-2xl">📄</div>
-              <div className="ub-t font-semibold mt-2">Civil ID</div>
+              <div className="ub-t font-semibold mt-2">{t("step.civil")}</div>
               <div className="ub-s text-sm text-zinc-400 mt-1">
-                Tap to upload · JPG / PNG
+                {t("upload.civil")}
               </div>
             </div>
             <input
@@ -164,24 +160,22 @@ export default function ReserveModal() {
               className="hide"
             />
             <div className="verify-row mt-3 text-sm text-emerald-300">
-              {civilFile ? "File selected" : ""}
+              {civilFile ? t("fileSelected") : ""}
             </div>
           </div>
         )}
 
         {r.step === 2 && (
           <div className="wiz-pane" data-step="2">
-            <p className="text-sm text-zinc-400 mb-4">
-              Upload a valid local driving license.
-            </p>
+            <p className="text-sm text-zinc-400 mb-4">{t("upload.license")}</p>
             <div
               className="upload-box cursor-pointer rounded-lg border-2 border-dashed border-zinc-700 p-4 text-center"
               onClick={() => onSelectFile(fileLicRef, setLicFile)}
             >
               <div className="ub-ic text-2xl">📄</div>
-              <div className="ub-t font-semibold mt-2">Driving license</div>
+              <div className="ub-t font-semibold mt-2">{t("step.license")}</div>
               <div className="ub-s text-sm text-zinc-400 mt-1">
-                Tap to upload · JPG / PNG
+                {t("upload.hint")}
               </div>
             </div>
             <input
@@ -209,16 +203,14 @@ export default function ReserveModal() {
                     const v = licNo.trim();
                     if (!v || !/^\d+$/.test(v)) {
                       setLicenseVerified(false);
-                      setVerifyMsg(
-                        "License or Civil number is required and must be numeric.",
-                      );
+                      setVerifyMsg(t("verify.numericError"));
                       return;
                     }
                     setLicenseVerified(true);
-                    setVerifyMsg("Verified ✔");
+                    setVerifyMsg(t("verify.verified"));
                   }}
                 >
-                  Verify license
+                  {t("verify.verifyBtn")}
                 </button>
                 {verifyMsg ? (
                   <div
@@ -255,7 +247,7 @@ export default function ReserveModal() {
             <div className="field-row grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm text-zinc-400 mb-2">
-                  Start date
+                  {t("label.startDate")}
                 </label>
                 <input
                   type="date"
@@ -265,7 +257,9 @@ export default function ReserveModal() {
                 />
               </div>
               <div>
-                <label className="block text-sm text-zinc-400 mb-2">Days</label>
+                <label className="block text-sm text-zinc-400 mb-2">
+                  {t("label.days")}
+                </label>
                 <input
                   type="number"
                   min={1}
@@ -277,10 +271,10 @@ export default function ReserveModal() {
               </div>
             </div>
             <div className="verify-row mt-3 text-sm text-zinc-400">
-              Pickup/return times subject to availability
+              {t("pickupNote")}
             </div>
             <div className="summary-row total mt-4 flex items-center justify-between">
-              <span>Estimated total</span>
+              <span>{t("estimated")}</span>
               <span className="sv font-serif">KWD {estTotal}</span>
             </div>
           </div>
@@ -312,39 +306,41 @@ export default function ReserveModal() {
             <div className="feature-list space-y-3 mb-4">
               <div className="fl flex items-center gap-3">
                 <span className="fc text-emerald-400">✓</span>
-                <span>Comprehensive accident insurance</span>
+                <span>{t("features.insurance")}</span>
               </div>
               <div className="fl flex items-center gap-3">
                 <span className="fc text-emerald-400">✓</span>
-                <span>Free delivery & collection</span>
+                <span>{t("features.delivery")}</span>
               </div>
               <div className="fl flex items-center gap-3">
                 <span className="fc text-emerald-400">✓</span>
-                <span>24/7 roadside assistance</span>
+                <span>{t("features.roadside")}</span>
               </div>
               <div className="fl flex items-center gap-3">
                 <span className="fc text-emerald-400">✓</span>
-                <span>Smart tracking via assistant</span>
+                <span>{t("features.tracking")}</span>
               </div>
             </div>
 
             <div className="divide-y divide-zinc-700 text-sm text-zinc-300">
               <div className="py-3 flex justify-between">
-                <span>Car</span>
+                <span>{t("label.car")}</span>
                 <span className="text-right">{r.car?.title}</span>
               </div>
               <div className="py-3 flex justify-between">
-                <span>Period</span>
-                <span className="text-right">{days} days</span>
+                <span>{t("label.period")}</span>
+                <span className="text-right">
+                  {days} {t("label.days")}
+                </span>
               </div>
               <div className="py-3 flex justify-between">
-                <span>Daily rate</span>
+                <span>{t("label.dailyRate")}</span>
                 <span className="text-right">KWD {r.car?.pricePerDay}</span>
               </div>
             </div>
 
             <div className="summary-row mt-4 flex items-center justify-between">
-              <span className="text-lg font-semibold">Total</span>
+              <span className="text-lg font-semibold">{t("label.total")}</span>
               <span className="sv font-serif text-xl text-amber-400">
                 KWD {estTotal}
               </span>
@@ -355,11 +351,7 @@ export default function ReserveModal() {
         {r.step === 5 && (
           <div className="wiz-pane" data-step="5">
             <div className="tc-box p-4 text-sm bg-[rgba(255,255,255,0.02)] rounded-md">
-              By using City Drive you agree to return the car on time and in
-              agreed condition, use within Kuwait only, and bear responsibility
-              for traffic violations during rental. Insurance covers incidental
-              damage with a small deductible. No smoking. Late return fees
-              apply. Minimum driver age 21 with a valid license at least 1 year.
+              {t("termsText")}
             </div>
             <label className="check-row mt-3 flex items-start gap-3">
               <input
@@ -369,17 +361,14 @@ export default function ReserveModal() {
                 checked={agreeTerms}
                 onChange={(e) => setAgreeTerms(e.target.checked)}
               />{" "}
-              <span>I agree to the terms and privacy policy.</span>
+              <span>{t("agree")}</span>
             </label>
           </div>
         )}
 
         {r.step === 6 && (
           <div className="wiz-pane" data-step="6">
-            <p className="text-sm text-zinc-400 mb-3">
-              Sign digitally then upload a selfie with your license and civil ID
-              for final verification.
-            </p>
+            <p className="text-sm text-zinc-400 mb-3">{t("signatureNotice")}</p>
             <label className="font-mono text-xs text-zinc-400">
               Digital signature
             </label>
@@ -406,11 +395,11 @@ export default function ReserveModal() {
                 </button>
                 {signature ? (
                   <div className="text-sm text-emerald-400">
-                    Signature saved
+                    {t("signatureSaved")}
                   </div>
                 ) : (
                   <div className="text-sm text-zinc-400">
-                    Draw your signature above
+                    {t("drawSignature")}
                   </div>
                 )}
               </div>
@@ -422,10 +411,10 @@ export default function ReserveModal() {
               >
                 <div className="ub-ic text-2xl">📸</div>
                 <div className="ub-t font-semibold mt-2">
-                  Selfie with license & ID
+                  {t("upload.selfie")}
                 </div>
                 <div className="ub-s text-sm text-zinc-400 mt-1">
-                  Tap to upload / capture photo
+                  {t("upload.selfie")}
                 </div>
               </div>
               <input
@@ -441,14 +430,14 @@ export default function ReserveModal() {
         {r.step === 7 && (
           <div className="wiz-pane" data-step="7">
             <div className="summary-row total flex items-center justify-between">
-              <span className="text-lg">Amount due</span>
+              <span className="text-lg">{t("amountDue")}</span>
               <span className="sv font-serif text-2xl text-amber-400">
                 KWD {estTotal}
               </span>
             </div>
 
             <label className="block mt-4 text-sm text-zinc-400">
-              CHOOSE PAYMENT METHOD
+              {t("choosePayment")}
             </label>
             <div className="pay-methods mt-2 grid grid-cols-2 gap-3">
               {["knet", "visa", "paypal", "apple"].map((key) => (
@@ -471,7 +460,7 @@ export default function ReserveModal() {
 
             <div className="mt-4">
               <label className="block text-sm text-zinc-400 mb-2">
-                CARD NUMBER
+                {t("cardNumber")}
               </label>
               <input
                 placeholder="•••• •••• •••• ••••"
@@ -483,7 +472,7 @@ export default function ReserveModal() {
               <div className="grid grid-cols-2 gap-3 mt-3">
                 <div>
                   <label className="block text-sm text-zinc-400 mb-2">
-                    EXPIRY
+                    {t("expiry")}
                   </label>
                   <input
                     placeholder="MM/YY"
@@ -494,7 +483,7 @@ export default function ReserveModal() {
                 </div>
                 <div>
                   <label className="block text-sm text-zinc-400 mb-2">
-                    CVV
+                    {t("cvv")}
                   </label>
                   <input
                     placeholder="•••"
@@ -505,10 +494,9 @@ export default function ReserveModal() {
                 </div>
               </div>
             </div>
-
             <div className="secure-note mt-4 p-3 rounded-md border border-emerald-700 bg-emerald-900/10 flex items-center gap-3 text-sm text-emerald-200">
               <span className="text-2xl">🔒</span>
-              <span>Encrypted & secure — Kuwaits certified KNET gateway.</span>
+              <span>{t("secureNote")}</span>
             </div>
           </div>
         )}
@@ -518,11 +506,10 @@ export default function ReserveModal() {
             <div className="success-wrap text-center">
               <div className="sc-ic text-4xl">✅</div>
               <h3 className="mt-3 text-xl font-semibold">
-                Reservation confirmed!
+                {t("doneMsgTitle")}
               </h3>
               <p className="text-sm text-zinc-400 mt-2" id="rsvDoneMsg">
-                We sent the confirmation to your email. Thank you for choosing
-                City Drive.
+                {t("doneMsgBody")}
               </p>
             </div>
           </div>
@@ -535,7 +522,7 @@ export default function ReserveModal() {
               onClick={() => r.back()}
               disabled={r.step === 0}
             >
-              Back
+              {t("back")}
             </button>
             <button
               className={`ml-auto py-2 px-4 rounded-md text-sm font-semibold ${canAdvance ? "" : "opacity-50 cursor-not-allowed"}`}
@@ -554,7 +541,7 @@ export default function ReserveModal() {
               }
               aria-disabled={!canAdvance}
             >
-              {r.step === 8 ? "Done" : "Next"}
+              {r.step === 8 ? t("done") : t("next")}
             </button>
           </div>
         )}

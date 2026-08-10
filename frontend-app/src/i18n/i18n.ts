@@ -58,6 +58,7 @@ export async function initI18n() {
     "catalog",
     "membership",
     "footer",
+    "reserve",
   ];
 
   // eagerly load all namespaces so translations are available across the app.

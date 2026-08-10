@@ -1,0 +1,62 @@
+{
+  "step": {
+    "signin": "Sign in",
+    "civil": "Civil ID",
+    "license": "Driving license",
+    "pickup": "Pickup & period",
+    "review": "Review",
+    "terms": "Terms",
+    "signature": "Signature",
+    "payment": "Payment",
+    "done": "Done"
+  },
+  "trustNote": "Booking is for registered members only, to keep your documents secure.",
+  "createAccount": "Create account",
+  "upload": {
+    "civil": "Upload your civil ID. Used for identity verification only.",
+    "license": "Upload a valid local driving license.",
+    "selfie": "Selfie with license & ID",
+    "hint": "Tap to upload · JPG / PNG"
+  },
+  "verify": {
+    "verifyBtn": "Verify license",
+    "numericError": "License or Civil number is required and must be numeric.",
+    "verified": "Verified ✔"
+  },
+  "pickupNote": "Pickup/return times subject to availability",
+  "estimated": "Estimated total",
+  "features": {
+    "insurance": "Comprehensive accident insurance",
+    "delivery": "Free delivery & collection",
+    "roadside": "24/7 roadside assistance",
+    "tracking": "Smart tracking via assistant"
+  },
+  "label": {
+    "car": "Car",
+    "period": "Period",
+    "days": "days",
+    "dailyRate": "Daily rate",
+    "total": "Total",
+    "startDate": "Start date"
+  },
+  "termsText": "By using City Drive you agree to return the car on time and in agreed condition, use within Kuwait only, and bear responsibility for traffic violations during rental. Insurance covers incidental damage with a small deductible. No smoking. Late return fees apply. Minimum driver age 21 with a valid license at least 1 year.",
+  "agree": "I agree to the terms and privacy policy.",
+  "signatureNotice": "Sign digitally then upload a selfie with your license and civil ID for final verification.",
+  "signatureSaved": "Signature saved",
+  "drawSignature": "Draw your signature above",
+  "amountDue": "Amount due",
+  "choosePayment": "CHOOSE PAYMENT METHOD",
+  "cardNumber": "CARD NUMBER",
+  "expiry": "EXPIRY",
+  "cvv": "CVV",
+  "secureNote": "Encrypted & secure — Kuwait's certified KNET gateway.",
+  "pay": "PAY & CONFIRM",
+  "back": "BACK",
+  "next": "NEXT",
+  "modalTitle": "Reserve a car",
+  "fileSelected": "File selected",
+  "licenseOrCivilNo": "License or Civil No",
+  "done": "Done",
+  "doneMsgTitle": "Reservation confirmed!",
+  "doneMsgBody": "We sent the confirmation to your email. Thank you for choosing City Drive."
+}

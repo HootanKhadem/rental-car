@@ -5,6 +5,7 @@ import useClientI18n from "@/src/i18n/useI18n";
 import Image from "next/image";
 import { Car } from "../types";
 import Button from "@/components/ui/Button";
+import i18n from "@/src/i18n/i18n";
 
 function LikeButton() {
   const [liked, setLiked] = React.useState(false);
@@ -194,7 +195,7 @@ export default function CarCard({ car }: Props) {
                 }
               }}
               >
-                Reserve
+                {i18n.language === "ar" ? "احجز" : "Reserve"}
           </Button>
         </div>
       </div>
