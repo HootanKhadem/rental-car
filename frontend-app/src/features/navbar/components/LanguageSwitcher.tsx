@@ -44,7 +44,7 @@ export default function LanguageSwitcher() {
       title={
         mounted ? (i18n.language === "ar" ? "العربية" : "English") : "English"
       }
-      className="py-2 px-3 text-xs rounded-full border border-neutral-700 flex items-center justify-center cursor-pointer text-white hover:text-title-yellow hover:border-title-yellow gap-1"
+      className="py-2 px-3 text-xs rounded-full border border-divider-line flex items-center justify-center cursor-pointer text-white hover:text-title-yellow hover:border-title-yellow gap-1"
     >
       <span suppressHydrationWarning={true}>
         {mounted ? (i18n.language === "ar" ? "العربية" : "English") : "English"}

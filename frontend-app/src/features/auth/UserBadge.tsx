@@ -5,18 +5,40 @@ type Props = { name: string; onSignOut: () => void };
 
 export default function UserBadge({ name, onSignOut }: Props) {
   return (
-    <div className="flex items-center gap-3">
-      <div className="w-9 h-9 rounded-full bg-emerald-600 flex items-center justify-center text-white font-medium">
+    <div className="flex items-center gap-3 border border-divider-line rounded-full p-2">
+      <div className="w-7 h-7 rounded-full font-bold bg-gradient-to-br from-emerald-700 to-amber-600 flex items-center justify-center text-black text-lg">
         {name.charAt(0).toUpperCase()}
       </div>
       <div className="hidden sm:flex flex-col text-left">
-        <span className="text-sm font-medium">{name}</span>
+        <span className="text-sm font-sans font-semibold">{name}</span>
       </div>
       <button
         onClick={onSignOut}
-        className="ml-2 text-sm text-neutral-300 hover:text-white"
+        className="ml-2 text-sm text-neutral-300 border border-[#FF5B61] rounded-full p-1 cursor-pointer hover:bg-red-900/30 transition-colors"
       >
-        Sign out
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="#FF5B61"
+        >
+          <path
+            d="M17.4399 15.3704C17.2499 15.3704 17.0599 15.3004 16.9099 15.1504C16.6199 14.8604 16.6199 14.3804 16.9099 14.0904L18.9399 12.0604L16.9099 10.0304C16.6199 9.74043 16.6199 9.26043 16.9099 8.97043C17.1999 8.68043 17.6799 8.68043 17.9699 8.97043L20.5299 11.5304C20.8199 11.8204 20.8199 12.3004 20.5299 12.5904L17.9699 15.1504C17.8199 15.3004 17.6299 15.3704 17.4399 15.3704Z"
+            fill="white"
+            style={{ fill: "var(--fillg)" }}
+          />
+          <path
+            d="M19.93 12.8096H9.76001C9.35001 12.8096 9.01001 12.4696 9.01001 12.0596C9.01001 11.6496 9.35001 11.3096 9.76001 11.3096H19.93C20.34 11.3096 20.68 11.6496 20.68 12.0596C20.68 12.4696 20.34 12.8096 19.93 12.8096Z"
+            fill="white"
+            style={{ fill: "var(--fillg)" }}
+          />
+          <path
+            d="M11.76 20.75C6.61001 20.75 3.01001 17.15 3.01001 12C3.01001 6.85 6.61001 3.25 11.76 3.25C12.17 3.25 12.51 3.59 12.51 4C12.51 4.41 12.17 4.75 11.76 4.75C7.49001 4.75 4.51001 7.73 4.51001 12C4.51001 16.27 7.49001 19.25 11.76 19.25C12.17 19.25 12.51 19.59 12.51 20C12.51 20.41 12.17 20.75 11.76 20.75Z"
+            fill="white"
+            style={{ fill: "var(--fillg)" }}
+          />
+        </svg>
       </button>
     </div>
   );

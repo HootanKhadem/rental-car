@@ -12,7 +12,7 @@ export default function NotificationButton() {
       <button
         aria-label="notifications"
         onClick={() => setOpen((v) => !v)}
-        className="p-2 rounded-md border border-neutral-700 flex items-center justify-center"
+        className="p-2.5 rounded-lg border border-divider-line flex items-center justify-center cursor-pointer hover:text-title-yellow hover:border-title-yellow"
       >
         <span className="relative">
           <svg

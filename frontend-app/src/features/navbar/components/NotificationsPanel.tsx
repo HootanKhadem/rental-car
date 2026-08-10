@@ -73,7 +73,7 @@ export default function NotificationsPanel({
       <div className="px-3 py-2 border-t border-divider-line text-center">
         <button
           onClick={onClose}
-          className="text-sm text-neutral-300 hover:text-white"
+          className="text-sm text-red-400 cursor-pointer hover:text-red-500"
         >
           {t("notifications.close")}
         </button>
