@@ -24,7 +24,7 @@ export default function CurrentTier({
   return (
     <div className="rounded-xl border border-icon-card p-6 h-full font-mono flex flex-col justify-between text-zinc-100 bg-gradient-to-br from-background-card to-emerald-950">
       <div>
-        <div className="text-xs text-title-yellow tracking-widest">
+        <div className="text-xs text-gold tracking-widest">
           {mounted ? t("membership.currentTier") : ""}
         </div>
         <h2 className="mt-3 text-3xl font-serif">{tier}</h2>
@@ -33,7 +33,7 @@ export default function CurrentTier({
         </div>
 
         <div className="mt-6">
-          <div className="text-4xl font-serif text-gradient-gold text-title-yellow">
+          <div className="text-4xl font-serif text-gradient-gold text-gold">
             {points.toLocaleString()}
             <span className="text-xs text-zinc-400 uppercase tracking-widest font-mono ml-2">
               {mounted ? t("membership.pointsLabel") : ""}

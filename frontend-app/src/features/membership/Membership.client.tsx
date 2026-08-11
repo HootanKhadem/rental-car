@@ -45,7 +45,7 @@ export default function MembershipClient() {
   return (
     <div className="max-w-7xl mx-auto px-6">
       <div className="mb-8">
-        <p className="text-sm text-title-yellow font-mono tracking-[2px]">
+        <p className="text-sm text-gold font-mono tracking-[2px]">
           {mounted ? t("membership.eyebrow") : ""}
         </p>
         <h1 className="text-5xl font-serif mt-8 mb-14 text-zinc-100">

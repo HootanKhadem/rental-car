@@ -1,6 +1,6 @@
 "use client";
-import { Modal } from "@/components/ui/modal/Modal";
-import { Button } from "@/components/ui/button/Button";
+import { Modal } from "@/components/ui/modal/modal";
+import { Button } from "@/components/ui/button/button";
 import useAuth from "@/src/features/auth/useAuth";
 import { useAuthContextMaybe } from "@/src/features/auth/AuthProvider";
 import { useTranslation } from "react-i18next";
@@ -98,7 +98,7 @@ export default function SignInModal({ isOpen, onClose }: Props) {
           <button
             type="button"
             onClick={openRegister}
-            className="text-title-yellow cursor-pointer hover:text-amber-400"
+            className="text-gold cursor-pointer hover:text-amber-400"
           >
             {t("modal.registerLink")}
           </button>

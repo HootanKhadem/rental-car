@@ -13,9 +13,9 @@ const ReserveModal = dynamic(() => import("../reserve/ReserveModal.client"), {
 import RegisterModal from "./components/RegisterModal";
 import SignInModal from "./components/SignInModal";
 import LanguageSwitcher from "./components/LanguageSwitcher";
-import NotificationButton from "./components/NotificationButton";
 import type { MenuItem } from "./components";
 import { defaultMenu } from "@/src/data";
+import NotificationsPanel from "./components/NotificationsPanel";
 
 export type NavbarProps = { menuItems?: MenuItem[] };
 
@@ -105,7 +105,7 @@ export default function NavbarClient({ menuItems }: NavbarProps) {
 
               <div className="flex items-center gap-4">
                 <LanguageSwitcher />
-                <NotificationButton />
+                <NotificationsPanel />
                 <AuthButtons
                   onOpenRegister={() => setRegisterOpen(true)}
                   onOpenSignIn={() => setSignInOpen(true)}

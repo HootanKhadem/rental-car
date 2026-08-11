@@ -67,7 +67,7 @@ export default function SortDropdown({ value, onChange }: Props) {
               <li key={o.value} role="option">
                 <button
                   type="button"
-                  className={`w-full text-left px-3 py-2 cursor-pointer hover:bg-title-yellow/10 text-sm ${o.value === value ? "text-title-yellow" : "text-zinc-200"}`}
+                  className={`w-full text-left px-3 py-2 cursor-pointer hover:bg-gold/10 text-sm ${o.value === value ? "text-gold" : "text-zinc-200"}`}
                   onClick={() => {
                     onChange(o.value);
                     setOpen(false);

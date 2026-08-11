@@ -1,6 +1,6 @@
 "use client";
-import Modal from "@/components/ui/modal/Modal";
-import { Button } from "@/components/ui/button/Button";
+import Modal from "@/components/ui/modal/modal";
+import { Button } from "@/components/ui/button/button";
 import useAuth from "@/src/features/auth/useAuth";
 import { useAuthContextMaybe } from "@/src/features/auth/AuthProvider";
 import { useTranslation } from "react-i18next";
@@ -69,7 +69,11 @@ export default function RegisterModal({ isOpen, onClose }: Props) {
   }
 
   return (
-    <Modal open={isOpen} onOpenChange={onClose} title={t("modal.createAccount")}>
+    <Modal
+      open={isOpen}
+      onOpenChange={onClose}
+      title={t("modal.createAccount")}
+    >
       <p className="text-sm text-zinc-400 -mt-3">
         Join City Drive in one step.
       </p>
@@ -188,7 +192,7 @@ export default function RegisterModal({ isOpen, onClose }: Props) {
           <button
             type="button"
             onClick={openSignIn}
-            className="text-title-yellow cursor-pointer hover:text-amber-400"
+            className="text-gold cursor-pointer hover:text-amber-400"
           >
             {t("modal.signInLink")}
           </button>

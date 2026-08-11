@@ -5,11 +5,11 @@ import {
   addNotification,
   acknowledgeNotification,
 } from "../notifications/notifications";
-import Modal from "@/components/ui/modal/Modal";
+import Modal from "@/components/ui/modal/modal";
 import { useReserve } from "./ReserveProvider";
 import Image from "next/image";
 import SignatureCanvas from "react-signature-canvas";
-import { Button } from "@/components/ui/button/Button";
+import { Button } from "@/components/ui/button/button";
 
 const TOTAL_STEPS = 9;
 
@@ -118,7 +118,7 @@ export default function ReserveModal() {
     <Modal open={r.isOpen} onOpenChange={r.close} title={t("modalTitle")}>
       <div className="modal-h mb-3 flex items-start justify-between">
         <div>
-          <p className="text-sm font-semibold text-title-yellow mt-1 tracking-[3px]">{`${r.step + 1} / ${TOTAL_STEPS} · ${stepLabel}`}</p>
+          <p className="text-sm font-semibold text-gold mt-1 tracking-[3px]">{`${r.step + 1} / ${TOTAL_STEPS} · ${stepLabel}`}</p>
         </div>
       </div>
 
@@ -310,7 +310,7 @@ export default function ReserveModal() {
             <div className="mt-3">
               <div className="flex items-center gap-3">
                 <button
-                  className="w-full py-2 rounded-md border text-neutral-300 border-emerald-900 cursor-pointer hover:border-title-yellow hover:text-title-yellow text-sm"
+                  className="w-full py-2 rounded-md border text-neutral-300 border-emerald-900 cursor-pointer hover:border-gold hover:text-gold text-sm"
                   onClick={() => {
                     const v = licNo.trim();
                     if (!v || !/^\d+$/.test(v)) {
@@ -351,7 +351,7 @@ export default function ReserveModal() {
               ) : null}
               <div>
                 <div className="font-serif text-lg">{r.car?.title}</div>
-                <div className="text-xs text-title-yellow">
+                <div className="text-xs text-gold">
                   KWD {r.car?.pricePerDay} / day
                 </div>
               </div>
@@ -387,7 +387,7 @@ export default function ReserveModal() {
             </div>
             <div className="text-lg mt-4 flex items-center justify-between">
               <span>{t("estimated")}</span>
-              <span className="font-serif text-title-yellow font-semibold">
+              <span className="font-serif text-gold font-semibold">
                 KWD {estTotal}
               </span>
             </div>
@@ -410,7 +410,7 @@ export default function ReserveModal() {
                 ) : null}
                 <div className="flex-1">
                   <div className="font-serif text-lg">{r.car?.title}</div>
-                  <div className="text-xs text-title-yellow">
+                  <div className="text-xs text-gold">
                     KWD {r.car?.pricePerDay} / day
                   </div>
                 </div>
@@ -453,7 +453,7 @@ export default function ReserveModal() {
               </div>
             </div>
 
-            <div className="mt-4 flex items-center justify-between border-t border-title-yellow/30 pt-2">
+            <div className="mt-4 flex items-center justify-between border-t border-gold/30 pt-2">
               <span className="text-lg font-semibold">{t("label.total")}</span>
               <span className="font-serif text-xl text-amber-400">
                 KWD {estTotal}
@@ -502,7 +502,7 @@ export default function ReserveModal() {
               <div className="flex items-center gap-3 mt-2">
                 <button
                   type="button"
-                  className="py-1 px-3 rounded-lg cursor-pointer hover:border-title-yellow hover:text-title-yellow border border-neutral-700 text-xs text-neutral-300"
+                  className="py-1 px-3 rounded-lg cursor-pointer hover:border-gold hover:text-gold border border-neutral-700 text-xs text-neutral-300"
                   onClick={clearSignature}
                 >
                   Clear
@@ -590,7 +590,7 @@ export default function ReserveModal() {
           <div data-step="7">
             <div className="flex items-center justify-between my-7">
               <span className="text-lg font-semibold">{t("amountDue")}</span>
-              <span className="sv font-serif text-xl text-title-yellow">
+              <span className="sv font-serif text-xl text-gold">
                 KWD {estTotal}
               </span>
             </div>
@@ -703,7 +703,7 @@ export default function ReserveModal() {
             {r.step !== 8 && (
               <Button
                 variant="outline"
-                //className="w-full hover:border-title-yellow hover:text-title-yellow"
+                //className="w-full hover:border-gold hover:text-gold"
                 onClick={() => r.back()}
                 disabled={r.step === 0}
               >

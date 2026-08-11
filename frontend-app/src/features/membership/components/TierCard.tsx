@@ -41,7 +41,7 @@ export default function TierCard({
       <div className="mt-4 space-y-2 text-[13px] text-zinc-300 w-full">
         {highlights.map((h, i) => (
           <div key={i} className="flex items-center gap-3 justify-center">
-            <div className="w-3 h-0.5 bg-title-yellow rounded-sm" />
+            <div className="w-3 h-0.5 bg-gold rounded-sm" />
             <div>{h}</div>
           </div>
         ))}

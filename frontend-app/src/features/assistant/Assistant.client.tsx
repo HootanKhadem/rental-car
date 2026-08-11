@@ -104,7 +104,7 @@ export default function AssistantClient() {
     >
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-8 flex flex-col gap-5">
-          <p className="text-sm text-title-yellow font-mono tracking-[2px]">
+          <p className="text-sm text-gold font-mono tracking-[2px]">
             {mounted ? t("assistant.badge") : ""}
           </p>
           <h1 className="text-5xl font-serif">

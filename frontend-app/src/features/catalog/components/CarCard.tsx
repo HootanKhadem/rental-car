@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import useClientI18n from "@/src/i18n/useI18n";
 import Image from "next/image";
 import { Car } from "../types";
-import Button from "@/components/ui/button/Button";
+import Button from "@/components/ui/button/button";
 import i18n from "@/src/i18n/i18n";
 
 function LikeButton() {
@@ -90,6 +90,7 @@ export default function CarCard({ car }: Props) {
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="object-cover"
+              loading="eager"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent group-hover:from-black/70" />
 

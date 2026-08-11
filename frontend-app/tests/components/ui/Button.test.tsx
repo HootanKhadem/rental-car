@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { Button } from "@/components/ui/button/Button";
+import { Button } from "@/components/ui/button/button";
 import { describe, expect, it } from "vitest";
 describe("Button", () => {
   it("renders the provided label", () => {

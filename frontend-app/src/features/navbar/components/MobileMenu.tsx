@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button/Button";
+import { Button } from "@/components/ui/button/button";
 import type { MenuItem } from "./DesktopNav";
 import { useTranslation } from "react-i18next";
 import useClientI18n from "@/src/i18n/useI18n";
@@ -35,27 +35,24 @@ export default function MobileMenu({ items, onClose }: Props) {
       }}
     >
       <div
-        className="w-full h-full flex flex-col"
+        className="w-full h-full flex flex-col bg-ink"
         style={{
-          // ensure a solid fallback color if CSS variable is missing or transparent
-          backgroundColor:
-            "var(--color-background-green-section2, rgba(3,38,26,0.98))",
           minHeight: "100dvh",
         }}
       >
         <div className="px-6 pt-6 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <p className="w-8 h-8 rounded-md bg-gradient-to-br from-emerald-600 to-yellow-600 flex items-center justify-center font-bold text-neutral-900">
+            <p className="w-8 h-8 rounded-md bg-gradient-to-br from-emerald to-gold flex items-center justify-center font-bold text-neutral-900">
               C
             </p>
             <p className="text-lg font-medium">
-              City <span className="text-title-yellow">Drive</span>
+              City <span className="text-gold">Drive</span>
             </p>
           </Link>
-          <button
+          <Button
             aria-label="close menu"
             onClick={onClose}
-            className="p-2 rounded-md border border-neutral-700"
+            className="p-2 rounded-md border border-line bg-transparent text-sand"
           >
             <svg
               className="w-6 h-6"
@@ -70,15 +67,15 @@ export default function MobileMenu({ items, onClose }: Props) {
                 d="M6 18L18 6M6 6l12 12"
               />
             </svg>
-          </button>
+          </Button>
         </div>
 
-        <nav className="flex-1 flex flex-col items-center justify-center gap-6 text-2xl">
+        <nav className="flex-1 flex flex-col items-center justify-center gap-7 text-xl text-smoke font-mono">
           {items.map((it) => (
             <Link
               key={it.href}
               href={it.href}
-              className="block"
+              className="block border px-3 py-2 border-line w-full max-w-90 rounded-xl text-center"
               onClick={onClose}
             >
               {it.label}

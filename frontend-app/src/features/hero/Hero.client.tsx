@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import Button from "@/components/ui/button/Button";
+import Button from "@/components/ui/button/button";
 import { useTranslation } from "react-i18next";
 import HeroImage from "./components/HeroImage";
 import StatItem from "./components/StatItem";
@@ -66,7 +66,7 @@ export default function HeroClient() {
 
             <Button
               variant="outline"
-              //className="hover:border hover:border-title-yellow hover:text-title-yellow hover:bg-transparent text-xs sm:text-sm"
+              //className="hover:border hover:border-gold hover:text-gold hover:bg-transparent text-xs sm:text-sm"
             >
               {mounted ? t("hero.cta.assistant") : ""}
             </Button>

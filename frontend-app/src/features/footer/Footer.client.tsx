@@ -24,9 +24,7 @@ export default function FooterClient() {
               </p>
               <p className="text-2xl font-semibold font-serif">
                 {tr("brand.city", "City")}{" "}
-                <span className="text-title-yellow">
-                  {tr("brand.drive", "Drive")}
-                </span>
+                <span className="text-gold">{tr("brand.drive", "Drive")}</span>
               </p>
             </Link>
 
