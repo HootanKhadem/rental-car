@@ -90,8 +90,6 @@ export default function MobileMenu({ items, onClose }: Props) {
           <div className="flex flex-col gap-3">
             <Button
               variant="outline"
-              size="md"
-              rounded="md"
               onClick={() => {
                 const e = new CustomEvent("open-signin-modal");
                 window.dispatchEvent(e);
@@ -101,10 +99,6 @@ export default function MobileMenu({ items, onClose }: Props) {
             </Button>
             <Button
               variant="solid"
-              size="md"
-              rounded="md"
-              bgClass="bg-button-primary-green"
-              textClass="text-white"
               onClick={() => {
                 const e = new CustomEvent("open-register-modal");
                 window.dispatchEvent(e);

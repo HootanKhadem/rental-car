@@ -169,13 +169,7 @@ export default function CarCard({ car }: Props) {
           </div>
           <Button
             variant="outline"
-            size="md"
-            className="transition-colors duration-200"
-            borderClass="border-button-primary-yellow"
-            textClass="text-button-primary-yellow"
-            hoverBg="var(--color-button-primary-yellow)"
-            hoverColor="#07110a"
-            hoverBorder="var(--color-button-primary-yellow)"
+            //className="transition-colors duration-200"
             onClick={() => {
               try {
                 window.dispatchEvent(

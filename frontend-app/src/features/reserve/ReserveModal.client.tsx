@@ -115,7 +115,7 @@ export default function ReserveModal() {
   }
 
   return (
-    <Modal isOpen={r.isOpen} onClose={r.close} title={t("modalTitle")}>
+    <Modal open={r.isOpen} onOpenChange={r.close} title={t("modalTitle")}>
       <div className="modal-h mb-3 flex items-start justify-between">
         <div>
           <p className="text-sm font-semibold text-title-yellow mt-1 tracking-[3px]">{`${r.step + 1} / ${TOTAL_STEPS} · ${stepLabel}`}</p>
@@ -703,9 +703,7 @@ export default function ReserveModal() {
             {r.step !== 8 && (
               <Button
                 variant="outline"
-                size="sm"
-                rounded="lg"
-                className="w-full hover:border-title-yellow hover:text-title-yellow"
+                //className="w-full hover:border-title-yellow hover:text-title-yellow"
                 onClick={() => r.back()}
                 disabled={r.step === 0}
               >

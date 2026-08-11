@@ -59,20 +59,14 @@ export default function HeroClient() {
           <div className="space-x-4">
             <Button
               variant="solid"
-              size="lg"
-              rounded="lg"
-              bgClass="bg-button-primary-yellow"
-              textClass="text-black"
-              className="hover:opacity-95 text-xs sm:text-sm"
+              //className="hover:opacity-95 text-xs sm:text-sm"
             >
               {mounted ? t("hero.cta.browse") : ""}
             </Button>
 
             <Button
               variant="outline"
-              size="lg"
-              rounded="lg"
-              className="hover:border hover:border-title-yellow hover:text-title-yellow hover:bg-transparent text-xs sm:text-sm"
+              //className="hover:border hover:border-title-yellow hover:text-title-yellow hover:bg-transparent text-xs sm:text-sm"
             >
               {mounted ? t("hero.cta.assistant") : ""}
             </Button>

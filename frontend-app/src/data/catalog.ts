@@ -29,7 +29,7 @@ export const sampleCars: Array<{
     fuel: "Petrol",
     transmission: "Manual",
     pricePerDay: 120,
-    image: "/pictures/benz.jpg",
+    image: "/pictures/benz-gle.jpg",
   },
   {
     id: "mercedes-benz-g-class",
