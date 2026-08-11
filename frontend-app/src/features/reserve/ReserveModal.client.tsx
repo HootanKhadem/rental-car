@@ -5,11 +5,11 @@ import {
   addNotification,
   acknowledgeNotification,
 } from "../notifications/notifications";
-import Modal from "@/components/ui/Modal";
+import Modal from "@/components/ui/modal/Modal";
 import { useReserve } from "./ReserveProvider";
 import Image from "next/image";
 import SignatureCanvas from "react-signature-canvas";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button/Button";
 
 const TOTAL_STEPS = 9;
 

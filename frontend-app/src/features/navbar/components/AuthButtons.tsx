@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button/Button";
 // Modals are lifted to Navbar; handlers are received via props
 import { useTranslation } from "react-i18next";
 import useClientI18n from "@/src/i18n/useI18n";

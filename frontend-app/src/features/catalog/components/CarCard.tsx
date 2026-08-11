@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import useClientI18n from "@/src/i18n/useI18n";
 import Image from "next/image";
 import { Car } from "../types";
-import Button from "@/components/ui/Button";
+import Button from "@/components/ui/button/Button";
 import i18n from "@/src/i18n/i18n";
 
 function LikeButton() {
@@ -170,32 +170,30 @@ export default function CarCard({ car }: Props) {
           <Button
             variant="outline"
             size="md"
-          
             className="transition-colors duration-200"
             borderClass="border-button-primary-yellow"
             textClass="text-button-primary-yellow"
             hoverBg="var(--color-button-primary-yellow)"
             hoverColor="#07110a"
             hoverBorder="var(--color-button-primary-yellow)"
-            
-              onClick={() => {
-                try {
-                  window.dispatchEvent(
-                    new CustomEvent("open-reserve", {
-                      detail: {
-                        id: car.id,
-                        title: mounted ? t(`cars.${car.id}`) : car.title,
-                        pricePerDay: car.pricePerDay,
-                        image: car.image,
-                      },
-                    }),
-                  );
-                } catch {
-                  // ignore
-                }
-              }}
-              >
-                {i18n.language === "ar" ? "احجز" : "Reserve"}
+            onClick={() => {
+              try {
+                window.dispatchEvent(
+                  new CustomEvent("open-reserve", {
+                    detail: {
+                      id: car.id,
+                      title: mounted ? t(`cars.${car.id}`) : car.title,
+                      pricePerDay: car.pricePerDay,
+                      image: car.image,
+                    },
+                  }),
+                );
+              } catch {
+                // ignore
+              }
+            }}
+          >
+            {i18n.language === "ar" ? "احجز" : "Reserve"}
           </Button>
         </div>
       </div>
