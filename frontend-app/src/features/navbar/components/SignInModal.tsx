@@ -1,6 +1,5 @@
 "use client";
-import React from "react";
-import Modal from "@/components/ui/modal/Modal";
+import { Modal } from "@/components/ui/modal/Modal";
 import { Button } from "@/components/ui/button/Button";
 import useAuth from "@/src/features/auth/useAuth";
 import { useAuthContextMaybe } from "@/src/features/auth/AuthProvider";
@@ -59,7 +58,7 @@ export default function SignInModal({ isOpen, onClose }: Props) {
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={t("auth.signIn")}>
+    <Modal open={isOpen} onOpenChange={onClose} title={t("auth.signIn")}>
       <p className="text-neutral-400 text-sm  -mt-3">{t("modal.welcome")}</p>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <div className="mt-7">
@@ -85,14 +84,10 @@ export default function SignInModal({ isOpen, onClose }: Props) {
 
         <div>
           <Button
+            variant="solid"
             type="submit"
-            fullWidth
-            rounded="md"
             disabled={isSubmitting}
-            size="lg"
-            bgClass="bg-emerald-600"
-            textClass="text-white font-semibold"
-            className="font-mono hover:bg-emerald-500"
+            className="w-full"
           >
             {t("modal.signInButton")}
           </Button>

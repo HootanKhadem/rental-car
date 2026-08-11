@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import Modal from "@/components/ui/modal/Modal";
 import { Button } from "@/components/ui/button/Button";
 import useAuth from "@/src/features/auth/useAuth";
@@ -70,7 +69,7 @@ export default function RegisterModal({ isOpen, onClose }: Props) {
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={t("modal.createAccount")}>
+    <Modal open={isOpen} onOpenChange={onClose} title={t("modal.createAccount")}>
       <p className="text-sm text-zinc-400 -mt-3">
         Join City Drive in one step.
       </p>
@@ -177,13 +176,8 @@ export default function RegisterModal({ isOpen, onClose }: Props) {
         <div>
           <Button
             type="submit"
-            fullWidth
-            size="lg"
-            rounded="md"
-            bgClass="bg-emerald-600"
-            textClass="text-white font-semibold"
             disabled={isSubmitting}
-            className="font-mono hover:bg-emerald-500"
+            className="font-mono bg-emerald-500 w-full"
           >
             {t("modal.createButton")}
           </Button>
