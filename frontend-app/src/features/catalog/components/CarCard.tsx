@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import useClientI18n from "@/src/i18n/useI18n";
 import Image from "next/image";
 import { Car } from "../types";
-import Button from "@/components/ui/button/button";
+import {Button} from "@/components/ui/button";
 import i18n from "@/src/i18n/i18n";
 
 function LikeButton() {
