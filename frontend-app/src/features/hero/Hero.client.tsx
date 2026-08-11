@@ -9,7 +9,7 @@ import useClientI18n from "@/src/i18n/useI18n";
 export default function HeroClient() {
   const mounted = useClientI18n();
   const { t } = useTranslation();
-
+//just for test
   //eslint-disable-next-line
   const renderValue = (s: any) => {
     if (typeof s.value === "string" && s.value.endsWith("min")) {
