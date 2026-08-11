@@ -11,8 +11,8 @@ export default function StatItem({ value, label, className = "" }: Props) {
     <div
       className={`col-span-1 py-6 px-6 ${className} flex flex-col justify-center`}
     >
-      <div className="text-3xl font-serif">{value}</div>
-      <div className="text-xs text-zinc-400 tracking-widest mt-1 font-mono">
+      <div className="text-3xl font-serif text-ivory">{value}</div>
+      <div className="text-xs text-smoke tracking-widest mt-1 font-mono">
         {label}
       </div>
     </div>

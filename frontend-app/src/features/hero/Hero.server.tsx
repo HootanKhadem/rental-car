@@ -1,4 +1,3 @@
-import React from "react";
 import HeroClient from "./Hero.client";
 
 export default function HeroServer() {
