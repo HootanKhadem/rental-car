@@ -181,7 +181,7 @@ export default function RegisterModal({ isOpen, onClose }: Props) {
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="font-mono bg-emerald-500 w-full"
+            className="w-full bg-emerald border-emerald text-white hover:bg-emerald-deep hover:border-emerald-deep font-mono font-bold"
           >
             {t("modal.createButton")}
           </Button>
@@ -192,7 +192,7 @@ export default function RegisterModal({ isOpen, onClose }: Props) {
           <button
             type="button"
             onClick={openSignIn}
-            className="text-gold cursor-pointer hover:text-amber-400"
+            className="text-gold cursor-pointer hover:text-gold-deep p-0 bg-transparent border-none hover:bg-transparent"
           >
             {t("modal.signInLink")}
           </button>

@@ -80,9 +80,9 @@ export function Modal({
             rounded-2xl
 
             border
-            border-gray-500
+            border-line
 
-            bg-emerald-700
+            bg-graphite
 
             p-6
 

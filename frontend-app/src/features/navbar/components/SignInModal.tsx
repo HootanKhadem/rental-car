@@ -87,7 +87,7 @@ export default function SignInModal({ isOpen, onClose }: Props) {
             variant="solid"
             type="submit"
             disabled={isSubmitting}
-            className="w-full"
+            className="w-full bg-emerald border-emerald text-white hover:bg-emerald-deep hover:border-emerald-deep font-mono font-bold"
           >
             {t("modal.signInButton")}
           </Button>
@@ -95,13 +95,13 @@ export default function SignInModal({ isOpen, onClose }: Props) {
 
         <p className="text-center text-sm text-neutral-400">
           {t("modal.haveAccount")}{" "}
-          <button
+          <Button
             type="button"
             onClick={openRegister}
-            className="text-gold cursor-pointer hover:text-amber-400"
+            className="text-gold cursor-pointer hover:text-gold-deep p-0 bg-transparent border-none hover:bg-transparent"
           >
             {t("modal.registerLink")}
-          </button>
+          </Button>
         </p>
       </form>
     </Modal>
