@@ -126,7 +126,7 @@ export default function ReserveModal() {
         {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
           <div
             key={i}
-            className={`h-2 flex-1 rounded-full ${i <= r.step ? "bg-emerald-400" : "bg-[#28392F]"}`}
+            className={`h-2 flex-1 rounded-full ${i <= r.step ? "bg-emerald-400" : "bg-line"}`}
           />
         ))}
       </div>
@@ -154,7 +154,7 @@ export default function ReserveModal() {
           <div className="wiz-pane" data-step="1">
             <p className="text-sm text-zinc-400 mb-4">{t("upload.civil")}</p>
             <div
-              className={`upload-box cursor-pointer rounded-xl border-2 border-dotted ${civilFile ? "border-emerald-700 bg-emerald-950/30" : "border-neutral-700 hover:border-[#C6A664] bg-background-main"} py-8 px-5 text-center`}
+              className={`upload-box cursor-pointer rounded-xl border-2 border-dotted ${civilFile ? "border-emerald-700 bg-emerald-950/30" : "border-neutral-700 hover:border-gold bg-background-main"} py-8 px-5 text-center`}
               onClick={() => onSelectFile(fileCivilRef, setCivilFile)}
             >
               <div className="text-2xl flex justify-center">
@@ -230,7 +230,7 @@ export default function ReserveModal() {
           <div className="wiz-pane" data-step="2">
             <p className="text-sm text-zinc-400 mb-4">{t("upload.license")}</p>
             <div
-              className={`upload-box cursor-pointer rounded-xl border-2 border-dotted ${licFile ? "border-emerald-700 bg-emerald-950/30" : "border-neutral-700 hover:border-[#C6A664] bg-background-main"} py-8 px-5 text-center`}
+              className={`upload-box cursor-pointer rounded-xl border-2 border-dotted ${licFile ? "border-emerald-700 bg-emerald-950/30" : "border-neutral-700 hover:border-gold bg-background-main"} py-8 px-5 text-center`}
               onClick={() => onSelectFile(fileLicRef, setLicFile)}
             >
               <div className="text-2xl flex justify-center">
@@ -304,7 +304,7 @@ export default function ReserveModal() {
                 value={licNo}
                 onChange={(e) => setLicNo(e.target.value)}
                 placeholder="123456789012"
-                className="w-full bg-[#0B1512] border border-background-icon-card rounded-lg text-sm p-3"
+                className="w-full bg-ink border border-background-icon-card rounded-lg text-sm p-3"
               />
             </div>
             <div className="mt-3">
@@ -365,7 +365,7 @@ export default function ReserveModal() {
                   type="date"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full bg-[#0B1512] border border-background-icon-card rounded-lg text-sm p-3"
+                  className="w-full bg-ink border border-background-icon-card rounded-lg text-sm p-3"
                 />
               </div>
               <div>
@@ -378,7 +378,7 @@ export default function ReserveModal() {
                   max={90}
                   value={days}
                   onChange={(e) => setDays(Number(e.target.value) || 1)}
-                  className="w-full bg-[#0B1512] border border-background-icon-card rounded-lg text-sm p-3"
+                  className="w-full bg-ink border border-background-icon-card rounded-lg text-sm p-3"
                 />
               </div>
             </div>
@@ -520,7 +520,7 @@ export default function ReserveModal() {
             </div>
             <div className="mt-3">
               <div
-                className={`upload-box cursor-pointer rounded-xl border-2 border-dotted ${selfieFile ? "border-emerald-700 bg-emerald-950/30" : "border-neutral-700 hover:border-[#C6A664] bg-background-main"} py-8 px-5 text-center`}
+                className={`upload-box cursor-pointer rounded-xl border-2 border-dotted ${selfieFile ? "border-emerald-700 bg-emerald-950/30" : "border-neutral-700 hover:border-gold bg-background-main"} py-8 px-5 text-center`}
                 onClick={() => onSelectFile(fileSelfieRef, setSelfieFile)}
               >
                 <div className="text-2xl flex justify-center">
@@ -625,7 +625,7 @@ export default function ReserveModal() {
                 placeholder="•••• •••• •••• ••••"
                 value={cardNumber}
                 onChange={(e) => setCardNumber(e.target.value)}
-                className="w-full bg-[#0B1512] border border-background-icon-card rounded-lg text-sm p-3"
+                className="w-full bg-ink border border-background-icon-card rounded-lg text-sm p-3"
               />
 
               <div className="grid grid-cols-2 gap-3 mt-3">
@@ -637,7 +637,7 @@ export default function ReserveModal() {
                     placeholder="MM/YY"
                     value={expiry}
                     onChange={(e) => setExpiry(e.target.value)}
-                    className="w-full bg-[#0B1512] border border-background-icon-card rounded-lg text-sm p-3"
+                    className="w-full bg-ink border border-background-icon-card rounded-lg text-sm p-3"
                   />
                 </div>
                 <div>
@@ -648,7 +648,7 @@ export default function ReserveModal() {
                     placeholder="•••"
                     value={cvv}
                     onChange={(e) => setCvv(e.target.value)}
-                    className="w-full bg-[#0B1512] border border-background-icon-card rounded-lg text-sm p-3"
+                    className="w-full bg-ink border border-background-icon-card rounded-lg text-sm p-3"
                   />
                 </div>
               </div>
@@ -722,6 +722,7 @@ export default function ReserveModal() {
                     });
                     // mark acknowledged (OK) for the user as requested
                     acknowledgeNotification(n.id);
+                    //eslint-disable-next-line
                   } catch (e) {
                     // ignore storage errors
                   }

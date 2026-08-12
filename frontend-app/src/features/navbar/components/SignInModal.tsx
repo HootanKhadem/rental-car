@@ -71,7 +71,7 @@ export default function SignInModal({ isOpen, onClose }: Props) {
           <input
             id="si-email"
             type="email"
-            className="w-full bg-[#0B1512] border border-background-icon-card rounded-lg text-sm p-3"
+            className="w-full bg-ink border border-background-icon-card rounded-lg text-sm p-3"
             placeholder={t("modal.emailPlaceholder")}
             {...register("email")}
           />

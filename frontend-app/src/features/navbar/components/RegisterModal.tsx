@@ -110,7 +110,7 @@ export default function RegisterModal({ isOpen, onClose }: Props) {
           </label>
           <input
             id="rc-fullname"
-            className="w-full bg-[#0B1512] border border-background-icon-card rounded-lg text-sm p-3"
+            className="w-full bg-ink border border-background-icon-card rounded-lg text-sm p-3"
             placeholder={t("modal.fullName")}
             {...register("fullName")}
           />
@@ -131,7 +131,7 @@ export default function RegisterModal({ isOpen, onClose }: Props) {
           <input
             id="rc-email"
             type="email"
-            className="w-full bg-[#0B1512] border border-background-icon-card rounded-lg text-sm p-3"
+            className="w-full bg-ink border border-background-icon-card rounded-lg text-sm p-3"
             placeholder={t("modal.email")}
             {...register("email")}
           />
@@ -152,7 +152,7 @@ export default function RegisterModal({ isOpen, onClose }: Props) {
             </label>
             <select
               id="rc-gov"
-              className="w-full bg-[#0B1512] border border-background-icon-card rounded-lg text-sm p-3"
+              className="w-full bg-ink border border-background-icon-card rounded-lg text-sm p-3"
               {...register("governorate")}
             >
               <option value="">{t("modal.select")}</option>
@@ -170,7 +170,7 @@ export default function RegisterModal({ isOpen, onClose }: Props) {
             </label>
             <input
               id="rc-area"
-              className="w-full bg-[#0B1512] border border-background-icon-card rounded-lg text-sm p-3"
+              className="w-full bg-ink border border-background-icon-card rounded-lg text-sm p-3"
               placeholder={t("modal.areaPlaceholder")}
               {...register("area")}
             />
