@@ -14,7 +14,7 @@ function renderIcon(key?: string) {
           width="24"
           height="24"
           viewBox="0 0 24 24"
-          fill="#39866d"
+          fill="var(--color-emerald)"
         >
           <g clipPath="url(#clip0_3111_32711)">
             <path
@@ -41,7 +41,7 @@ function renderIcon(key?: string) {
           width="24"
           height="24"
           viewBox="0 0 24 24"
-          fill="#39866d"
+          fill="var(--color-emerald)"
         >
           <g clipPath="url(#clip0_4418_7470)">
             <path
@@ -72,7 +72,7 @@ function renderIcon(key?: string) {
           width="24"
           height="24"
           viewBox="0 0 24 24"
-          fill="#39866d"
+          fill="var(--color-emerald)"
         >
           <g clipPath="url(#clip0_4418_7010)">
             <path
@@ -100,7 +100,8 @@ export default function AssistantClient() {
   return (
     <section
       id="ai"
-      className="w-full text-white py-20 bg-background-green-section2"
+      className="w-full text-ivory py-20"
+      style={{ background: "linear-gradient(160deg, #0d211b, #0b1512)" }}
     >
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-8 flex flex-col gap-5">

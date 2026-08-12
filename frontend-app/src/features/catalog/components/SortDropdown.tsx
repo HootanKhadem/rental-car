@@ -36,7 +36,7 @@ export default function SortDropdown({ value, onChange }: Props) {
     <div className="relative" ref={ref}>
       <button
         type="button"
-        className="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-lg bg-background-main border border-border-card text-sm text-zinc-200 focus:outline-none font-mono cursor-pointer"
+        className="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-lg bg-ink border border-line text-sm text-ivory focus:outline-none font-mono cursor-pointer"
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="listbox"
         aria-expanded={open}
@@ -61,13 +61,13 @@ export default function SortDropdown({ value, onChange }: Props) {
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-56 bg-background-main border border-border-card rounded-md shadow-lg z-50">
+        <div className="absolute right-0 mt-2 w-56 bg-ink border border-line rounded-md shadow-lg z-50">
           <ul role="listbox" className="py-1">
             {OPTIONS.map((o) => (
               <li key={o.value} role="option">
                 <button
                   type="button"
-                  className={`w-full text-left px-3 py-2 cursor-pointer hover:bg-gold/10 text-sm ${o.value === value ? "text-gold" : "text-zinc-200"}`}
+                  className={`w-full text-left px-3 py-2 cursor-pointer hover:bg-gold/10 text-sm ${o.value === value ? "text-gold" : "text-ivory"}`}
                   onClick={() => {
                     onChange(o.value);
                     setOpen(false);

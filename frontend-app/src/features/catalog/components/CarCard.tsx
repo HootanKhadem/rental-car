@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import useClientI18n from "@/src/i18n/useI18n";
 import Image from "next/image";
 import { Car } from "../types";
-import {Button} from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import i18n from "@/src/i18n/i18n";
 
 function LikeButton() {
@@ -51,7 +51,7 @@ function LikeButton() {
         >
           <path
             d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"
-            stroke="var(--color-icon-card)"
+            stroke="var(--color-emerald)"
             strokeWidth="1.2"
             strokeLinejoin="round"
             strokeLinecap="round"
@@ -76,7 +76,7 @@ export default function CarCard({ car }: Props) {
   const { t } = useTranslation();
 
   return (
-    <article className="group rounded-xl overflow-hidden bg-background-car-card border border-border-card transform transition-all duration-300 will-change-transform hover:-translate-y-1 hover:shadow-xl hover:border-icon-card">
+    <article className="group rounded-xl overflow-hidden bg-[linear-gradient(180deg,var(--color-graphite),var(--color-obsidian))] border border-line transform transition-all duration-300 will-change-transform hover:-translate-y-1 hover:shadow-xl hover:border-emerald">
       <div className="relative h-48 w-full bg-zinc-900/20">
         {car.image ? (
           <>
@@ -105,45 +105,45 @@ export default function CarCard({ car }: Props) {
       </div>
 
       <div className="p-4">
-        <div className="text-xs text-icon-card tracking-widest font-mono">
+        <div className="text-xs text-emerald tracking-widest font-mono">
           {(mounted
             ? t(`categories.${car.category}`, { defaultValue: car.category })
             : car.category
           ).toUpperCase()}
         </div>
-        <h3 className="text-2xl font-medium mt-2 font-serif">
+        <h3 className="text-2xl font-medium mt-2 font-serif text-ivory">
           {mounted
             ? t(`cars.${car.id}`, { defaultValue: car.title })
             : car.title}
         </h3>
 
         <div className="mt-3">
-          <div className="w-full rounded-xl border border-border-card overflow-hidden bg-[rgba(0,0,0,.22)]">
+          <div className="w-full rounded-xl border border-line overflow-hidden bg-[rgba(0,0,0,.22)]">
             <div className="grid grid-cols-3 divide-x divide-border-card">
               <div className="px-4 py-2 text-center">
-                <div className="text-sm font-semibold text-zinc-100">
+                <div className="text-sm font-semibold text-ivory">
                   {car.seats ?? "-"}
                 </div>
-                <div className="text-[9px] text-zinc-400 tracking-widest mt-1 uppercase">
+                <div className="text-[9px] text-smoke tracking-widest mt-1 uppercase">
                   {mounted ? t("catalog.card.seats").toUpperCase() : ""}
                 </div>
               </div>
 
               <div className="px-4 py-2 text-center">
-                <div className="text-sm font-semibold text-zinc-100">
+                <div className="text-sm font-semibold text-ivory">
                   {mounted
                     ? t(`carsData.${String(car.fuel ?? "").toLowerCase()}`, {
                         defaultValue: car.fuel ?? "-",
                       })
                     : (car.fuel ?? "-")}
                 </div>
-                <div className="text-[9px] text-zinc-400 tracking-widest mt-1 uppercase">
+                <div className="text-[9px] text-smoke tracking-widest mt-1 uppercase">
                   {mounted ? t("catalog.card.engine").toUpperCase() : ""}
                 </div>
               </div>
 
               <div className="px-4 py-2 text-center">
-                <div className="text-sm font-semibold text-zinc-100">
+                <div className="text-sm font-semibold text-ivory">
                   {mounted
                     ? t(
                         `carsData.${String(car.transmission ?? "").toLowerCase()}`,
@@ -151,7 +151,7 @@ export default function CarCard({ car }: Props) {
                       )
                     : (car.transmission ?? "-")}
                 </div>
-                <div className="text-[9px] text-zinc-400 tracking-widest mt-1 uppercase">
+                <div className="text-[9px] text-smoke tracking-widest mt-1 uppercase">
                   {mounted ? t("catalog.card.transmission").toUpperCase() : ""}
                 </div>
               </div>
@@ -161,16 +161,16 @@ export default function CarCard({ car }: Props) {
 
         <div className="mt-4 flex items-center justify-between">
           <div>
-            <div className="text-2xl text-zinc-100 font-serif">
+            <div className="text-2xl text-ivory font-serif">
               {mounted ? t("other.KWD").toUpperCase() : ""} {car.pricePerDay}{" "}
-              <span className="text-zinc-400 text-xs">
+              <span className="text-smoke text-xs">
                 {mounted ? t("catalog.card.perDay") : ""}
               </span>
             </div>
           </div>
           <Button
             variant="outline"
-            //className="transition-colors duration-200"
+            className="transition-colors duration-300"
             onClick={() => {
               try {
                 window.dispatchEvent(

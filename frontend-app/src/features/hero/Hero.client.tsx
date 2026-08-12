@@ -55,17 +55,17 @@ export default function HeroClient() {
         </p>
 
         <div className="w-full flex justify-center lg:justify-start">
-          <div className="space-x-4 font-mono">
+          <div className="space-x-4 font-mono space-y-3 sm:space-y-0">
             <Button
               variant="solid"
-              className="bg-gold-bright text-ink font-bold"
+              className="bg-gold-bright text-ink font-bold w-full sm:w-auto"
             >
               {mounted ? t("hero.cta.browse") : ""}
             </Button>
 
             <Button
               variant="outline"
-              className="text-ivory border-line hover:bg-transparent hover:border-gold hover:text-gold"
+              className="text-ivory border-line hover:bg-transparent hover:border-gold hover:text-gold w-full sm:w-auto"
             >
               {mounted ? t("hero.cta.assistant") : ""}
             </Button>
