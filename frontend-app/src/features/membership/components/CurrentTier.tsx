@@ -22,20 +22,23 @@ export default function CurrentTier({
   const { t } = useTranslation();
 
   return (
-    <div className="rounded-xl border border-icon-card p-6 h-full font-mono flex flex-col justify-between text-zinc-100 bg-gradient-to-br from-background-card to-emerald-950">
+    <div
+      className="rounded-xl border border-emerald-deep p-6 h-full font-mono flex flex-col justify-between text-ivory"
+      style={{ background: "linear-gradient(150deg, #1d3329, #10201b)" }}
+    >
       <div>
         <div className="text-xs text-gold tracking-widest">
           {mounted ? t("membership.currentTier") : ""}
         </div>
         <h2 className="mt-3 text-3xl font-serif">{tier}</h2>
-        <div className="text-[12px] text-zinc-400 mt-2">
+        <div className="text-[12px] text-smoke mt-2">
           {mounted ? t("membership.memberNoPrefix") : ""} {memberNo} · {year}
         </div>
 
         <div className="mt-6">
-          <div className="text-4xl font-serif text-gradient-gold text-gold">
+          <div className="text-4xl font-serif text-gold">
             {points.toLocaleString()}
-            <span className="text-xs text-zinc-400 uppercase tracking-widest font-mono ml-2">
+            <span className="text-xs text-smoke uppercase tracking-widest font-mono ml-2">
               {mounted ? t("membership.pointsLabel") : ""}
             </span>
           </div>
@@ -46,13 +49,12 @@ export default function CurrentTier({
                 className="h-2 rounded-full"
                 style={{
                   width: `${percent}%`,
-                  background:
-                    "linear-gradient(90deg, var(--color-button-primary-yellow), #1f2f27)",
+                  background: "linear-gradient(90deg, #C6A664, #1f2f27)",
                 }}
               />
             </div>
             {nextLabel && (
-              <div className="mt-3 text-xs text-zinc-400">{nextLabel}</div>
+              <div className="mt-3 text-xs text-smoke">{nextLabel}</div>
             )}
           </div>
         </div>
