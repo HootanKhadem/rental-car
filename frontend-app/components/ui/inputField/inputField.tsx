@@ -151,7 +151,7 @@ export function InputField({
           match
           className={(state) =>
             twMerge(
-              "text-xs text-rust",
+              "text-xs text-rust font-mono",
               typeof errorClassName === "function"
                 ? errorClassName(state)
                 : errorClassName,
