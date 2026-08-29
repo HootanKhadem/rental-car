@@ -1,7 +1,7 @@
 "use client";
 
-import { Modal } from "@/components/ui/modal";
-import { Button } from "@/components/ui/button";
+import { Modal } from "@/components/ui/modal/modal";
+import { Button } from "@/components/ui/button/button";
 import useAuth from "@/src/features/auth/useAuth";
 import { useAuthContextMaybe } from "@/src/features/auth/AuthProvider";
 import { useTranslation } from "react-i18next";

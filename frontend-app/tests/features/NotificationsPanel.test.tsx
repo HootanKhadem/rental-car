@@ -2,6 +2,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { describe, beforeEach, it, expect, vi } from "vitest";
+import userEvent from "@testing-library/user-event";
 
 // mock i18n
 vi.mock("react-i18next", () => ({
@@ -29,7 +30,7 @@ describe("NotificationsPanel", () => {
     writeNotifications([]);
   });
 
-  it("renders translated notification from keys and params", () => {
+  it("renders translated notification from keys and params", async () => {
     writeNotifications([
       {
         id: "1",
@@ -43,6 +44,9 @@ describe("NotificationsPanel", () => {
     ] as any);
 
     render(<NotificationsPanel onClose={() => {}} />);
+
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("button", { name: /notifications/i }));
 
     expect(screen.getByText(/Reservation confirmed!/i)).toBeInTheDocument();
     expect(

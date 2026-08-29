@@ -5,7 +5,7 @@ import {
   addNotification,
   acknowledgeNotification,
 } from "../notifications/notifications";
-import { Modal } from "@/components/ui/modal";
+import { Modal } from "@/components/ui/modal/modal";
 import { useReserve } from "./ReserveProvider";
 import Image from "next/image";
 import SignatureCanvas from "react-signature-canvas";
@@ -699,21 +699,23 @@ export default function ReserveModal() {
         )}
 
         {r.step !== 0 && (
-          <div className="mt-6 flex justify-between gap-4">
+          <div className="mt-6 grid grid-cols-2 gap-4">
             {r.step !== 8 && (
               <Button
-                variant="outline"
-                //className="w-full hover:border-gold hover:text-gold"
+                variant="ghost"
+                className="w-full hover:border-gold hover:text-gold bg-transparent text-gold hover:bg-transparent"
                 onClick={() => r.back()}
                 disabled={r.step === 0}
               >
                 {t("back")}
               </Button>
             )}
-            <button
-              className={`w-full py-3 rounded-lg cursor-pointer text-sm font-semibold ${canAdvance ? "" : "opacity-50 cursor-not-allowed"}`}
-              onClick={() => {
-                if (r.step === 8) {
+
+            {r.step === 8 ? (
+              <Button
+                variant="default"
+                className="w-full bg-emerald col-span-2 hover:bg-emerald-deep"
+                onClick={() => {
                   try {
                     const n = addNotification({
                       titleKey: "reserve:doneMsgTitle",
@@ -727,22 +729,24 @@ export default function ReserveModal() {
                     // ignore storage errors
                   }
                   return r.close();
-                }
-                if (!canAdvance) return;
-                return r.next();
-              }}
-              style={
-                canAdvance
-                  ? {
-                      background: "#10b981",
-                      color: "#fff",
-                    }
-                  : { background: "transparent", color: "#9ca3af" }
-              }
-              aria-disabled={!canAdvance}
-            >
-              {r.step === 8 ? t("done") : t("next")}
-            </button>
+                }}
+              >
+                {t("done")}
+              </Button>
+            ) : (
+              <Button
+                type="button"
+                className={`w-full h-auto rounded-lg text-sm font-semibold border ${canAdvance ? "bg-emerald border-emerald text-white hover:bg-emerald-deep hover:border-emerald-deep" : "bg-transparent border-line text-zinc-400 hover:bg-transparent opacity-50"}`}
+                onClick={() => {
+                  if (!canAdvance) return;
+                  return r.next();
+                }}
+                disabled={r.step !== 8 && !canAdvance}
+                aria-disabled={!canAdvance}
+              >
+                {t("next")}
+              </Button>
+            )}
           </div>
         )}
       </div>

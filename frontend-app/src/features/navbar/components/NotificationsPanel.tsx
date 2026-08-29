@@ -6,8 +6,8 @@ import {
   writeNotifications,
   NotificationItem,
 } from "../../notifications/notifications";
-import { Popover } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
+import { Popover } from "@/components/ui/popover/popover";
+import { Button } from "@/components/ui/button/button";
 
 function migrateLegacyPure(itemsIn: NotificationItem[]) {
   let changed = false;
@@ -185,6 +185,7 @@ export default function NotificationsPanel({
         {/* Footer */}
         <div className="border-t border-line px-3 py-2 text-center">
           <Button
+            variant="ghost"
             onClick={() => {
               // Close the uncontrolled popover by toggling its trigger
               try {
@@ -207,10 +208,7 @@ export default function NotificationsPanel({
             transition-colors
             duration-150
             hover:text-red-500
-            bg-transparent
-            border-none
             hover:bg-transparent
-            p-0
           "
           >
             {t("notifications.close")}

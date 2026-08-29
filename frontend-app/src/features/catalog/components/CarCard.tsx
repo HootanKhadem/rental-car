@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import useClientI18n from "@/src/i18n/useI18n";
 import Image from "next/image";
 import { Car } from "../types";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button/button";
 import i18n from "@/src/i18n/i18n";
 
 function LikeButton() {
@@ -170,7 +170,7 @@ export default function CarCard({ car }: Props) {
           </div>
           <Button
             variant="outline"
-            className="transition-colors duration-300"
+            className="transition-colors duration-300 border-gold bg-transparent text-gold hover:bg-gold hover:text-ink"
             onClick={() => {
               try {
                 window.dispatchEvent(

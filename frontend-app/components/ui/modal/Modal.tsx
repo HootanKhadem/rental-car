@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Dialog } from "@base-ui/react/dialog";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
 
 export type ModalProps = {
   open?: boolean;
@@ -35,14 +35,14 @@ export function Modal({
   showCloseButton = true,
 }: ModalProps) {
   return (
-    <Dialog.Root
+    <DialogPrimitive.Root
       open={open}
       defaultOpen={defaultOpen}
       onOpenChange={onOpenChange}
     >
-      <Dialog.Portal>
+      <DialogPrimitive.Portal>
         {/* Overlay */}
-        <Dialog.Backdrop
+        <DialogPrimitive.Overlay
           className={`
             fixed
             inset-0
@@ -54,15 +54,17 @@ export function Modal({
             transition-opacity
             duration-200
 
-            data-starting-style:opacity-0
-            data-ending-style:opacity-0
+            data-[state=open]:animate-in
+            data-[state=open]:fade-in-0
+            data-[state=closed]:animate-out
+            data-[state=closed]:fade-out-0
 
             ${overlayClassName}
           `}
         />
 
         {/* Modal */}
-        <Dialog.Popup
+        <DialogPrimitive.Content
           className={`
             fixed
             left-1/2
@@ -96,11 +98,12 @@ export function Modal({
             duration-200
             ease-out
 
-            data-starting-style:scale-95
-            data-starting-style:opacity-0
-
-            data-ending-style:scale-95
-            data-ending-style:opacity-0
+            data-[state=open]:animate-in
+            data-[state=open]:zoom-in-95
+            data-[state=open]:fade-in-0
+            data-[state=closed]:animate-out
+            data-[state=closed]:zoom-out-95
+            data-[state=closed]:fade-out-0
 
             ${className}
           `}
@@ -110,7 +113,7 @@ export function Modal({
             <div className="mb-5 flex items-start justify-between gap-4">
               {/* Title */}
               {title ? (
-                <Dialog.Title
+                <DialogPrimitive.Title
                   className={`
                     text-xl
                     font-semibold
@@ -120,59 +123,62 @@ export function Modal({
                   `}
                 >
                   {title}
-                </Dialog.Title>
+                </DialogPrimitive.Title>
               ) : (
                 <div />
               )}
 
               {/* Close Button */}
               {showCloseButton && (
-                <Dialog.Close
-                  aria-label="Close modal"
-                  className={`
-                    shrink-0
-                    cursor-pointer
+                <DialogPrimitive.Close asChild>
+                  <button
+                    type="button"
+                    aria-label="Close modal"
+                    className={`
+                      shrink-0
+                      cursor-pointer
 
-                    rounded-md
-                    p-1
+                      rounded-md
+                      p-1
 
-                    text-gray-400
+                      text-gray-400
 
-                    transition-colors
-                    duration-150
+                      transition-colors
+                      duration-150
 
-                    hover:text-red-500
+                      hover:text-red-500
 
-                    focus-visible:outline-none
-                    focus-visible:ring-2
-                    focus-visible:ring-red-500
+                      focus-visible:outline-none
+                      focus-visible:ring-2
+                      focus-visible:ring-red-500
 
-                    ${closeButtonClassName}
-                  `}
-                >
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    aria-hidden="true"
+                      ${closeButtonClassName}
+                    `}
                   >
-                    <path d="M6 6L18 18" strokeLinecap="round" />
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      aria-hidden="true"
+                    >
+                      <path d="M6 6L18 18" strokeLinecap="round" />
 
-                    <path d="M18 6L6 18" strokeLinecap="round" />
-                  </svg>
-                </Dialog.Close>
+                      <path d="M18 6L6 18" strokeLinecap="round" />
+                    </svg>
+                  </button>
+                </DialogPrimitive.Close>
               )}
             </div>
           )}
 
           {/* Content */}
           <div>{children}</div>
-        </Dialog.Popup>
-      </Dialog.Portal>
-    </Dialog.Root>
+        </DialogPrimitive.Content>
+      </DialogPrimitive.Portal>
+    </DialogPrimitive.Root>
   );
 }
 

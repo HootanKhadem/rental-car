@@ -1,7 +1,7 @@
 "use client";
 
-import { Modal } from "@/components/ui/modal";
-import { Button } from "@/components/ui/button";
+import { Modal } from "@/components/ui/modal/modal";
+import { Button } from "@/components/ui/button/button";
 import InputField from "@/components/ui/inputField/inputField";
 import SelectField from "@/components/ui/selectField/selectField";
 
@@ -252,7 +252,6 @@ export default function RegisterModal({ isOpen, onClose }: Props) {
 
         {/* Submit */}
         <Button
-          variant="solid"
           type="submit"
           disabled={isSubmitting}
           className="

@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button/button";
 import { useTranslation } from "react-i18next";
 import HeroImage from "./components/HeroImage";
 import StatItem from "./components/StatItem";
@@ -57,14 +57,14 @@ export default function HeroClient() {
         <div className="w-full flex justify-center lg:justify-start">
           <div className="space-x-4 font-mono space-y-3 sm:space-y-0">
             <Button
-              variant="solid"
-              className="bg-gold-bright text-ink font-bold w-full sm:w-auto"
+              variant="default"
+              className="font-bold w-full sm:w-auto"
             >
               {mounted ? t("hero.cta.browse") : ""}
             </Button>
 
             <Button
-              variant="outline"
+              variant="ghost"
               className="text-ivory border-line hover:bg-transparent hover:border-gold hover:text-gold w-full sm:w-auto"
             >
               {mounted ? t("hero.cta.assistant") : ""}

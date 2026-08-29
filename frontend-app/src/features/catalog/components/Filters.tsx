@@ -4,7 +4,7 @@ type Category = { name: string; count: number };
 
 import { useTranslation } from "react-i18next";
 import useClientI18n from "@/src/i18n/useI18n";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button/button";
 
 type Props = {
   categories: Category[];

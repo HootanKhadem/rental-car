@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { describe, it, vi, expect } from "vitest";
 
@@ -19,9 +19,9 @@ vi.mock("react-i18next", () => ({
 }));
 
 // mock Modal and SignatureCanvas to simplify rendering
-vi.mock("@/components/ui/Modal", () => ({
-    //eslint-disable-next-line
-  default: ({ children }: any) => <div>{children}</div>,
+vi.mock("@/components/ui/modal/modal", () => ({
+  //eslint-disable-next-line
+  Modal: ({ children }: any) => <div>{children}</div>,
 }));
 vi.mock("react-signature-canvas", () => ({ default: () => <div /> }));
 // mock ReserveProvider's hook to provide a controllable context
@@ -40,21 +40,21 @@ vi.mock("../../src/features/reserve/ReserveProvider", () => ({
 
 import ReserveModal from "../../src/features/reserve/ReserveModal.client";
 import {
-  addNotification,
+  //addNotification,
   readNotifications,
 } from "../../src/features/notifications/notifications";
 
 describe("ReserveModal", () => {
   it("checkbox has accent-emerald-600 class and success shows car name", () => {
-    const mockReserve = {
-      isOpen: true,
-      step: 5,
-      car: { title: "Chevrolet Tahoe", pricePerDay: 20, image: "/" },
-      close: () => {},
-      back: () => {},
-      next: () => {},
-      //eslint-disable-next-line
-    } as any;
+    // const mockReserve = {
+    //   isOpen: true,
+    //   step: 5,
+    //   car: { title: "Chevrolet Tahoe", pricePerDay: 20, image: "/" },
+    //   close: () => {},
+    //   back: () => {},
+    //   next: () => {},
+    //   //eslint-disable-next-line
+    // } as any;
 
     // render at step 5 (terms) to find checkbox
     render(<ReserveModal />);
@@ -66,11 +66,11 @@ describe("ReserveModal", () => {
     if (checkbox) expect(checkbox).toHaveClass("accent-emerald-600");
 
     // simulate addNotification call: check it writes keys
-    const n = addNotification({
-      titleKey: "reserve:doneMsgTitle",
-      subtitleKey: "reserve:doneMsgBodyWithCar",
-      subtitleParams: { car: "Chevrolet Tahoe" },
-    });
+    // const n = addNotification({
+    //   titleKey: "reserve:doneMsgTitle",
+    //   subtitleKey: "reserve:doneMsgBodyWithCar",
+    //   subtitleParams: { car: "Chevrolet Tahoe" },
+    // });
     const items = readNotifications();
     expect(items.length).toBeGreaterThan(0);
     expect(items[0].subtitleKey).toBe("reserve:doneMsgBodyWithCar");

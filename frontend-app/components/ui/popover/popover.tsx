@@ -1,49 +1,59 @@
 "use client";
 
 import * as React from "react";
-import { Popover as BasePopover } from "@base-ui/react/popover";
+import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { twMerge } from "tailwind-merge";
 
-type PopoverTriggerProps = React.ComponentProps<typeof BasePopover.Trigger>;
+type TriggerState = {
+  open: boolean;
+};
 
-type PopoverPositionerProps = React.ComponentProps<
-  typeof BasePopover.Positioner
+type ContentState = {
+  open: boolean;
+  side: "top" | "right" | "bottom" | "left";
+  align: "start" | "center" | "end";
+};
+
+type PopoverTriggerProps = React.ComponentProps<
+  typeof PopoverPrimitive.Trigger
 >;
+type PopoverContentProps = React.ComponentProps<
+  typeof PopoverPrimitive.Content
+>;
+type PopoverArrowProps = React.ComponentProps<typeof PopoverPrimitive.Arrow>;
 
-type PopoverPopupProps = React.ComponentProps<typeof BasePopover.Popup>;
-
-type PopoverArrowProps = React.ComponentProps<typeof BasePopover.Arrow>;
-
-export type PopoverProps = React.ComponentProps<typeof BasePopover.Root> & {
+export type PopoverProps = React.ComponentProps<
+  typeof PopoverPrimitive.Root
+> & {
   /**
    * Element that opens the popover.
    *
    * Example:
    * <Button>Open</Button>
    */
-  trigger: React.ReactElement;
+  trigger: React.ReactElement<{ className?: string }>;
 
   children?: React.ReactNode;
 
   /**
    * Default / custom trigger styling.
    */
-  triggerClassName?: PopoverTriggerProps["className"];
+  triggerClassName?: string | ((state: TriggerState) => string);
 
   /**
    * Default / custom positioner styling.
    */
-  positionerClassName?: PopoverPositionerProps["className"];
+  positionerClassName?: string | ((state: ContentState) => string);
 
   /**
    * Default / custom popup styling.
    */
-  popupClassName?: PopoverPopupProps["className"];
+  popupClassName?: string | ((state: ContentState) => string);
 
   /**
    * Default / custom arrow styling.
    */
-  arrowClassName?: PopoverArrowProps["className"];
+  arrowClassName?: string | ((state: ContentState) => string);
 
   /**
    * Whether to render the arrow.
@@ -53,40 +63,49 @@ export type PopoverProps = React.ComponentProps<typeof BasePopover.Root> & {
   /**
    * Distance between trigger and popup.
    */
-  sideOffset?: PopoverPositionerProps["sideOffset"];
+  sideOffset?: PopoverContentProps["sideOffset"];
 
   /**
    * Alignment offset.
    */
-  alignOffset?: PopoverPositionerProps["alignOffset"];
+  alignOffset?: PopoverContentProps["alignOffset"];
 
   /**
    * Position relative to trigger.
    */
-  side?: PopoverPositionerProps["side"];
+  side?: PopoverContentProps["side"];
 
   /**
    * Alignment relative to trigger.
    */
-  align?: PopoverPositionerProps["align"];
+  align?: PopoverContentProps["align"];
 
   /**
-   * Additional props for the Base UI Trigger.
+   * Additional props for the trigger.
    */
-  triggerProps?: Omit<PopoverTriggerProps, "className" | "children">;
+  triggerProps?: Omit<
+    PopoverTriggerProps,
+    "className" | "children" | "asChild"
+  >;
 
   /**
-   * Additional props for the Base UI Positioner.
+   * Additional props for the positioned popover container.
    */
-  positionerProps?: Omit<PopoverPositionerProps, "className" | "children">;
+  positionerProps?: Omit<
+    PopoverContentProps,
+    "className" | "children" | "side" | "align" | "sideOffset" | "alignOffset"
+  >;
 
   /**
-   * Additional props for the Base UI Popup.
+   * Additional props for the popover content.
    */
-  popupProps?: Omit<PopoverPopupProps, "className" | "children">;
+  popupProps?: Omit<
+    PopoverContentProps,
+    "className" | "children" | "side" | "align" | "sideOffset" | "alignOffset"
+  >;
 
   /**
-   * Additional props for the Base UI Arrow.
+   * Additional props for the arrow.
    */
   arrowProps?: Omit<PopoverArrowProps, "className">;
 };
@@ -98,9 +117,9 @@ export function Popover({
   triggerClassName,
   positionerClassName,
   popupClassName,
-  // arrowClassName,
+  arrowClassName,
 
-  // showArrow = true,
+  showArrow = false,
 
   sideOffset = 8,
   alignOffset,
@@ -110,111 +129,113 @@ export function Popover({
   triggerProps,
   positionerProps,
   popupProps,
-  // arrowProps,
+  arrowProps,
 
+  open: controlledOpen,
+  defaultOpen,
+  onOpenChange,
   ...rootProps
 }: PopoverProps) {
-  return (
-    <BasePopover.Root {...rootProps}>
-      <BasePopover.Trigger
-        {...triggerProps}
-        render={trigger}
-        className={(state) =>
-          twMerge(
-            "cursor-pointer outline-none",
-            typeof triggerClassName === "function"
-              ? triggerClassName(state)
-              : triggerClassName,
-          )
-        }
-      />
+  const isControlled = controlledOpen !== undefined;
+  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(
+    defaultOpen ?? false,
+  );
+  const open = isControlled ? Boolean(controlledOpen) : uncontrolledOpen;
 
-      <BasePopover.Portal>
-        <BasePopover.Positioner
+  const resolvedSide = side ?? "bottom";
+  const resolvedAlign = align ?? "center";
+
+  const triggerState: TriggerState = { open };
+  const contentState: ContentState = {
+    open,
+    side: resolvedSide,
+    align: resolvedAlign,
+  };
+
+  function handleOpenChange(nextOpen: boolean) {
+    if (!isControlled) setUncontrolledOpen(nextOpen);
+    onOpenChange?.(nextOpen);
+  }
+
+  const enhancedTrigger = React.cloneElement(trigger, {
+    className: twMerge(
+      "cursor-pointer outline-none",
+      trigger.props.className,
+      typeof triggerClassName === "function"
+        ? triggerClassName(triggerState)
+        : triggerClassName,
+    ),
+  });
+
+  return (
+    <PopoverPrimitive.Root
+      {...rootProps}
+      open={open}
+      onOpenChange={handleOpenChange}
+    >
+      <PopoverPrimitive.Trigger {...triggerProps} asChild>
+        {enhancedTrigger}
+      </PopoverPrimitive.Trigger>
+
+      <PopoverPrimitive.Portal>
+        <PopoverPrimitive.Content
           {...positionerProps}
+          {...popupProps}
           side={side}
           align={align}
           sideOffset={sideOffset}
           alignOffset={alignOffset}
-          className={(state) =>
-            twMerge(
-              "z-50",
-              typeof positionerClassName === "function"
-                ? positionerClassName(state)
-                : positionerClassName,
-            )
-          }
+          className={twMerge(
+            "z-50",
+            typeof positionerClassName === "function"
+              ? positionerClassName(contentState)
+              : positionerClassName,
+            `
+              w-max
+              max-w-[calc(100vw-2rem)]
+              rounded-[14px]
+              border
+              border-line
+              bg-graphite
+              text-ivory
+              shadow-2xl
+              outline-none
+              transition-all
+              duration-200
+              ease-out
+              origin-(--radix-popover-content-transform-origin)
+              data-[state=open]:animate-in
+              data-[state=open]:fade-in-0
+              data-[state=open]:zoom-in-95
+              data-[state=closed]:animate-out
+              data-[state=closed]:fade-out-0
+              data-[state=closed]:zoom-out-95
+            `,
+            typeof popupClassName === "function"
+              ? popupClassName(contentState)
+              : popupClassName,
+          )}
         >
-          <BasePopover.Popup
-            {...popupProps}
-            className={(state) =>
-              twMerge(
+          {showArrow ? (
+            <PopoverPrimitive.Arrow
+              {...arrowProps}
+              className={twMerge(
                 `
-                  z-50
-                  w-max
-                  max-w-[calc(100vw-2rem)]
-
-                  rounded-[14px]
-
-                  border
-                  border-line
-
-                  bg-graphite
-
-                  text-ivory
-
-                  shadow-2xl
-
-                  outline-none
-
-                  transition-all
-                  duration-200
-                  ease-out
-
-                  data-starting-style:scale-95
-                  data-starting-style:opacity-0
-
-                  data-ending-style:scale-95
-                  data-ending-style:opacity-0
+                  fill-graphite
+                  stroke-line
+                  stroke-[0.5]
                 `,
-                typeof popupClassName === "function"
-                  ? popupClassName(state)
-                  : popupClassName,
-              )
-            }
-          >
-            {/* {showArrow && (
-              <BasePopover.Arrow
-                {...arrowProps}
-                className={(state) =>
-                  twMerge(
-                    `
-                      size-3
+                typeof arrowClassName === "function"
+                  ? arrowClassName(contentState)
+                  : arrowClassName,
+              )}
+            />
+          ) : null}
 
-                      before:block
-                      before:size-3
-
-                      before:rotate-45
-
-                      before:border-l
-                      before:border-t
-                      before:border-line
-
-                      before:bg-graphite
-                    `,
-                    typeof arrowClassName === "function"
-                      ? arrowClassName(state)
-                      : arrowClassName,
-                  )
-                }
-              />
-            )} */}
-
-            {children}
-          </BasePopover.Popup>
-        </BasePopover.Positioner>
-      </BasePopover.Portal>
-    </BasePopover.Root>
+          <div>{children}</div>
+        </PopoverPrimitive.Content>
+      </PopoverPrimitive.Portal>
+    </PopoverPrimitive.Root>
   );
 }
 

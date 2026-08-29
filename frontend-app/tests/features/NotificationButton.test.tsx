@@ -1,33 +1,38 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { describe, it, vi, expect } from "vitest";
+import userEvent from "@testing-library/user-event";
 
 vi.mock("react-i18next", () => ({
-  useTranslation: () => ({ i18n: { language: "en" } }),
-}));
-// mock NotificationsPanel to simplify
-vi.mock("../../src/features/navbar/components/NotificationsPanel", () => ({
-    //eslint-disable-next-line
-  default: ({ onClose }: any) => (
-    <div data-testid="notifications-panel">panel</div>
-  ),
+  useTranslation: () => ({
+    t: (key: string) => {
+      const map: Record<string, string> = {
+        "notifications.title": "Notifications",
+        "notifications.close": "Close",
+        "notifications.empty": "No notifications",
+      };
+      return map[key] ?? key;
+    },
+    i18n: { language: "en" },
+  }),
 }));
 
-import NotificationButton from "../../src/features/navbar/components/NotificationButton";
+import NotificationsPanel from "../../src/features/navbar/components/NotificationsPanel";
+import { writeNotifications } from "../../src/features/notifications/notifications";
 
-describe("NotificationButton", () => {
-  it("toggles panel on click", () => {
-    render(<NotificationButton />);
+describe("NotificationsPanel trigger", () => {
+  it("opens panel on click", async () => {
+    writeNotifications([]);
+    render(<NotificationsPanel />);
+
+    const user = userEvent.setup();
     const btn = screen.getByRole("button", { name: /notifications/i });
     expect(btn).toBeInTheDocument();
-    // panel not visible initially
-    expect(screen.queryByTestId("notifications-panel")).toBeNull();
 
-    fireEvent.click(btn);
-    expect(screen.getByTestId("notifications-panel")).toBeInTheDocument();
+    expect(screen.queryByText(/No notifications/i)).toBeNull();
 
-    fireEvent.click(btn);
-    expect(screen.queryByTestId("notifications-panel")).toBeNull();
+    await user.click(btn);
+    expect(screen.getByText(/No notifications/i)).toBeInTheDocument();
   });
 });

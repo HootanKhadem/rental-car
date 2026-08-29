@@ -61,7 +61,7 @@ export default function CatalogClient() {
             </h1>
           </div>
           <div className="rounded-lg border border-line bg-obsidian p-4">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
               <div className="lg:col-span-9">
                 <SearchBar value={query} onChange={setQuery} />
               </div>
@@ -248,7 +248,7 @@ export default function CatalogClient() {
                 key={f.key}
                 className="flex items-center gap-3 bg-obsidian border border-line-soft rounded-xl px-4 py-4 text-xs w-full"
               >
-                <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-[rgba(47,163,122,.1)] flex items-center justify-center">
+                <div className="shrink-0 w-10 h-10 rounded-xl bg-[rgba(47,163,122,.1)] flex items-center justify-center">
                   {f.icon}
                 </div>
                 <div className="flex flex-col">

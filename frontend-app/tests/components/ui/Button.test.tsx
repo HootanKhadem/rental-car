@@ -15,7 +15,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button/button";
 
 describe("Button", () => {
   // agar component render nashavad, teste 1 khata mide
@@ -67,16 +67,15 @@ describe("Button", () => {
     expect(handleClick).not.toHaveBeenCalled();
   });
 
-  it("applies solid variant classes by default", () => {
-    render(<Button>Solid Button</Button>);
+  it("maps solid variant to default classes", () => {
+    render(<Button variant="solid">Solid Button</Button>);
 
     const button = screen.getByRole("button", {
       name: "Solid Button",
     });
 
-    expect(button.className).toContain(
-      "bg-[var(--color-button-primary-yellow)]",
-    );
+    expect(button.className).toContain("bg-primary");
+    expect(button.className).toContain("text-primary-foreground");
   });
 
   it("applies outline variant classes", () => {
@@ -86,8 +85,8 @@ describe("Button", () => {
       name: "Outline Button",
     });
 
-    expect(button.className).toContain("border-[var(--color-gold)]");
-    expect(button.className).toContain("text-[var(--color-gold)]");
+    expect(button.className).toContain("border-border");
+    expect(button.className).toContain("bg-background");
   });
 
   it("merges custom string className", () => {

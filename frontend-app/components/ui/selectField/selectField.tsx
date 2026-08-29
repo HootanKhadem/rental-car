@@ -1,22 +1,29 @@
 "use client";
 
 import * as React from "react";
-import { Select } from "@base-ui/react/select";
-import { Field } from "@base-ui/react/field";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectItemIndicator,
+  SelectItemText,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { twMerge } from "tailwind-merge";
 import { useTranslation } from "react-i18next";
 
-type SelectRootProps = React.ComponentProps<typeof Select.Root>;
-type SelectLabelProps = React.ComponentProps<typeof Field.Label>;
-type SelectTriggerProps = React.ComponentProps<typeof Select.Trigger>;
-type SelectValueProps = React.ComponentProps<typeof Select.Value>;
-type SelectPositionerProps = React.ComponentProps<typeof Select.Positioner>;
-type SelectPopupProps = React.ComponentProps<typeof Select.Popup>;
-type SelectListProps = React.ComponentProps<typeof Select.List>;
-type SelectItemProps = React.ComponentProps<typeof Select.Item>;
-type SelectItemTextProps = React.ComponentProps<typeof Select.ItemText>;
+type SelectRootProps = React.ComponentProps<typeof Select>;
+type SelectLabelProps = React.LabelHTMLAttributes<HTMLLabelElement>;
+type SelectTriggerProps = React.ComponentProps<typeof SelectTrigger>;
+type SelectValueProps = React.ComponentProps<typeof SelectValue>;
+type SelectPositionerProps = React.ComponentProps<typeof SelectContent>;
+type SelectPopupProps = React.ComponentProps<typeof SelectContent>;
+type SelectListProps = React.HTMLAttributes<HTMLDivElement>;
+type SelectItemProps = React.ComponentProps<typeof SelectItem>;
+type SelectItemTextProps = React.ComponentProps<typeof SelectItemText>;
 type SelectItemIndicatorProps = React.ComponentProps<
-  typeof Select.ItemIndicator
+  typeof SelectItemIndicator
 >;
 
 export type SelectFieldOption<T = string> = {
@@ -166,24 +173,6 @@ export type SelectFieldProps = Omit<SelectRootProps, "children"> & {
   onBlur?: React.FocusEventHandler<HTMLButtonElement>;
 };
 
-function CaretUpDownIcon(props: React.ComponentProps<"svg">) {
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 16 16"
-      fill="currentColor"
-      {...props}
-      style={{
-        display: "block",
-        ...props.style,
-      }}
-    >
-      <path d="M11 10H5l3 3.5zm0-4H5l3-3.5z" />
-    </svg>
-  );
-}
-
 function CheckIcon(props: React.ComponentProps<"svg">) {
   return (
     <svg
@@ -240,17 +229,17 @@ export function SelectField({
 }: SelectFieldProps) {
   const hasError = Boolean(error);
   const { i18n } = useTranslation();
-  const lang = i18n.language?.toLowerCase();
+  const lang = i18n?.language?.toLowerCase();
   const isRTL = lang?.startsWith("ar");
   const direction = isRTL ? "rtl" : "ltr";
 
   return (
-    <Field.Root
+    <div
       dir={direction}
       className={twMerge("flex w-full flex-col gap-1", rootClassName)}
     >
       {label ? (
-        <Field.Label
+        <label
           {...labelProps}
           className={twMerge(
             `
@@ -268,11 +257,11 @@ export function SelectField({
           )}
         >
           {label}
-        </Field.Label>
+        </label>
       ) : null}
 
-      <Select.Root {...rootProps}>
-        <Select.Trigger
+      <Select dir={direction} {...rootProps}>
+        <SelectTrigger
           dir={direction}
           {...triggerProps}
           onBlur={(event) => {
@@ -309,9 +298,9 @@ export function SelectField({
               focus-visible:ring-2
               focus-visible:ring-gold/20
 
-              data-popup-open:border-gold-bright
-              data-popup-open:ring-2
-              data-popup-open:ring-gold/20
+              data-[state=open]:border-gold-bright
+              data-[state=open]:ring-2
+              data-[state=open]:ring-gold/20
 
               disabled:cursor-not-allowed
               disabled:opacity-50
@@ -325,7 +314,7 @@ export function SelectField({
             triggerClassName,
           )}
         >
-          <Select.Value
+          <SelectValue
             {...valueProps}
             placeholder={placeholder}
             className={twMerge(
@@ -334,121 +323,99 @@ export function SelectField({
               valueClassName,
             )}
           />
+        </SelectTrigger>
 
-          <Select.Icon>
-            <CaretUpDownIcon className="shrink-0 text-smoke" />
-          </Select.Icon>
-        </Select.Trigger>
-
-        <Select.Portal>
-          <Select.Positioner
-            {...positionerProps}
-            sideOffset={4}
-            className={twMerge("z-60", positionerClassName)}
+        <SelectContent
+          dir={direction}
+          {...positionerProps}
+          {...popupProps}
+          sideOffset={4}
+          className={twMerge(
+            "z-60",
+            `
+              overflow-hidden
+              rounded-lg
+              border
+              border-line
+              bg-ink
+              p-1
+              text-ivory
+              shadow-xl
+              outline-none
+            `,
+            positionerClassName,
+            popupClassName,
+          )}
+        >
+          <div
+            {...listProps}
+            className={twMerge("max-h-60 overflow-y-auto", listClassName)}
           >
-            <Select.Popup
-              dir={direction}
-              {...popupProps}
-              className={twMerge(
-                `
-                  min-w-var(--anchor-width)
-                  overflow-hidden
+            {options.map((option) => (
+              <SelectItem
+                key={String(option.value)}
+                {...itemProps}
+                value={String(option.value)}
+                disabled={option.disabled}
+                className={twMerge(
+                  `
+                    relative
+                    flex
+                    w-full
+                    cursor-pointer
+                    items-center
+                    rounded-lg
 
-                  rounded-lg
-                  border
-                  border-line
+                    px-3
+                    py-2
 
-                  bg-ink
+                    text-sm
+                    text-ivory
 
-                  p-1
+                    outline-none
 
-                  text-ivory
-                  shadow-xl
+                    transition-colors
 
-                  outline-none
-                `,
-                popupClassName,
-              )}
-            >
-              <Select.List
-                {...listProps}
-                className={twMerge("max-h-60 overflow-y-auto", listClassName)}
+                    hover:bg-raised
+
+                    data-highlighted:bg-gold
+                    data-highlighted:text-ivory
+
+                    data-[state=checked]:text-gold-bright
+
+                    data-disabled:pointer-events-none
+                    data-disabled:opacity-50
+                    text-start
+                  `,
+                  itemClassName,
+                )}
               >
-                {options.map((option) => (
-                  <Select.Item
-                    dir={direction}
-                    key={String(option.value)}
-                    {...itemProps}
-                    value={option.value}
-                    disabled={option.disabled}
-                    className={twMerge(
-                      `
-                        relative
-                        flex
-                        w-full
-                        cursor-pointer
-                        items-center
-                        rounded-lg
+                <span
+                  className={twMerge(
+                    "pointer-events-none absolute inset-y-0 flex w-4 items-center justify-center text-gold",
+                    isRTL ? "left-3" : "right-3",
+                    itemIndicatorClassName,
+                  )}
+                >
+                  <SelectItemIndicator {...itemIndicatorProps}>
+                    <CheckIcon />
+                  </SelectItemIndicator>
+                </span>
 
-                        px-3
-                        py-2
-
-                        text-sm
-                        text-ivory
-
-                        outline-none
-
-                        transition-colors
-
-                        hover:bg-raised
-
-                        data-highlighted:bg-raised
-                        data-highlighted:text-ivory
-
-                        data-selected:text-gold-bright
-
-                        data-disabled:pointer-events-none
-                        data-disabled:opacity-50
-                        text-start
-                      `,
-                      itemClassName,
-                    )}
-                  >
-                    <Select.ItemIndicator
-                      {...itemIndicatorProps}
-                      className={twMerge(
-                        `
-                          flex
-                          w-4
-                          shrink-0
-                          items-center
-                          justify-center
-                          text-gold
-                           text-start
-                        `,
-                        isRTL ? "ml-2" : "mr-2",
-                        itemIndicatorClassName,
-                      )}
-                    >
-                      <CheckIcon />
-                    </Select.ItemIndicator>
-
-                    <Select.ItemText
-                      {...itemTextProps}
-                      className={twMerge(
-                        "min-w-0 flex-1 truncate",
-                        itemTextClassName,
-                      )}
-                    >
-                      {option.label}
-                    </Select.ItemText>
-                  </Select.Item>
-                ))}
-              </Select.List>
-            </Select.Popup>
-          </Select.Positioner>
-        </Select.Portal>
-      </Select.Root>
+                <SelectItemText
+                  {...itemTextProps}
+                  className={twMerge(
+                    "min-w-0 flex-1 truncate",
+                    itemTextClassName,
+                  )}
+                >
+                  {option.label}
+                </SelectItemText>
+              </SelectItem>
+            ))}
+          </div>
+        </SelectContent>
+      </Select>
 
       {hasError ? (
         <div
@@ -458,24 +425,17 @@ export function SelectField({
           {error}
         </div>
       ) : description ? (
-        <Field.Description
-          className={() => {
-            const lang = i18n.language?.toLowerCase();
-            const languageMargin =
-              lang?.startsWith("ar") || lang?.startsWith("en") ? "ms-1" : "";
-
-            return twMerge(
-              "select-none text-xs font-medium text-smoke font-mono",
-              languageMargin,
-              descriptionClassName,
-            );
-          }}
-          //className={twMerge("text-xs text-smoke", descriptionClassName)}
+        <p
+          className={twMerge(
+            "select-none text-xs font-medium text-smoke font-mono",
+            lang?.startsWith("ar") || lang?.startsWith("en") ? "ms-1" : "",
+            descriptionClassName,
+          )}
         >
           {description}
-        </Field.Description>
+        </p>
       ) : null}
-    </Field.Root>
+    </div>
   );
 }
 

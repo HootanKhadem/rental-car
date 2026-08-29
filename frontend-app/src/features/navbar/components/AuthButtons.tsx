@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button/button";
 // Modals are lifted to Navbar; handlers are received via props
 import { useTranslation } from "react-i18next";
 import useClientI18n from "@/src/i18n/useI18n";
@@ -28,7 +28,7 @@ export default function AuthButtons({ onOpenRegister, onOpenSignIn }: Props) {
       ) : (
         <>
           <Button
-            variant="outline"
+            variant="ghost"
             className="bg-transparent border-line text-ivory hover:bg-transparent hover:border-gold hover:text-gold"
             onClick={() => {
               if (onOpenSignIn) onOpenSignIn();
@@ -38,7 +38,7 @@ export default function AuthButtons({ onOpenRegister, onOpenSignIn }: Props) {
             {mounted ? t("auth.signIn") : ""}
           </Button>
           <Button
-            variant="solid"
+            variant="default"
             className="hover:opacity-90 text-white bg-emerald border-none hover:bg-emerald font-bold"
             onClick={() => {
               if (onOpenRegister) onOpenRegister();

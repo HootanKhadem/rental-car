@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button/button";
 import type { MenuItem } from "./DesktopNav";
 import { useTranslation } from "react-i18next";
 import useClientI18n from "@/src/i18n/useI18n";

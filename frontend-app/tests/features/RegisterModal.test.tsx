@@ -20,7 +20,7 @@ vi.mock("react-i18next", () => ({
 }));
 
 // mock Modal to avoid portal/timers
-vi.mock("../../components/ui/Modal", () => ({
+vi.mock("../../components/ui/modal/modal", () => ({
   //eslint-disable-next-line
   default: ({ children }: any) => <div>{children}</div>,
 }));
