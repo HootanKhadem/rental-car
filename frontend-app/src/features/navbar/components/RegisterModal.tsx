@@ -1,7 +1,7 @@
 "use client";
 
-import { Modal } from "@/components/ui/modal/modal";
-import { Button } from "@/components/ui/button/button";
+import { Modal } from "@/components/ui/modal";
+import { Button } from "@/components/ui/button";
 import InputField from "@/components/ui/inputField/inputField";
 import SelectField from "@/components/ui/selectField/selectField";
 
@@ -127,7 +127,7 @@ export default function RegisterModal({ isOpen, onClose }: Props) {
           text-xs
           text-sand
         "
-        style={{background:"rgba(47,163,122,.08)"}}
+        style={{ background: "rgba(47,163,122,.08)" }}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

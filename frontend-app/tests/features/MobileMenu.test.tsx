@@ -8,18 +8,18 @@ vi.mock("react-i18next", () => ({
 }));
 vi.mock("@/src/i18n/useI18n", () => ({ default: () => true }));
 vi.mock("next/link", () => ({
-    __esModule: true,
-    //eslint-disable-next-line
+  __esModule: true,
+  //eslint-disable-next-line
   default: ({ children, href, ...rest }: any) => (
     <a href={href} {...rest}>
       {children}
     </a>
   ),
 }));
-vi.mock("@/components/ui/button/button", () => ({
-    //eslint-disable-next-line
+vi.mock("@/components/ui/button", () => ({
+  //eslint-disable-next-line
   Button: ({ children, ...p }: any) => <button {...p}>{children}</button>,
-//eslint-disable-next-line
+  //eslint-disable-next-line
   default: ({ children, ...p }: any) => <button {...p}>{children}</button>,
 }));
 
@@ -35,7 +35,7 @@ describe("MobileMenu", () => {
 
     const dispatchSpy = vi.spyOn(window, "dispatchEvent");
     const { unmount } = render(
-        //eslint-disable-next-line
+      //eslint-disable-next-line
       <MobileMenu items={items as any} onClose={onClose} />,
     );
 

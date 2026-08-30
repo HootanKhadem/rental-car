@@ -7,7 +7,7 @@ import {
   NotificationItem,
 } from "../../notifications/notifications";
 import { Popover } from "@/components/ui/popover/popover";
-import { Button } from "@/components/ui/button/button";
+import { Button } from "@/components/ui/button";
 
 function migrateLegacyPure(itemsIn: NotificationItem[]) {
   let changed = false;

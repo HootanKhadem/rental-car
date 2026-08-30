@@ -15,7 +15,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
-import { Button } from "@/components/ui/button/button";
+import { Button } from "@/components/ui/button";
 
 describe("Button", () => {
   // agar component render nashavad, teste 1 khata mide

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import useClientI18n from "@/src/i18n/useI18n";
 import { loadNamespace } from "@/src/i18n/i18n";
-import { Button } from "@/components/ui/button/button";
+import { Button } from "@/components/ui/button";
 
 export default function LanguageSwitcher() {
   const mounted = useClientI18n();
