@@ -5,11 +5,11 @@ import {
   addNotification,
   acknowledgeNotification,
 } from "../notifications/notifications";
-import Modal from "@/components/ui/Modal";
+import { Modal } from "@/components/ui/modal/modal";
 import { useReserve } from "./ReserveProvider";
 import Image from "next/image";
 import SignatureCanvas from "react-signature-canvas";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
 const TOTAL_STEPS = 9;
 
@@ -115,10 +115,10 @@ export default function ReserveModal() {
   }
 
   return (
-    <Modal isOpen={r.isOpen} onClose={r.close} title={t("modalTitle")}>
+    <Modal open={r.isOpen} onOpenChange={r.close} title={t("modalTitle")}>
       <div className="modal-h mb-3 flex items-start justify-between">
         <div>
-          <p className="text-sm font-semibold text-title-yellow mt-1 tracking-[3px]">{`${r.step + 1} / ${TOTAL_STEPS} · ${stepLabel}`}</p>
+          <p className="text-sm font-semibold text-gold mt-1 tracking-[3px]">{`${r.step + 1} / ${TOTAL_STEPS} · ${stepLabel}`}</p>
         </div>
       </div>
 
@@ -126,7 +126,7 @@ export default function ReserveModal() {
         {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
           <div
             key={i}
-            className={`h-2 flex-1 rounded-full ${i <= r.step ? "bg-emerald-400" : "bg-[#28392F]"}`}
+            className={`h-2 flex-1 rounded-full ${i <= r.step ? "bg-emerald-400" : "bg-line"}`}
           />
         ))}
       </div>
@@ -154,7 +154,7 @@ export default function ReserveModal() {
           <div className="wiz-pane" data-step="1">
             <p className="text-sm text-zinc-400 mb-4">{t("upload.civil")}</p>
             <div
-              className={`upload-box cursor-pointer rounded-xl border-2 border-dotted ${civilFile ? "border-emerald-700 bg-emerald-950/30" : "border-neutral-700 hover:border-[#C6A664] bg-background-main"} py-8 px-5 text-center`}
+              className={`upload-box cursor-pointer rounded-xl border-2 border-dotted ${civilFile ? "border-emerald-700 bg-emerald-950/30" : "border-neutral-700 hover:border-gold bg-background-main"} py-8 px-5 text-center`}
               onClick={() => onSelectFile(fileCivilRef, setCivilFile)}
             >
               <div className="text-2xl flex justify-center">
@@ -230,7 +230,7 @@ export default function ReserveModal() {
           <div className="wiz-pane" data-step="2">
             <p className="text-sm text-zinc-400 mb-4">{t("upload.license")}</p>
             <div
-              className={`upload-box cursor-pointer rounded-xl border-2 border-dotted ${licFile ? "border-emerald-700 bg-emerald-950/30" : "border-neutral-700 hover:border-[#C6A664] bg-background-main"} py-8 px-5 text-center`}
+              className={`upload-box cursor-pointer rounded-xl border-2 border-dotted ${licFile ? "border-emerald-700 bg-emerald-950/30" : "border-neutral-700 hover:border-gold bg-background-main"} py-8 px-5 text-center`}
               onClick={() => onSelectFile(fileLicRef, setLicFile)}
             >
               <div className="text-2xl flex justify-center">
@@ -304,13 +304,13 @@ export default function ReserveModal() {
                 value={licNo}
                 onChange={(e) => setLicNo(e.target.value)}
                 placeholder="123456789012"
-                className="w-full bg-[#0B1512] border border-background-icon-card rounded-lg text-sm p-3"
+                className="w-full bg-ink border border-background-icon-card rounded-lg text-sm p-3"
               />
             </div>
             <div className="mt-3">
               <div className="flex items-center gap-3">
                 <button
-                  className="w-full py-2 rounded-md border text-neutral-300 border-emerald-900 cursor-pointer hover:border-title-yellow hover:text-title-yellow text-sm"
+                  className="w-full py-2 rounded-md border text-neutral-300 border-emerald-900 cursor-pointer hover:border-gold hover:text-gold text-sm"
                   onClick={() => {
                     const v = licNo.trim();
                     if (!v || !/^\d+$/.test(v)) {
@@ -351,7 +351,7 @@ export default function ReserveModal() {
               ) : null}
               <div>
                 <div className="font-serif text-lg">{r.car?.title}</div>
-                <div className="text-xs text-title-yellow">
+                <div className="text-xs text-gold">
                   KWD {r.car?.pricePerDay} / day
                 </div>
               </div>
@@ -365,7 +365,7 @@ export default function ReserveModal() {
                   type="date"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full bg-[#0B1512] border border-background-icon-card rounded-lg text-sm p-3"
+                  className="w-full bg-ink border border-background-icon-card rounded-lg text-sm p-3"
                 />
               </div>
               <div>
@@ -378,7 +378,7 @@ export default function ReserveModal() {
                   max={90}
                   value={days}
                   onChange={(e) => setDays(Number(e.target.value) || 1)}
-                  className="w-full bg-[#0B1512] border border-background-icon-card rounded-lg text-sm p-3"
+                  className="w-full bg-ink border border-background-icon-card rounded-lg text-sm p-3"
                 />
               </div>
             </div>
@@ -387,7 +387,7 @@ export default function ReserveModal() {
             </div>
             <div className="text-lg mt-4 flex items-center justify-between">
               <span>{t("estimated")}</span>
-              <span className="font-serif text-title-yellow font-semibold">
+              <span className="font-serif text-gold font-semibold">
                 KWD {estTotal}
               </span>
             </div>
@@ -410,7 +410,7 @@ export default function ReserveModal() {
                 ) : null}
                 <div className="flex-1">
                   <div className="font-serif text-lg">{r.car?.title}</div>
-                  <div className="text-xs text-title-yellow">
+                  <div className="text-xs text-gold">
                     KWD {r.car?.pricePerDay} / day
                   </div>
                 </div>
@@ -453,7 +453,7 @@ export default function ReserveModal() {
               </div>
             </div>
 
-            <div className="mt-4 flex items-center justify-between border-t border-title-yellow/30 pt-2">
+            <div className="mt-4 flex items-center justify-between border-t border-gold/30 pt-2">
               <span className="text-lg font-semibold">{t("label.total")}</span>
               <span className="font-serif text-xl text-amber-400">
                 KWD {estTotal}
@@ -502,7 +502,7 @@ export default function ReserveModal() {
               <div className="flex items-center gap-3 mt-2">
                 <button
                   type="button"
-                  className="py-1 px-3 rounded-lg cursor-pointer hover:border-title-yellow hover:text-title-yellow border border-neutral-700 text-xs text-neutral-300"
+                  className="py-1 px-3 rounded-lg cursor-pointer hover:border-gold hover:text-gold border border-neutral-700 text-xs text-neutral-300"
                   onClick={clearSignature}
                 >
                   Clear
@@ -520,7 +520,7 @@ export default function ReserveModal() {
             </div>
             <div className="mt-3">
               <div
-                className={`upload-box cursor-pointer rounded-xl border-2 border-dotted ${selfieFile ? "border-emerald-700 bg-emerald-950/30" : "border-neutral-700 hover:border-[#C6A664] bg-background-main"} py-8 px-5 text-center`}
+                className={`upload-box cursor-pointer rounded-xl border-2 border-dotted ${selfieFile ? "border-emerald-700 bg-emerald-950/30" : "border-neutral-700 hover:border-gold bg-background-main"} py-8 px-5 text-center`}
                 onClick={() => onSelectFile(fileSelfieRef, setSelfieFile)}
               >
                 <div className="text-2xl flex justify-center">
@@ -590,7 +590,7 @@ export default function ReserveModal() {
           <div data-step="7">
             <div className="flex items-center justify-between my-7">
               <span className="text-lg font-semibold">{t("amountDue")}</span>
-              <span className="sv font-serif text-xl text-title-yellow">
+              <span className="sv font-serif text-xl text-gold">
                 KWD {estTotal}
               </span>
             </div>
@@ -625,7 +625,7 @@ export default function ReserveModal() {
                 placeholder="•••• •••• •••• ••••"
                 value={cardNumber}
                 onChange={(e) => setCardNumber(e.target.value)}
-                className="w-full bg-[#0B1512] border border-background-icon-card rounded-lg text-sm p-3"
+                className="w-full bg-ink border border-background-icon-card rounded-lg text-sm p-3"
               />
 
               <div className="grid grid-cols-2 gap-3 mt-3">
@@ -637,7 +637,7 @@ export default function ReserveModal() {
                     placeholder="MM/YY"
                     value={expiry}
                     onChange={(e) => setExpiry(e.target.value)}
-                    className="w-full bg-[#0B1512] border border-background-icon-card rounded-lg text-sm p-3"
+                    className="w-full bg-ink border border-background-icon-card rounded-lg text-sm p-3"
                   />
                 </div>
                 <div>
@@ -648,7 +648,7 @@ export default function ReserveModal() {
                     placeholder="•••"
                     value={cvv}
                     onChange={(e) => setCvv(e.target.value)}
-                    className="w-full bg-[#0B1512] border border-background-icon-card rounded-lg text-sm p-3"
+                    className="w-full bg-ink border border-background-icon-card rounded-lg text-sm p-3"
                   />
                 </div>
               </div>
@@ -699,23 +699,23 @@ export default function ReserveModal() {
         )}
 
         {r.step !== 0 && (
-          <div className="mt-6 flex justify-between gap-4">
+          <div className="mt-6 grid grid-cols-2 gap-4">
             {r.step !== 8 && (
               <Button
-                variant="outline"
-                size="sm"
-                rounded="lg"
-                className="w-full hover:border-title-yellow hover:text-title-yellow"
+                variant="ghost"
+                className="w-full hover:border-gold hover:text-gold bg-transparent text-gold hover:bg-transparent"
                 onClick={() => r.back()}
                 disabled={r.step === 0}
               >
                 {t("back")}
               </Button>
             )}
-            <button
-              className={`w-full py-3 rounded-lg cursor-pointer text-sm font-semibold ${canAdvance ? "" : "opacity-50 cursor-not-allowed"}`}
-              onClick={() => {
-                if (r.step === 8) {
+
+            {r.step === 8 ? (
+              <Button
+                variant="default"
+                className="w-full bg-emerald col-span-2 hover:bg-emerald-deep"
+                onClick={() => {
                   try {
                     const n = addNotification({
                       titleKey: "reserve:doneMsgTitle",
@@ -724,26 +724,29 @@ export default function ReserveModal() {
                     });
                     // mark acknowledged (OK) for the user as requested
                     acknowledgeNotification(n.id);
+                    //eslint-disable-next-line
                   } catch (e) {
                     // ignore storage errors
                   }
                   return r.close();
-                }
-                if (!canAdvance) return;
-                return r.next();
-              }}
-              style={
-                canAdvance
-                  ? {
-                      background: "#10b981",
-                      color: "#fff",
-                    }
-                  : { background: "transparent", color: "#9ca3af" }
-              }
-              aria-disabled={!canAdvance}
-            >
-              {r.step === 8 ? t("done") : t("next")}
-            </button>
+                }}
+              >
+                {t("done")}
+              </Button>
+            ) : (
+              <Button
+                type="button"
+                className={`w-full h-auto rounded-lg text-sm font-semibold border ${canAdvance ? "bg-emerald border-emerald text-white hover:bg-emerald-deep hover:border-emerald-deep" : "bg-transparent border-line text-zinc-400 hover:bg-transparent opacity-50"}`}
+                onClick={() => {
+                  if (!canAdvance) return;
+                  return r.next();
+                }}
+                disabled={r.step !== 8 && !canAdvance}
+                aria-disabled={!canAdvance}
+              >
+                {t("next")}
+              </Button>
+            )}
           </div>
         )}
       </div>

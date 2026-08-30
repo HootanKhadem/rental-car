@@ -1,23 +1,37 @@
 "use client";
-import React from "react";
-import Modal from "@/components/ui/Modal";
-import { Button } from "@/components/ui/Button";
+
+import { Modal } from "@/components/ui/modal/modal";
+import { Button } from "@/components/ui/button/button";
 import useAuth from "@/src/features/auth/useAuth";
 import { useAuthContextMaybe } from "@/src/features/auth/AuthProvider";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import InputField from "@/components/ui/inputField/inputField";
 
-type Props = { isOpen: boolean; onClose: () => void };
+type Props = {
+  isOpen: boolean;
+  onClose: () => void;
+};
 
 const signInSchema = z.object({
-  email: z.string().email({ message: "invalidEmail" }),
+  email: z
+    .string()
+    .trim()
+    .min(1, {
+      message: "emailRequired",
+    })
+    .email({
+      message: "invalidEmail",
+    }),
 });
+
 type SignInForm = z.infer<typeof signInSchema>;
 
 export default function SignInModal({ isOpen, onClose }: Props) {
   const { t } = useTranslation();
+
   const authFallback = useAuth();
   const ctx = useAuthContextMaybe() ?? authFallback;
 
@@ -28,25 +42,29 @@ export default function SignInModal({ isOpen, onClose }: Props) {
     setError,
   } = useForm<SignInForm>({
     resolver: zodResolver(signInSchema),
-    defaultValues: { email: "" },
+    defaultValues: {
+      email: "",
+    },
+    mode: "onSubmit",
   });
 
   async function onSubmit(data: SignInForm) {
     try {
-      ctx.signIn(data.email);
+      await ctx.signIn(data.email);
+
       onClose();
-      //eslint-disable-next-line
-    } catch (err: any) {
-      const msg = String(err?.message || err);
-      if (msg.includes("User not found")) {
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+
+      if (message.includes("User not found")) {
         setError("email", {
           type: "manual",
-          message: t("modal.error.userNotFound"),
+          message: "userNotFound",
         });
       } else {
         setError("email", {
           type: "manual",
-          message: t("modal.error.generic"),
+          message: "generic",
         });
       }
     }
@@ -54,59 +72,73 @@ export default function SignInModal({ isOpen, onClose }: Props) {
 
   function openRegister() {
     onClose();
-    const ev = new CustomEvent("open-register-modal");
-    window.dispatchEvent(ev);
+
+    window.dispatchEvent(new CustomEvent("open-register-modal"));
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={t("auth.signIn")}>
-      <p className="text-neutral-400 text-sm  -mt-3">{t("modal.welcome")}</p>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-        <div className="mt-7">
-          <label
-            htmlFor="si-email"
-            className="text-xs text-neutral-400 mb-2 block"
-          >
-            {t("modal.email")}
-          </label>
-          <input
-            id="si-email"
-            type="email"
-            className="w-full bg-[#0B1512] border border-background-icon-card rounded-lg text-sm p-3"
-            placeholder={t("modal.emailPlaceholder")}
-            {...register("email")}
-          />
-          {errors.email ? (
-            <div className="text-sm text-red-400 mt-1">
-              {String(errors.email.message)}
-            </div>
-          ) : null}
-        </div>
+    <Modal open={isOpen} onOpenChange={onClose} title={t("auth.signIn")}>
+      <p className="-mt-4 text-xs text-neutral-400 mb-6">
+        {t("modal.welcome")}
+      </p>
 
-        <div>
-          <Button
-            type="submit"
-            fullWidth
-            rounded="md"
-            disabled={isSubmitting}
-            size="lg"
-            bgClass="bg-emerald-600"
-            textClass="text-white font-semibold"
-            className="font-mono hover:bg-emerald-500"
-          >
-            {t("modal.signInButton")}
-          </Button>
-        </div>
+      <form
+        noValidate
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col gap-4"
+      >
+        <InputField
+          label={t("modal.email")}
+          description={t("modal.emailDescription")}
+          placeholder={t("modal.emailPlaceholder")}
+          type="email"
+          autoComplete="email"
+          inputMode="email"
+          disabled={isSubmitting}
+          error={
+            errors.email?.message
+              ? t(`modal.${errors.email.message}`)
+              : undefined
+          }
+          {...register("email")}
+        />
+
+        <Button
+          variant="solid"
+          type="submit"
+          disabled={isSubmitting}
+          className="
+            w-full
+            bg-emerald
+            border-emerald
+            text-white
+            hover:bg-emerald-deep
+            hover:border-emerald-deep
+            font-mono
+            font-bold
+          "
+        >
+          {isSubmitting ? t("modal.signingIn") : t("modal.signInButton")}
+        </Button>
 
         <p className="text-center text-sm text-neutral-400">
           {t("modal.haveAccount")}{" "}
-          <button
+          <Button
             type="button"
+            disabled={isSubmitting}
             onClick={openRegister}
-            className="text-title-yellow cursor-pointer hover:text-amber-400"
+            className="
+              cursor-pointer
+              border-none
+              bg-transparent
+              p-0
+              text-gold
+              hover:bg-transparent
+              hover:text-gold-deep
+            "
           >
             {t("modal.registerLink")}
-          </button>
+          </Button>
         </p>
       </form>
     </Modal>

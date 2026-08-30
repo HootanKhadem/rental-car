@@ -1,6 +1,5 @@
 "use client";
-import React from "react";
-import Button from "@/components/ui/Button";
+import { Button } from "@/components/ui/button/button";
 import { useTranslation } from "react-i18next";
 import HeroImage from "./components/HeroImage";
 import StatItem from "./components/StatItem";
@@ -10,7 +9,7 @@ import useClientI18n from "@/src/i18n/useI18n";
 export default function HeroClient() {
   const mounted = useClientI18n();
   const { t } = useTranslation();
-
+  //just for test
   //eslint-disable-next-line
   const renderValue = (s: any) => {
     if (typeof s.value === "string" && s.value.endsWith("min")) {
@@ -31,13 +30,13 @@ export default function HeroClient() {
     <div className="grid md:grid-cols-2 gap-12 items-stretch">
       <div className="flex flex-col items-center text-center space-y-6 lg:col-span-1 col-span-2 lg:items-start lg:text-left">
         <span
-          className="inline-flex items-center gap-2 bg-background-hero-badge border-2 border-border-hero-badge rounded-4xl px-3 py-2 text-[11px] mb-5 text-button-primary-green tracking-[1px] font-mono"
+          className="inline-flex items-center gap-2 bg-[rgba(47,163,122,.1)] border border-emerald-deep rounded-4xl px-3 py-2 text-[11px] mb-5 text-emerald tracking-[1px] font-mono"
           role="status"
           aria-label={mounted ? t("hero.badge") : ""}
         >
           <span className="relative flex h-2 w-2">
             <span
-              className="absolute inline-flex h-full w-full rounded-full opacity-60 animate-ping bg-emerald-500"
+              className="absolute inline-flex h-full w-full rounded-full opacity-60 animate-ping bg-emerald"
               aria-hidden="true"
             />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-700" />
@@ -47,32 +46,26 @@ export default function HeroClient() {
           </span>
         </span>
 
-        <h1 className="text-5xl sm:text-7xl font-serif leading-tight text-zinc-100">
+        <h1 className="text-5xl sm:text-7xl font-serif leading-tight text-ivory font-semibold">
           {mounted ? t("hero.title") : ""}
         </h1>
 
-        <p className="text-zinc-400 max-w-7xl text-sm sm:text-md text-start">
+        <p className="text-smoke max-w-md text-sm sm:text-md text-start">
           {mounted ? t("hero.description") : ""}
         </p>
 
         <div className="w-full flex justify-center lg:justify-start">
-          <div className="space-x-4">
+          <div className="space-x-4 font-mono space-y-3 sm:space-y-0">
             <Button
-              variant="solid"
-              size="lg"
-              rounded="lg"
-              bgClass="bg-button-primary-yellow"
-              textClass="text-black"
-              className="hover:opacity-95 text-xs sm:text-sm"
+              variant="default"
+              className="font-bold w-full sm:w-auto"
             >
               {mounted ? t("hero.cta.browse") : ""}
             </Button>
 
             <Button
-              variant="outline"
-              size="lg"
-              rounded="lg"
-              className="hover:border hover:border-title-yellow hover:text-title-yellow hover:bg-transparent text-xs sm:text-sm"
+              variant="ghost"
+              className="text-ivory border-line hover:bg-transparent hover:border-gold hover:text-gold w-full sm:w-auto"
             >
               {mounted ? t("hero.cta.assistant") : ""}
             </Button>
@@ -100,15 +93,15 @@ export default function HeroClient() {
         }
       />
 
-      <div className="grid grid-cols-3 col-span-2 border-t border-b border-divider-line mt-6">
+      <div className="grid grid-cols-3 col-span-2 border-t border-b border-line mt-6">
         {heroStats.map((s, idx) => {
           const isBorder = idx < heroStats.length - 1;
           const className = isBorder
             ? mounted && typeof window !== "undefined"
               ? window.document.documentElement.lang === "ar"
-                ? "border-l border-divider-line last:border-r-0"
-                : "border-r border-divider-line last:border-r-0"
-              : "border-r border-divider-line last:border-r-0"
+                ? "border-l border-line last:border-r-0"
+                : "border-r border-line last:border-r-0"
+              : "border-r border-line last:border-r-0"
             : undefined;
 
           return (

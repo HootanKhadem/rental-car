@@ -16,7 +16,7 @@ vi.mock("next/link", () => ({
     </a>
   ),
 }));
-vi.mock("@/components/ui/Button", () => ({
+vi.mock("@/components/ui/button/button", () => ({
     //eslint-disable-next-line
   Button: ({ children, ...p }: any) => <button {...p}>{children}</button>,
 //eslint-disable-next-line
