@@ -6,7 +6,7 @@ import {
   writeNotifications,
   NotificationItem,
 } from "../../notifications/notifications";
-import { Popover } from "@/components/ui/popover/popover";
+import { Popover } from "@/components/ui/custom/popover/popover";
 import { Button } from "@/components/ui/button";
 
 function migrateLegacyPure(itemsIn: NotificationItem[]) {

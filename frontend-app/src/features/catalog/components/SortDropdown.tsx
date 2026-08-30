@@ -1,7 +1,7 @@
 "use client";
 import { useTranslation } from "react-i18next";
 import useClientI18n from "@/src/i18n/useI18n";
-import SelectField from "@/components/ui/selectField/selectField";
+import SelectField from "@/components/ui/custom/selectField/selectField";
 
 type Props = {
   value: string;

@@ -1,6 +1,6 @@
 "use client";
 
-import { Modal } from "@/components/ui/modal";
+import { Modal } from "@/components/ui/custom/modal";
 import { Button } from "@/components/ui/button";
 import useAuth from "@/src/features/auth/useAuth";
 import { useAuthContextMaybe } from "@/src/features/auth/AuthProvider";
@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import InputField from "@/components/ui/inputField/inputField";
+import InputField from "@/components/ui/custom/inputField/inputField";
 
 type Props = {
   isOpen: boolean;

@@ -1,4 +1,4 @@
-import React from "react";
+import Navbar from "@/src/features/navbar/Navbar.server";
 import Hero from "@/src/features/hero/Hero.server";
 import Assistant from "@/src/features/assistant/Assistant.server";
 import Catalog from "@/src/features/catalog/Catalog.server";
@@ -7,13 +7,16 @@ import Footer from "@/src/features/footer/Footer.server";
 
 const Home = () => {
   return (
-    <main>
-      <Hero />
-      <Assistant />
-      <Catalog />
-      <Membership />
-      <Footer />
-    </main>
+    <>
+      <Navbar />
+      <main>
+        <Hero />
+        <Assistant />
+        <Catalog />
+        <Membership />
+        <Footer />
+      </main>
+    </>
   );
 };
 

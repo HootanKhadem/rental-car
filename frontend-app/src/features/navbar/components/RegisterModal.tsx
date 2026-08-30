@@ -1,9 +1,9 @@
 "use client";
 
-import { Modal } from "@/components/ui/modal";
+import { Modal } from "@/components/ui/custom/modal";
 import { Button } from "@/components/ui/button";
-import InputField from "@/components/ui/inputField/inputField";
-import SelectField from "@/components/ui/selectField/selectField";
+import InputField from "@/components/ui/custom/inputField/inputField";
+import SelectField from "@/components/ui/custom/selectField/selectField";
 
 import useAuth from "@/src/features/auth/useAuth";
 import { useAuthContextMaybe } from "@/src/features/auth/AuthProvider";

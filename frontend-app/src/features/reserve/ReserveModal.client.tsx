@@ -5,7 +5,7 @@ import {
   addNotification,
   acknowledgeNotification,
 } from "../notifications/notifications";
-import { Modal } from "@/components/ui/modal";
+import { Modal } from "@/components/ui/custom/modal";
 import { useReserve } from "./ReserveProvider";
 import Image from "next/image";
 import SignatureCanvas from "react-signature-canvas";
