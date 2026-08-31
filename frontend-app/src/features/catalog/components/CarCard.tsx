@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/custom/badge/badge";
 import i18n from "@/src/i18n/i18n";
 import type { Car } from "@/src/features/catalog/types";
 import Link from "next/link";
+import { openReserve } from "@/src/features/reserve/bus";
 
 function LikeButton() {
   const [liked, setLiked] = React.useState(false);
@@ -192,16 +193,12 @@ export default function CarCard({ car }: Props) {
               className="transition-colors duration-300 border-gold bg-transparent text-gold hover:bg-gold hover:text-ink"
               onClick={() => {
                 try {
-                  window.dispatchEvent(
-                    new CustomEvent("open-reserve", {
-                      detail: {
-                        id: car.id,
-                        title: mounted ? t(`cars.${car.id}`) : car.title,
-                        pricePerDay: car.pricePerDay,
-                        image: car.image,
-                      },
-                    }),
-                  );
+                  openReserve({
+                    id: car.id,
+                    title: mounted ? t(`cars.${car.id}`) : car.title,
+                    pricePerDay: car.pricePerDay,
+                    image: car.image,
+                  });
                 } catch {
                   // ignore
                 }

@@ -1,13 +1,13 @@
 "use client";
 import React from "react";
+import dynamic from "next/dynamic";
 import { useAuthContextMaybe } from "@/src/features/auth/AuthProvider";
+import type { CarRef } from "./types";
+import { onOpenReserve } from "./bus";
 
-type CarRef = {
-  id: string;
-  title: string;
-  pricePerDay: number;
-  image?: string;
-};
+const ReserveModal = dynamic(() => import("./ReserveModal.client"), {
+  ssr: false,
+});
 
 type ReserveContext = {
   isOpen: boolean;
@@ -83,21 +83,17 @@ export default function ReserveProvider({
     goTo,
   };
 
-  // Listen for global event to open reserve (used by non-hook consumers)
+  // Subscribe to typed reserve open events
   React.useEffect(() => {
-    function handler(e: Event) {
-      const ev = e as CustomEvent;
-
-      if (!ev?.detail) return;
-      const { id, title, pricePerDay, image } = ev.detail;
-      openReserve({ id, title, pricePerDay, image });
-    }
-
-    window.addEventListener("open-reserve", handler as EventListener);
-    return () =>
-      window.removeEventListener("open-reserve", handler as EventListener);
+    const unsub = onOpenReserve((detail) => openReserve(detail));
+    return () => unsub();
     //eslint-disable-next-line
-  }, []);
+  }, [auth?.isAuthenticated]);
 
-  return <ctx.Provider value={value}>{children}</ctx.Provider>;
+  return (
+    <ctx.Provider value={value}>
+      {children}
+      <ReserveModal />
+    </ctx.Provider>
+  );
 }
