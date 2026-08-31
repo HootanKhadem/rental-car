@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { AuthForm } from "@/src/components/auth/authForm";
 import { useCustomerAuthStore } from "@/stores/customerAuth.store";
 import { useEffect } from "react";
@@ -15,16 +15,18 @@ import { Lock } from "lucide-react";
 
 export default function AuthPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
   const { isAuthenticated } = useCustomerAuthStore();
 
   useEffect(() => {
     if (isAuthenticated) {
-      router.push("/");
+      router.push(callbackUrl);
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, router, callbackUrl]);
 
   const handleSuccess = () => {
-    router.push("/");
+    router.push(callbackUrl);
   };
 
   return (

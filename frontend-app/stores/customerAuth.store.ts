@@ -4,8 +4,8 @@ import type {
   Customer,
   LoginCredentials,
   RegisterData,
-  AuthResponse,
 } from "@/src/types/customer";
+import * as customerService from "@/src/services/customer.service";
 
 // تعریف ساختار Store
 interface CustomerAuthStore {
@@ -24,67 +24,9 @@ interface CustomerAuthStore {
   reset: () => void;
 }
 
-// --- Mock API (این بخش بعداً با API واقعی جایگزین می‌شود) ---
-
-// شبیه‌سازی دیتابیس محلی برای کاربران ثبت‌نام‌شده
-const mockUsersDB: Array<{
-  email: string;
-  password: string;
-  customer: Customer;
-}> = [];
-
-const mockApiLogin = async (
-  credentials: LoginCredentials,
-): Promise<AuthResponse> => {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  // جستجو در "دیتابیس" محلی
-  const found = mockUsersDB.find(
-    (u) => u.email === credentials.email && u.password === credentials.password,
-  );
-
-  if (found) {
-    return {
-      customer: found.customer,
-      token: `mock-jwt-token-${found.customer.id}`,
-    };
-  }
-
-  throw new Error("Invalid email or password");
-};
-
-const mockApiRegister = async (data: RegisterData): Promise<AuthResponse> => {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  // بررسی تکراری نبودن ایمیل
-  const exists = mockUsersDB.find((u) => u.email === data.email);
-  if (exists) {
-    throw new Error("This email is already registered");
-  }
-
-  // ساخت کاربر جدید
-  const newCustomer: Customer = {
-    id: `cust-${Date.now()}`,
-    name: data.name,
-    email: data.email,
-    phone: data.phone,
-    role: "Customer",
-  };
-
-  // ذخیره در "دیتابیس" محلی
-  mockUsersDB.push({
-    email: data.email,
-    password: data.password,
-    customer: newCustomer,
-  });
-
-  return {
-    customer: newCustomer,
-    token: `mock-jwt-token-${newCustomer.id}`,
-  };
-};
-
-// ----------------------------------------------------------------
+// Service-layer implementation lives in src/services/customer.service.ts
+// which currently uses localStorage as a mock backing store and can be
+// swapped for real HTTP calls when the backend is ready.
 
 export const useCustomerAuthStore = create<CustomerAuthStore>()(
   persist(
@@ -100,7 +42,7 @@ export const useCustomerAuthStore = create<CustomerAuthStore>()(
       login: async (credentials) => {
         set({ isLoading: true, error: null });
         try {
-          const response = await mockApiLogin(credentials);
+          const response = await customerService.login(credentials);
 
           set({
             customer: response.customer,
@@ -121,7 +63,7 @@ export const useCustomerAuthStore = create<CustomerAuthStore>()(
       register: async (data) => {
         set({ isLoading: true, error: null });
         try {
-          const response = await mockApiRegister(data);
+          const response = await customerService.register(data);
 
           set({
             customer: response.customer,
@@ -146,6 +88,9 @@ export const useCustomerAuthStore = create<CustomerAuthStore>()(
           isAuthenticated: false,
           error: null,
         });
+        if (typeof window !== "undefined") {
+          customerService.signOut();
+        }
       },
 
       // Clear Error
