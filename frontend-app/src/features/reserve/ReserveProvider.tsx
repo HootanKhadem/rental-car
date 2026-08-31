@@ -87,6 +87,7 @@ export default function ReserveProvider({
   React.useEffect(() => {
     function handler(e: Event) {
       const ev = e as CustomEvent;
+
       if (!ev?.detail) return;
       const { id, title, pricePerDay, image } = ev.detail;
       openReserve({ id, title, pricePerDay, image });

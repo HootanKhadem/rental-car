@@ -1,16 +1,20 @@
 "use client";
+
 import React from "react";
 import { useTranslation } from "react-i18next";
 import useClientI18n from "@/src/i18n/useI18n";
 import Image from "next/image";
-import { Car } from "../types";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/custom/badge/badge";
 import i18n from "@/src/i18n/i18n";
+import type { Car } from "@/src/features/catalog/types";
+import Link from "next/link";
 
 function LikeButton() {
   const [liked, setLiked] = React.useState(false);
   const mounted = useClientI18n();
   const { t } = useTranslation();
+
   return (
     <button
       type="button"
@@ -90,11 +94,9 @@ export default function CarCard({ car }: Props) {
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="object-cover"
-              loading="eager"
+              loading="lazy" // تغییر به lazy برای بهینه‌تر شدن لود گرید
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent group-hover:from-black/70" />
-
-            {/* Like / bookmark button */}
             <LikeButton />
           </>
         ) : (
@@ -105,13 +107,19 @@ export default function CarCard({ car }: Props) {
       </div>
 
       <div className="p-4">
-        <div className="text-xs text-emerald tracking-widest font-mono">
-          {(mounted
-            ? t(`categories.${car.category}`, { defaultValue: car.category })
-            : car.category
-          ).toUpperCase()}
+        {/* ✅ جایگزینی متن ساده با کامپوننت Badge کاستوم */}
+        <div className="mb-2">
+          <Badge
+            variant="outline"
+            className="border-emerald/30 text-emerald bg-emerald/10 hover:bg-emerald/20 uppercase tracking-widest text-[10px] font-mono"
+          >
+            {mounted
+              ? t(`categories.${car.category}`, { defaultValue: car.category })
+              : car.category}
+          </Badge>
         </div>
-        <h3 className="text-2xl font-medium mt-2 font-serif text-ivory">
+
+        <h3 className="text-2xl font-medium mt-2 font-serif text-ivory line-clamp-1">
           {mounted
             ? t(`cars.${car.id}`, { defaultValue: car.title })
             : car.title}
@@ -168,7 +176,42 @@ export default function CarCard({ car }: Props) {
               </span>
             </div>
           </div>
-          <Button
+
+          <div className="flex items-center gap-2">
+            {/* ✅ لینک جدید به صفحه جزئیات */}
+            <Link href={`/fleet/${car.id}`}>
+              <Button
+                variant="ghost"
+                className="text-smoke hover:text-gold-bright"
+              >
+                Details
+              </Button>
+            </Link>
+            <Button
+              variant="outline"
+              className="transition-colors duration-300 border-gold bg-transparent text-gold hover:bg-gold hover:text-ink"
+              onClick={() => {
+                try {
+                  window.dispatchEvent(
+                    new CustomEvent("open-reserve", {
+                      detail: {
+                        id: car.id,
+                        title: mounted ? t(`cars.${car.id}`) : car.title,
+                        pricePerDay: car.pricePerDay,
+                        image: car.image,
+                      },
+                    }),
+                  );
+                } catch {
+                  // ignore
+                }
+              }}
+            >
+              {i18n.language === "ar" ? "احجز" : "Reserve"}
+            </Button>
+          </div>
+
+          {/* <Button
             variant="outline"
             className="transition-colors duration-300 border-gold bg-transparent text-gold hover:bg-gold hover:text-ink"
             onClick={() => {
@@ -189,7 +232,7 @@ export default function CarCard({ car }: Props) {
             }}
           >
             {i18n.language === "ar" ? "احجز" : "Reserve"}
-          </Button>
+          </Button> */}
         </div>
       </div>
     </article>

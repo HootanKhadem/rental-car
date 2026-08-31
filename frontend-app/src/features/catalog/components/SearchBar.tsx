@@ -38,7 +38,7 @@ export default function SearchBar({ value, onChange }: Props) {
         </div>
 
         <input
-          className="w-full rounded-lg bg-ink border border-line pl-10 pr-4 py-2 placeholder:text-smoke focus:outline-none"
+          className="w-full text-ivory rounded-lg bg-ink border border-line pl-10 pr-4 py-2 placeholder:text-smoke focus:outline-none"
           placeholder={mounted ? t("catalog.search.placeholder") : ""}
           value={value}
           onChange={(e) => onChange(e.target.value)}
