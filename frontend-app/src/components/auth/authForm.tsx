@@ -12,7 +12,6 @@ import {
 } from "@/lib/validators/customerAuth.validator";
 import { Button } from "@/components/ui/custom/button/Button";
 import { InputField } from "@/components/ui/custom/inputField/inputField";
-import { Alert, AlertDescription } from "@/components/ui/custom/alert/alert";
 import {
   Tabs,
   TabsContent,
@@ -43,17 +42,27 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
   const onLoginSubmit = async (data: CustomerLoginFormData) => {
     clearError();
     await login(data);
-    if (!useCustomerAuthStore.getState().error) {
-      onSuccess?.();
+    const storeError = useCustomerAuthStore.getState().error;
+    if (storeError) {
+      // map generic server error to password field so user sees it under the input
+      loginForm.setError("password", { type: "server", message: storeError });
+      return;
     }
+
+    onSuccess?.();
   };
 
   const onRegisterSubmit = async (data: CustomerRegisterFormData) => {
     clearError();
     await register(data);
-    if (!useCustomerAuthStore.getState().error) {
-      onSuccess?.();
+    const storeError = useCustomerAuthStore.getState().error;
+    if (storeError) {
+      // map generic registration/server error to email field by default
+      registerForm.setError("email", { type: "server", message: storeError });
+      return;
     }
+
+    onSuccess?.();
   };
 
   return (
@@ -74,12 +83,6 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
           className="space-y-4"
           noValidate
         >
-          {error && (
-            <Alert variant="destructive">
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
-
           <InputField
             id="login-email"
             label="Email"
@@ -141,12 +144,6 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
           className="space-y-4"
           noValidate
         >
-          {error && (
-            <Alert variant="destructive">
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
-
           <InputField
             id="register-name"
             label="Full Name"
