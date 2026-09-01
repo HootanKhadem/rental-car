@@ -8,6 +8,7 @@ import sampleCars from "@/src/data/catalog";
 import SearchBar from "./SearchBar";
 import Filters from "./Filters";
 import CarGrid from "./CarGrid";
+import InfiniteCarGrid from "./InfiniteCarGrid";
 import SortDropdown from "./SortDropdown";
 
 const MOCK_CARS: Car[] = sampleCars as Car[];
@@ -92,7 +93,17 @@ export default function FullCatalog() {
         </div>
 
         {/* Car Grid */}
-        <CarGrid cars={filtered} />
+        {/* Toggle between local grid (for tests/dev) and infinite scroll backed by API/mocks */}
+        {true ? (
+          <InfiniteCarGrid
+            query={query}
+            category={active}
+            sort={sort}
+            pageSize={9}
+          />
+        ) : (
+          <CarGrid cars={filtered} />
+        )}
 
         {/* Empty State */}
         {filtered.length === 0 && (
