@@ -125,8 +125,7 @@ export function InputField({
             border
             border-line
             bg-ink
-            px-3
-            py-2.5
+            h-10
             text-sm
             text-ivory
             placeholder:text-smoke-dim

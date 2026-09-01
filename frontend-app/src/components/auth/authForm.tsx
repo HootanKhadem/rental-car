@@ -58,13 +58,17 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
 
   return (
     <Tabs defaultValue="login" className="w-full">
-      <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="login">Sign In</TabsTrigger>
-        <TabsTrigger value="register">Register</TabsTrigger>
+      <TabsList className="w-full flex justify-center py-5 bg-ink">
+        <TabsTrigger className="py-3.5 mx-1 font-bold" value="login">
+          Sign In
+        </TabsTrigger>
+        <TabsTrigger className="py-3.5 mx-1 font-bold" value="register">
+          Register
+        </TabsTrigger>
       </TabsList>
 
       {/* Login Form */}
-      <TabsContent value="login">
+      <TabsContent value="login" className="mt-3">
         <form
           onSubmit={loginForm.handleSubmit(onLoginSubmit)}
           className="space-y-4"
@@ -101,7 +105,7 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
               type="button"
               variant="ghost"
               size="icon-sm"
-              className="absolute right-0 top-6 z-10"
+              className="absolute right-0 top-6.5 z-10"
               onClick={() => setShowPassword(!showPassword)}
               disabled={isLoading}
             >
@@ -113,7 +117,11 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
             </Button>
           </div>
 
-          <Button type="submit" className="w-full" disabled={isLoading}>
+          <Button
+            type="submit"
+            className="w-full py-5 mt-7 text-lg"
+            disabled={isLoading}
+          >
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -127,7 +135,7 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
       </TabsContent>
 
       {/* Register Form */}
-      <TabsContent value="register">
+      <TabsContent value="register" className="mt-3">
         <form
           onSubmit={registerForm.handleSubmit(onRegisterSubmit)}
           className="space-y-4"
@@ -184,7 +192,7 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
               type="button"
               variant="ghost"
               size="icon-sm"
-              className="absolute right-0 top-6 z-10"
+              className="absolute right-0 top-6.5 z-10"
               onClick={() => setShowPassword(!showPassword)}
               disabled={isLoading}
             >
@@ -211,7 +219,7 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
               type="button"
               variant="ghost"
               size="icon-sm"
-              className="absolute right-0 top-6 z-10"
+              className="absolute right-0 top-6.5 z-10"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               disabled={isLoading}
             >
@@ -223,7 +231,11 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
             </Button>
           </div>
 
-          <Button type="submit" className="w-full" disabled={isLoading}>
+          <Button
+            type="submit"
+            className="w-full py-5 mt-7 text-lg"
+            disabled={isLoading}
+          >
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
