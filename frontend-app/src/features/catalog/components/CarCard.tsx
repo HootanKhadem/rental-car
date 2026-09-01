@@ -10,6 +10,7 @@ import i18n from "@/src/i18n/i18n";
 import type { Car } from "@/src/features/catalog/types";
 import Link from "next/link";
 import { openReserve } from "@/src/features/reserve/bus";
+import { ArrowRight } from "lucide-react";
 
 function LikeButton() {
   const [liked, setLiked] = React.useState(false);
@@ -107,12 +108,11 @@ export default function CarCard({ car }: Props) {
         )}
       </div>
 
-      <div className="p-4">
-        {/* ✅ جایگزینی متن ساده با کامپوننت Badge کاستوم */}
+      <div className="p-4 space-y-4">
         <div className="mb-2">
           <Badge
             variant="outline"
-            className="border-emerald/30 text-emerald bg-emerald/10 hover:bg-emerald/20 uppercase tracking-widest text-[10px] font-mono"
+            className="border-emerald text-emerald bg-emerald-950 uppercase tracking-widest text-[10px] font-mono flex *:items-center *:justify-center"
           >
             {mounted
               ? t(`categories.${car.category}`, { defaultValue: car.category })
@@ -179,18 +179,17 @@ export default function CarCard({ car }: Props) {
           </div>
 
           <div className="flex items-center gap-2">
-            {/* ✅ لینک جدید به صفحه جزئیات */}
             <Link href={`/fleet/${car.id}`}>
               <Button
                 variant="ghost"
-                className="text-smoke hover:text-gold-bright"
+                className="border-gold/80 text-gold/80 hover:bg-transparent hover:text-gold-deep transition-colors duration-300 hover:border-gold-deep"
               >
-                Details
+                {mounted ? t("catalog.card.details") : "Details"}
               </Button>
             </Link>
             <Button
-              variant="outline"
-              className="transition-colors duration-300 border-gold bg-transparent text-gold hover:bg-gold hover:text-ink"
+              variant="default"
+              className="bg-gold hover:bg-gold-bright text-ink font-semibold px-6 py-4 shadow-md shadow-gold/30 hover:shadow-gold/50 transition-all duration-300 ease-out hover:scale-105 active:scale-95 flex *:items-center *:justify-center"
               onClick={() => {
                 try {
                   openReserve({
@@ -205,31 +204,11 @@ export default function CarCard({ car }: Props) {
               }}
             >
               {i18n.language === "ar" ? "احجز" : "Reserve"}
+              <ArrowRight
+                className={`${i18n.language === "ar" ? "rotate-180" : ""}`}
+              />
             </Button>
           </div>
-
-          {/* <Button
-            variant="outline"
-            className="transition-colors duration-300 border-gold bg-transparent text-gold hover:bg-gold hover:text-ink"
-            onClick={() => {
-              try {
-                window.dispatchEvent(
-                  new CustomEvent("open-reserve", {
-                    detail: {
-                      id: car.id,
-                      title: mounted ? t(`cars.${car.id}`) : car.title,
-                      pricePerDay: car.pricePerDay,
-                      image: car.image,
-                    },
-                  }),
-                );
-              } catch {
-                // ignore
-              }
-            }}
-          >
-            {i18n.language === "ar" ? "احجز" : "Reserve"}
-          </Button> */}
         </div>
       </div>
     </article>

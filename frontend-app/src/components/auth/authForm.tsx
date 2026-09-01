@@ -26,7 +26,7 @@ interface AuthFormProps {
 }
 
 export function AuthForm({ onSuccess }: AuthFormProps) {
-  const { login, register, isLoading, error, clearError } =
+  const { login, register, isLoading, clearError } =
     useCustomerAuthStore();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);

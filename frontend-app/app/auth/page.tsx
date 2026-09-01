@@ -11,7 +11,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/custom/card/card";
-import { Lock } from "lucide-react";
 
 export default function AuthPage() {
   const router = useRouter();
